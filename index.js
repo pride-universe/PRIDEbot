@@ -1,23 +1,12 @@
-const secrets = require('./secrets.json');
+const bot = require('./bot.js');
+const router = require('./commandRouter.js');
 
-var Discord = require('discord.io');
-
-function parseMessage(user, userID, channelID, message, event) {
-  if (message === "ping") {
-    bot.sendMessage({
-      to: channelID,
-      message: "pong"
-    });
-  }
+const commands = {
+  ping: require('./commands/ping.js'),
 }
 
-var bot = new Discord.Client({
-  token: secrets.discordToken,
-  autorun: true
-});
-
-bot.on('ready', function() {
-  console.log('Logged in as %s - %s\n', bot.username, bot.id);
-});
-
-bot.on('message', parseMessage);
+for (var key in commands) {
+    if (commands.hasOwnProperty(key)) {
+        router.registerCommand(key, commands[key]);
+    }
+}
