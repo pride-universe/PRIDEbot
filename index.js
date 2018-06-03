@@ -1,6 +1,5 @@
 const bot = require('./bot.js');
 const router = require('./commandRouter.js');
-const repl = require('repl');
 
 const commands = {
   ping: require('./commands/ping.js'),
@@ -14,4 +13,7 @@ for (var command in commands) {
     }
 }
 
-repl.start('> ').context.bot = bot;
+if(!process.argv.find((e)=>e==="--no-repl")) {
+  const repl = require('repl');
+  repl.start('> ').context.bot = bot;
+}
