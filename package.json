@@ -9,9 +9,7 @@
   "author": "Oppo",
   "license": "MIT",
   "dependencies": {
-    "canvas": "^1.6.11",
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
-    "gifencoder": "^1.1.0",
     "sqlite": "^2.9.2"
   }
 }
