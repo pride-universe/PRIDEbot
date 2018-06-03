@@ -1,3 +1,5 @@
+#!/usr/bin/node
+
 const bot = require('./bot.js');
 const router = require('./commandRouter.js');
 
