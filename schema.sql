@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS `trigger_warnings` (
 CREATE TABLE IF NOT EXISTS `spoilers` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
 	`message_id`	TEXT UNIQUE,
-	`subject`	TEXT,
 	`text`	INTEGER
 );
 CREATE TABLE IF NOT EXISTS `roles` (
