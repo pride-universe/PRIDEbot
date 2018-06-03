@@ -5,7 +5,6 @@ const { emojiToString, emojiToReaction, emojiCompare } = require('../utils.js');
 const emoji = config.spoilerEmoji;
 
 bot.on("messageReactionAdd", event => {
-  console.log(event);
   if(!emojiCompare(event.d.emoji, emoji) || event.d.user_id === bot.id) return;
   db().get('SELECT message_id, text FROM spoilers WHERE message_id = ?', event.d.message_id)
   .then(res => {
@@ -19,12 +18,11 @@ bot.on("messageReactionAdd", event => {
     bot.sendMessage({
       to: event.d.user_id,
       message: res.text,
-    }, console.log);
+    });
   })
 });
 
 function run (args, context) {
-  //console.log(context);
   message = context.message;
   if(message.indexOf(" ") === -1) {
     bot.sendMessage({
@@ -53,7 +51,7 @@ function run (args, context) {
     to: context.channelID,
     message: resMsg,
   }, (err, res) => {
-    console.log(err, res);
+    
     if(err) {
       console.error("Error when posting spoiler message.");
       return;
