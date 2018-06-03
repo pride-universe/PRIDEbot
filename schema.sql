@@ -1,0 +1,20 @@
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS `trigger_warnings` (
+	`id`	INTEGER,
+	`message_id`	TEXT UNIQUE,
+	`text`	TEXT,
+	PRIMARY KEY(`id`)
+);
+CREATE TABLE IF NOT EXISTS `spoilers` (
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+	`message_id`	TEXT UNIQUE,
+	`subject`	TEXT,
+	`text`	INTEGER
+);
+CREATE TABLE IF NOT EXISTS `roles` (
+	`id`	INTEGER NOT NULL,
+	`name`	TEXT NOT NULL UNIQUE,
+	`permissions`	TEXT NOT NULL,
+	PRIMARY KEY(`id`)
+);
+COMMIT;

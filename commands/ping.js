@@ -1,7 +1,7 @@
 const bot = require('../bot.js');
 
 function run (args, context) {
-  console.log(bot.servers[context.event.d.guild_id]);
+  console.log(context);
   bot.sendMessage({
     to: context.channelID,
     message: "pong"

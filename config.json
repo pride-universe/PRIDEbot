@@ -1,3 +1,12 @@
 {
-  "prefix": "p!"
+  "prefix": "p!",
+  "twEmoji": {
+    "name": "⚠",
+    "id": null
+  },
+  "spoilerEmoji": {
+    "name": "👀",
+    "id": null,
+    "animated": false
+  }
 }

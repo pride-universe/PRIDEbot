@@ -2,12 +2,12 @@ const bot = require('../bot.js');
 const db = require('../db.js');
 const config = require('../config.json');
 const { emojiToString, emojiToReaction, emojiCompare } = require('../utils.js');
-const emoji = config.twEmoji;
+const emoji = config.spoilerEmoji;
 
 bot.on("messageReactionAdd", event => {
   console.log(event);
   if(!emojiCompare(event.d.emoji, emoji) || event.d.user_id === bot.id) return;
-  db().get('SELECT message_id, text FROM trigger_warnings WHERE message_id = ?', event.d.message_id)
+  db().get('SELECT message_id, text FROM spoilers WHERE message_id = ?', event.d.message_id)
   .then(res => {
     if(!res) return;
     bot.removeReaction({
@@ -29,19 +29,33 @@ function run (args, context) {
   if(message.indexOf(" ") === -1) {
     bot.sendMessage({
       to: context.channelID,
-      message: "<@"+context.userID+"> Error, you did not include any message with your trigger warning.",
+      message: "<@"+context.userID+"> Error, you did not include any message with your spoiler.",
     });
     return;
   }
+
   message = message.substr(message.indexOf(" ") + 1);
+
+  let subject = null;
+  const matches = message.match(/\`([^\`]+)\` (.*)/);
+
+  if(matches) {
+    subject = matches[1];
+    message = matches[2];
+  }
+
+  let resMsg = "<@"+context.userID+"> sent a spoiler. Click "+emojiToString(emoji)+" to have the message sent in PM"
+  if(subject) {
+    resMsg += "\nThe subject of the spoiler is: "+subject;
+  }
   bot.deleteMessage({channelID: context.channelID, messageID: context.event.d.id });
   bot.sendMessage({
     to: context.channelID,
-    message: "<@"+context.userID+"> sent a message that may be triggering. Click "+emojiToString(emoji)+" to have the message sent in PM",
+    message: resMsg,
   }, (err, res) => {
     console.log(err, res);
     if(err) {
-      console.error("Error when posting TW message.");
+      console.error("Error when posting spoiler message.");
       return;
     }
 
@@ -50,7 +64,7 @@ function run (args, context) {
       messageID: res.id,
       reaction: emojiToReaction(emoji),
     });
-    db().run("INSERT INTO trigger_warnings (message_id, text) VALUES (?, ?)", res.id, message);
+    db().run("INSERT INTO spoilers (message_id, text) VALUES (?, ?)", res.id, message);
   });
 }
 
