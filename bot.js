@@ -13,7 +13,7 @@ function tokenize (message) {
 }
 
 function parseMessage(user, userID, channelID, message, event) {
-  if (message.startsWith(config.prefix)) {
+  if (message.toLowerCase().startsWith(config.prefix)) {
     message = message.substring(config.prefix.length);
     let args = tokenize(message);
     let command = args[0];

@@ -2,6 +2,7 @@ const commands = {};
 const aliases = require('./aliases.json');
 
 function route (command, args, context) {
+  command = command.toLowerCase();
   if (aliases.hasOwnProperty(command)) {
     command = aliases[command];
   }
