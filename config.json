@@ -1,5 +1,6 @@
 {
   "prefix": "p!",
+  "commandDir": "./commands/",
   "twEmoji": {
     "name": "⚠",
     "id": null

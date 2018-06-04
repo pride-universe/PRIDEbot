@@ -1,4 +1,15 @@
 const bot = require('../bot.js');
+const config = require('../config.json');
+
+function shortInfo(command) {
+  return "Responds with pong";
+}
+
+function helpString(command) {
+  let help = "Responds with pong";
+  help += "\nSyntax `"+config.prefix+command+"`";
+  return help
+}
 
 function run (args, context) {
   bot.sendMessage({
@@ -9,4 +20,6 @@ function run (args, context) {
 
 module.exports = {
   run,
+  shortInfo,
+  helpString,
 }
