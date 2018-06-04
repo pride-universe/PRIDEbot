@@ -4,6 +4,17 @@ const config = require('../config.json');
 const { emojiToString, emojiToReaction, emojiCompare } = require('../utils.js');
 const emoji = config.spoilerEmoji;
 
+function shortInfo(command) {
+  return "Sends a message which hides a spoiler";
+}
+
+function helpString(command) {
+  let help = "Hides the message and require user interaction to view it";
+  help += "\nSyntax ```"+config.prefix+command+" `<Subject>` <Spoiler>``` (Subject is optional)";
+  return help
+}
+
+
 bot.on("messageReactionAdd", event => {
   if(!emojiCompare(event.d.emoji, emoji) || event.d.user_id === bot.id) return;
   db().get('SELECT message_id, text FROM spoilers WHERE message_id = ?', event.d.message_id)
@@ -51,7 +62,7 @@ function run (args, context) {
     to: context.channelID,
     message: resMsg,
   }, (err, res) => {
-    
+
     if(err) {
       console.error("Error when posting spoiler message.");
       return;
@@ -68,4 +79,6 @@ function run (args, context) {
 
 module.exports = {
   run,
+  shortInfo,
+  helpString,
 }
