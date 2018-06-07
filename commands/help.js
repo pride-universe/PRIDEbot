@@ -7,8 +7,8 @@ function shortInfo(command) {
 }
 
 function helpString(command) {
-  let help = "Shows help about a command. To get a list of commands, type `" + config.prefix + "commands`";
-  help += "\nSyntax `"+config.prefix+command+" [command]`";
+  let help = "Shows help about a command. To get a list of commands, type `" + config.prefix[0] + "commands`";
+  help += "\nSyntax `"+config.prefix[0]+command+" [command]`";
   return help
 }
 
@@ -43,7 +43,7 @@ function run (args, context) {
   let aliases = commandRouter.listAliases(command);
 
   if(aliases.length > 0) {
-    aliases = aliases.map(a => "`"+config.prefix+a+"`");
+    aliases = aliases.map(a => "`"+config.prefix[0]+a+"`");
     helpStr += "\n\nAliases: "+aliases.join(", ");
   }
 

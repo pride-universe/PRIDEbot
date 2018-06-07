@@ -7,7 +7,7 @@ function shortInfo(command) {
 
 function helpString(command) {
   let help = "Responds with pong";
-  help += "\nSyntax `"+config.prefix+command+"`";
+  help += "\nSyntax `"+config.prefix[0]+command+"`";
   return help
 }
 

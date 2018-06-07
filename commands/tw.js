@@ -10,7 +10,7 @@ function shortInfo(command) {
 
 function helpString(command) {
   let help = "Hides the message and require user interaction to view it";
-  help += "\nSyntax `"+config.prefix+command+" <message>`";
+  help += "\nSyntax `"+config.prefix[0]+command+" <message>`";
   return help
 }
 

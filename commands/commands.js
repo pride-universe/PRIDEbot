@@ -8,7 +8,7 @@ function shortInfo(command) {
 
 function helpString(command) {
   let help = "Lists all commands";
-  help += "\nSyntax `"+config.prefix+command+"`";
+  help += "\nSyntax `"+config.prefix[0]+command+"`";
   return help
 }
 
@@ -23,7 +23,7 @@ function run (args, context) {
     } catch (err) {
       shortInfo = "[NO INFO AVAILABLE]";
     }
-    commandsBlock += config.prefix+command+": "+shortInfo+"\n";
+    commandsBlock += config.prefix[0]+command+": "+shortInfo+"\n";
   }
 
   commandsBlock += "```"

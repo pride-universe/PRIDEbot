@@ -13,8 +13,17 @@ function tokenize (message) {
 }
 
 function parseMessage(user, userID, channelID, message, event) {
-  if (message.toLowerCase().startsWith(config.prefix)) {
-    message = message.substring(config.prefix.length);
+  let isCommand = false;
+  let prefixLength = -1;
+  for(let prefix of config.prefix) {
+    if(message.toLowerCase().startsWith(prefix)) {
+      isCommand = true;
+      if(prefix.length > prefixLength) prefixLength = prefix.length;
+    }
+  }
+
+  if (isCommand) {
+    message = message.substring(prefixLength);
     let args = tokenize(message);
     let command = args[0];
     router.route(command, args, {user, userID, channelID, message, event});
