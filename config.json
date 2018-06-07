@@ -1,6 +1,7 @@
 {
   "prefix": ["p!", "p! "],
   "commandDir": "./commands/",
+  "updateUsersInterval": 30000,
   "twEmoji": {
     "name": "⚠",
     "id": null

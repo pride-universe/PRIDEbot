@@ -32,8 +32,12 @@ function parseMessage(user, userID, channelID, message, event) {
 
 bot.on('ready', function() {
   console.log('Logged in as %s - %s\n', bot.username, bot.id);
+  bot.getAllUsers();
+  setInterval(()=>bot.getAllUsers(), config.updateUsersInterval);
 });
 
 bot.on('message', parseMessage);
+
+bot.on("allUsers", ()=>bot.setPresence({game: {name: Object.keys(bot.users).length+" users", type: 3}}));
 
 module.exports = bot;
