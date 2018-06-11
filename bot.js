@@ -38,6 +38,10 @@ bot.on('ready', function() {
 
 bot.on('message', parseMessage);
 
-bot.on("allUsers", ()=>bot.setPresence({game: {name: Object.keys(bot.users).length+" users", type: 3}}));
+bot.on('allUsers', ()=>bot.setPresence({game: {name: Object.keys(bot.users).length+" users", type: 3}}));
+
+bot.on('disconnect', console.log);
+
+//bot.on('guildMemberUpdate', console.log);
 
 module.exports = bot;

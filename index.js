@@ -4,6 +4,8 @@ const bot = require('./bot.js');
 const router = require('./commandRouter.js');
 const fs = require('fs');
 const config = require('./config.json');
+require('./jokes/banned.js');
+
 fs.readdir("./commands", function(err, items) {
     console.log(items);
 
