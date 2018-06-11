@@ -2,7 +2,7 @@ const bot = require('../bot.js');
 
 const channels = [
   '389948829295837185',
-  '389948829295837185',
+  '390235784956870656',
   '448171713444708364',
 ];
 const keyword = "banned";
