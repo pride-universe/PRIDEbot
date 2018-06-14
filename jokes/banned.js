@@ -3,7 +3,7 @@ const bot = require('../bot.js');
 const channels = [
   '389948829295837185',
   '390235784956870656',
-  '448171713444708364',
+  '456591307511693327',
 ];
 const keyword = "banned";
 
@@ -11,7 +11,7 @@ const cooldown = "1200";
 
 const staffroles = [
   '399326671058108417',
-  '450731626788290560',
+  '456596094546345984',
 ];
 
 let lastMessage = 0;
