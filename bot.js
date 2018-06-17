@@ -8,6 +8,7 @@ const config = require('./config');
 const bot = new commando.Client({
 	owner: config.owners,
 	commandPrefix: config.prefix,
+  unknownCommandResponse: false,
 });
 
 bot
