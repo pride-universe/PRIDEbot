@@ -3,17 +3,17 @@ const commando = require('discord.js-commando');
 const db = require('../../db');
 const config = require('../../config');
 const { stripIndents, oneLine } = require('common-tags');
-const emoji = new (require('discord.js').Emoji)(bot, config.twEmoji);
+const emoji = new (require('discord.js').Emoji)(bot, config.spoilerEmoji);
 
 module.exports = class TwCommand extends commando.Command {
   constructor(client) {
     super(client, {
-      name: 'tw',
-      aliases: ['trigger', 'cw'],
+      name: 'spoiler',
+      aliases: [],
       group: 'util',
-      memberName: 'tw',
+      memberName: 'spoiler',
       description: 'Hides the message and require user interaction to view it',
-      examples: ['tw I stubbed my toe on a table', 'tw \\`physical harm` I stubbed my toe on a table'],
+      examples: ['spoiler Oppo created this bot', 'spoiler \\`Creator of Bot` Oppo created this bot'],
       guildOnly: true,
       defaultHandling: true,
       format: '[`subject`] <message>',
@@ -27,14 +27,14 @@ module.exports = class TwCommand extends commando.Command {
 
     const response = await msg.channel.send(
       stripIndents`
-      ${msg.author} sent a message that may be triggering.
+      ${msg.author} sent a spoiler.
       Click ${emoji} to have the message sent in PM ${
-        subject ? `\n\nSubject of the message is: ${subject}` : ''
+        subject ? `\n\nSubject of the spoiler is: ${subject}` : ''
       }`,
       { reply: null }
     );
 
-    db().run("INSERT INTO trigger_warnings (message_id, text) VALUES (?, ?)", response.id, text);
+    db().run("INSERT INTO spoilers (message_id, text) VALUES (?, ?)", response.id, text);
 
     await response.react(emoji.reactionString);
   }

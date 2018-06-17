@@ -1,8 +1,10 @@
 #!/usr/bin/node
+require('./extensions');
 
-const bot = require('./bot.js');
+const bot = require('./bot');
 require('./modules/triggerWarnings');
-require('./jokes/banned.js');
+require('./modules/spoilers');
+require('./jokes/banned');
 
 if(!process.argv.find((e)=>e==="--no-repl")) {
   const repl = require('repl');

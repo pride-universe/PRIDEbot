@@ -10,10 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "common-tags": "^1.8.0",
-    "convert-units": "^2.3.4",
-    "discord.io": "git+https://github.com/izy521/discord.io.git",
-    "discord.js": "^11.3.2",
-    "discord.js-commando": "^0.10.0",
+    "discord.js": "git://github.com/discordjs/discord.js.git",
+    "discord.js-commando": "git://github.com/NbOpposite/Commando.git#backticks",
     "sqlite": "^2.9.2"
   }
 }

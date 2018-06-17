@@ -4,7 +4,8 @@
   "updateUsersInterval": 30000,
   "twEmoji": {
     "name": "⚠",
-    "id": null
+    "id": null,
+    "animated": false
   },
   "spoilerEmoji": {
     "name": "👀",
