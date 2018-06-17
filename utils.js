@@ -4,7 +4,7 @@ function emojiToString(emoji) {
 }
 
 function emojiToReaction(emoji) {
-  return emoji.id === null ? emoji.name : emoji;
+  return emoji.id === null ? emoji.name : emoji.id;
 }
 
 function emojiCompare(emojiA, emojiB) {

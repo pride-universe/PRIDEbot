@@ -1,6 +1,6 @@
 {
-  "prefix": ["p!", "p! "],
-  "commandDir": "./commands/",
+  "prefix": "p!",
+  "owners": ["141977677404962816", "389824128896729089", "261589406513758209"],
   "updateUsersInterval": 30000,
   "twEmoji": {
     "name": "⚠",

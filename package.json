@@ -9,8 +9,11 @@
   "author": "Oppo",
   "license": "MIT",
   "dependencies": {
+    "common-tags": "^1.8.0",
     "convert-units": "^2.3.4",
-    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "discord.io": "git+https://github.com/izy521/discord.io.git",
+    "discord.js": "^11.3.2",
+    "discord.js-commando": "^0.10.0",
     "sqlite": "^2.9.2"
   }
 }

@@ -2,12 +2,13 @@ const bot = require('../bot.js');
 const config = require('../config.json');
 
 function shortInfo(command) {
-  return "Responds with pong";
+  return "Toggles roles for your account";
 }
 
 function helpString(command) {
-  let help = "Responds with pong";
-  help += "\nSyntax `"+config.prefix[0]+command+"`";
+  let help = "Toggles roles for your account";
+  help += "\nSyntax `"+config.prefix[0]+command+" <role|'list'>`";
+  help += "\nSyntax `"+config.prefix[0]+command+" <role|'list'>`";
   return help
 }
 

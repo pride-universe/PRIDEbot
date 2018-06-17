@@ -1,47 +1,69 @@
-const Discord = require('discord.io');
-const secrets = require('./secrets.json');
-const config = require('./config.json');
-const router = require('./commandRouter.js');
+const commando = require('discord.js-commando');
+const path = require('path');
+const oneLine = require('common-tags').oneLine;
+const token = require('./secrets').discordToken;
+const db = require('./db');
+const config = require('./config');
 
-const bot = new Discord.Client({
-  token: secrets.discordToken,
-  autorun: true
+const bot = new commando.Client({
+	owner: config.owners,
+	commandPrefix: config.prefix,
 });
 
-function tokenize (message) {
-  return message.split(" ");
-}
+bot
+  .on('error', console.error)
+  .on('warn', console.warn)
+  .on('debug', console.log)
+  .on('ready', () => {
+		console.log(`Client ready; logged in as ${bot.user.username}#${bot.user.discriminator} - (${bot.user.id})`);
+	})
+  .on('disconnect', () => { console.warn('Disconnected!'); })
+  .on('reconnecting', () => { console.warn('Reconnecting...'); })
+  .on('commandError', (cmd, err) => {
+    if(err instanceof commando.FriendlyError) return;
+    console.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err);
+  })
+  .on('commandBlocked', (msg, reason) => {
+    console.log(oneLine`
+      Command ${msg.command ? `${msg.command.groupID}:${msg.command.memberName}` : ''}
+      blocked; ${reason}
+    `);
+  })
+  .on('commandPrefixChange', (guild, prefix) => {
+    console.log(oneLine`
+      Prefix ${prefix === '' ? 'removed' : `changed to ${prefix || 'the default'}`}
+      ${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
+    `);
+  })
+  .on('commandStatusChange', (guild, command, enabled) => {
+    console.log(oneLine`
+      Command ${command.groupID}:${command.memberName}
+      ${enabled ? 'enabled' : 'disabled'}
+      ${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
+    `);
+  })
+  .on('groupStatusChange', (guild, group, enabled) => {
+    console.log(oneLine`
+      Group ${group.id}
+      ${enabled ? 'enabled' : 'disabled'}
+      ${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
+    `);
+  });
 
-function parseMessage(user, userID, channelID, message, event) {
-  let isCommand = false;
-  let prefixLength = -1;
-  for(let prefix of config.prefix) {
-    if(message.toLowerCase().startsWith(prefix)) {
-      isCommand = true;
-      if(prefix.length > prefixLength) prefixLength = prefix.length;
-    }
-  }
+bot.setProvider(
+	db.awaitDb().then(db => new commando.SQLiteProvider(db))
+).catch(console.error);
 
-  if (isCommand) {
-    message = message.substring(prefixLength);
-    let args = tokenize(message);
-    let command = args[0];
-    router.route(command, args, {user, userID, channelID, message, event});
-  }
-}
+bot.registry
+	.registerGroup('math', 'Math')
+  .registerDefaultTypes()
+  .registerDefaultGroups()
+	.registerDefaultCommands({
+    'prefix': false,
+  })
+  .registerTypesIn(path.join(__dirname, 'types'))
+  .registerCommandsIn(path.join(__dirname, 'commands'));;
 
-bot.on('ready', function() {
-  console.log('Logged in as %s - %s\n', bot.username, bot.id);
-  bot.getAllUsers();
-  setInterval(()=>bot.getAllUsers(), config.updateUsersInterval);
-});
-
-bot.on('message', parseMessage);
-
-bot.on('allUsers', ()=>bot.setPresence({game: {name: Object.keys(bot.users).length+" users", type: 3}}));
-
-bot.on('disconnect', console.log);
-
-//bot.on('guildMemberUpdate', console.log);
+bot.login(token);
 
 module.exports = bot;

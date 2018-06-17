@@ -1,20 +1,13 @@
-const bot = require('../bot.js');
-const db = require('../db.js');
-const config = require('../config.json');
-const { emojiToString, emojiToReaction, emojiCompare } = require('../utils.js');
+const bot = require('../../bot');
+const commando = require('discord.js-commando');
+const db = require('../../db');
+const config = require('../../config');
+const { emojiToString, emojiToReaction, emojiCompare } = require('../../utils');
+const { stripIndents, oneLine } = require('common-tags');
+
 const emoji = config.twEmoji;
 
-function shortInfo(command) {
-  return "Sends a message with a trigger warning and hides the message";
-}
-
-function helpString(command) {
-  let help = "Hides the message and require user interaction to view it";
-  help += "\nSyntax `"+config.prefix[0]+command+" <message>`";
-  return help
-}
-
-bot.on("messageReactionAdd", event => {
+/*bot.on("messageReactionAdd", event => {
   if(!emojiCompare(event.d.emoji, emoji) || event.d.user_id === bot.id) return;
   db().get('SELECT message_id, text FROM trigger_warnings WHERE message_id = ?', event.d.message_id)
   .then(res => {
@@ -30,7 +23,7 @@ bot.on("messageReactionAdd", event => {
       message: res.text,
     });
   })
-});
+});*/
 
 function run (args, context) {
   message = context.message;
@@ -62,8 +55,43 @@ function run (args, context) {
   });
 }
 
+module.exports = class TwCommand extends commando.Command {
+  constructor(client) {
+    super(client, {
+      name: 'tw',
+      aliases: ['trigger', 'cw'],
+      group: 'util',
+      memberName: 'tw',
+      description: 'Hides the message and require user interaction to view it',
+      examples: ['tw I stubbed my toe on a table', 'tw \\`physical harm` I stubbed my toe on a table'],
+      guildOnly: true,
+      defaultHandling: true,
+      format: '[`subject`] <message>',
+    });
+  }
+  async run(msg, args) {
+    await msg.delete();
+    const match = args.match(/\s*(?:(``?)(.*?)\1)?\s*(.*)/);
+    const subject = match[2];
+    const text = match[3];
+
+    db().run("INSERT INTO trigger_warnings (message_id, text) VALUES (?, ?)", msg.id, text);
+
+    const response = await msg.channel.send(
+      stripIndents`
+      ${msg.author} sent a message that may be triggering.
+      Click ${emojiToString(emoji)} to have the message sent in PM ${
+        subject ? `\n\nSubject of the message is: ${subject}` : ''
+      }`,
+      { reply: null }
+    );
+    await response.react(emojiToReaction(emoji));
+  }
+};
+
+/*
 module.exports = {
   run,
   shortInfo,
   helpString,
-}
+}*/
