@@ -30,6 +30,7 @@ module.exports = class WaCommand extends commando.Command {
     response = response.find(e=>e.primary);
     console.log(response);
     if(!response) {
+      msg.channel.stopTyping();
       msg.reply("WolframAlpha did not respond with any result.");
       return;
     }
