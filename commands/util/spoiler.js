@@ -5,7 +5,7 @@ const config = require('../../config');
 const { stripIndents, oneLine } = require('common-tags');
 const emoji = new (require('discord.js').Emoji)(bot, config.spoilerEmoji);
 
-module.exports = class TwCommand extends commando.Command {
+module.exports = class SpoilerCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'spoiler',
@@ -15,7 +15,7 @@ module.exports = class TwCommand extends commando.Command {
       description: 'Hides the message and require user interaction to view it',
       examples: ['spoiler Oppo created this bot', 'spoiler \\`Creator of Bot` Oppo created this bot'],
       guildOnly: true,
-      defaultHandling: true,
+      clientPermissions: ['MANAGE_MESSAGES', 'ADD_REACTIONS'],
       format: '[`subject`] <message>',
     });
   }
@@ -39,10 +39,3 @@ module.exports = class TwCommand extends commando.Command {
     await response.react(emoji.reactionString);
   }
 };
-
-/*
-module.exports = {
-  run,
-  shortInfo,
-  helpString,
-}*/

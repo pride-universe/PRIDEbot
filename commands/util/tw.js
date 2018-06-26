@@ -15,7 +15,7 @@ module.exports = class TwCommand extends commando.Command {
       description: 'Hides the message and require user interaction to view it',
       examples: ['tw I stubbed my toe on a table', 'tw \\`physical harm` I stubbed my toe on a table'],
       guildOnly: true,
-      defaultHandling: true,
+      clientPermissions: ['MANAGE_MESSAGES', 'ADD_REACTIONS'],
       format: '[`subject`] <message>',
     });
   }
@@ -39,10 +39,3 @@ module.exports = class TwCommand extends commando.Command {
     await response.react(emoji.reactionString);
   }
 };
-
-/*
-module.exports = {
-  run,
-  shortInfo,
-  helpString,
-}*/

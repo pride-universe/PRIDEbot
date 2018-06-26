@@ -71,9 +71,9 @@ bot.setProvider(
 ).catch(console.error);
 
 bot.registry
-	.registerGroup('math', 'Math')
   .registerDefaultTypes()
   .registerDefaultGroups()
+	.registerGroup('jokes', 'Jokes')
 	.registerDefaultCommands({
     'prefix': false,
   })
