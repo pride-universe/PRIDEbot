@@ -37,5 +37,6 @@ module.exports = class SpoilerCommand extends commando.Command {
     db().run("INSERT INTO spoilers (message_id, text) VALUES (?, ?)", response.id, text);
 
     await response.react(emoji.reactionString);
+    return null;
   }
 };

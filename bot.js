@@ -14,7 +14,7 @@ const bot = new commando.Client({
 bot
   .on('error', console.error)
   .on('warn', console.warn)
-  .on('debug', console.log)
+  .on('debug', msg=>console.log(msg.replace(token,'<TOKEN>')))
   .on('ready', () => {
 		console.log(`Client ready; logged in as ${bot.user.username}#${bot.user.discriminator} - (${bot.user.id})`);
 	})

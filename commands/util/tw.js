@@ -37,5 +37,6 @@ module.exports = class TwCommand extends commando.Command {
     db().run("INSERT INTO trigger_warnings (message_id, text) VALUES (?, ?)", response.id, text);
 
     await response.react(emoji.reactionString);
+    return null;
   }
 };

@@ -25,7 +25,7 @@ module.exports = class CultCommand extends commando.Command {
     const counts = JSON.parse((await db().get('SELECT value FROM jokes WHERE identifier = ?', 'cult') || {value: "{}"}).value);
     const user = trackUsers[args.toLowerCase()] ? {name: args.toLowerCase(), id: trackUsers[args.toLowerCase()]} : {name: 'jo', id: trackUsers['jo']};
     const count = counts[user.id] || 0;
-    msg.reply(oneLine`${msg.guild && msg.guild.members.get(user.id) ? msg.guild.members.get(user.id).displayName : user.name.replace(/^\w/,l=>l.toUpperCase())}
+    return msg.reply(oneLine`${msg.guild && msg.guild.members.get(user.id) ? msg.guild.members.get(user.id).displayName : user.name.replace(/^\w/,l=>l.toUpperCase())}
     has said the word "cult" ${count} ${count!==1 ? 'times' : 'time'}.`);
   }
   static trackUsers () {
