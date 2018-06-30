@@ -11,8 +11,6 @@ function getDBInstance() {
   return db;
 }
 
-getDBInstance.awaitDb = async function () {
-  return await promise;
-}
+getDBInstance.dbPromise = promise;
 
 module.exports = getDBInstance;

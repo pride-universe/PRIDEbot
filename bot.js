@@ -2,8 +2,9 @@ const commando = require('discord.js-commando');
 const path = require('path');
 const oneLine = require('common-tags').oneLine;
 const token = require('./secrets').discordToken;
-const db = require('./db');
+const { dbPromise } = require('./db');
 const config = require('./config');
+const { parseVoiceUpdate } = require('./modules/voiceChannelManager');
 
 const bot = new commando.Client({
 	owner: config.owners,
@@ -64,16 +65,20 @@ bot
     const reaction = message.reactions.get(emojiKey);
     bot.emit('messageReactionAdd', reaction, user);
 
-  });
+  })
+	.on('voiceStateUpdate', (oldMember, newMember) => {
+		parseVoiceUpdate(newMember);
+	});
 
 bot.setProvider(
-	db.awaitDb().then(db => new commando.SQLiteProvider(db))
+	dbPromise.then(db => new commando.SQLiteProvider(db))
 ).catch(console.error);
 
 bot.registry
   .registerDefaultTypes()
   .registerDefaultGroups()
 	.registerGroup('jokes', 'Jokes')
+	.registerGroup('privacy', 'Privacy')
 	.registerDefaultCommands({
     'prefix': false,
   })

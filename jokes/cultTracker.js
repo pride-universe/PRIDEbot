@@ -1,5 +1,5 @@
 const bot = require('../bot.js');
-const db = require('../db.js');
+const { dbPromise } = require('../db.js');
 
 function getCommand () {
   try {
@@ -10,6 +10,7 @@ function getCommand () {
 }
 
 bot.on('message', async msg => {
+  const db = await dbPromise;
   if(msg.author.id === bot.user.id) return;
 
   const cultCount = (msg.content.match(/cult/gi) || []).length;
@@ -21,5 +22,5 @@ bot.on('message', async msg => {
   if(!Object.values(Cult.trackUsers()).includes(msg.author.id)) return;
   const counts = JSON.parse((await db().get('SELECT value FROM jokes WHERE identifier = ?', 'cult') || {value: "{}"}).value);
   counts[msg.author.id] = (counts[msg.author.id] || 0) + cultCount;
-  db().run("INSERT OR REPLACE INTO jokes (identifier, value) VALUES (?, ?);", 'cult', JSON.stringify(counts));
+  db.run("INSERT OR REPLACE INTO jokes (identifier, value) VALUES (?, ?);", 'cult', JSON.stringify(counts));
 });

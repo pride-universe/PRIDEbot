@@ -1,6 +1,6 @@
 const bot = require('../../bot');
 const commando = require('discord.js-commando');
-const db = require('../../db');
+const { dbPromise } = require('../../db');
 const config = require('../../config');
 const { stripIndents, oneLine } = require('common-tags');
 const emoji = new (require('discord.js').Emoji)(bot, config.twEmoji);
@@ -21,6 +21,7 @@ module.exports = class TwCommand extends commando.Command {
   }
   async run(msg, args) {
     await msg.delete();
+    const db = await dbPromise;
     const match = args.match(/\s*(?:(``?)(.*?)\1)?\s*(.*)/);
     const subject = match[2];
     const text = match[3];
@@ -34,7 +35,7 @@ module.exports = class TwCommand extends commando.Command {
       { reply: null }
     );
 
-    db().run("INSERT INTO trigger_warnings (message_id, text) VALUES (?, ?)", response.id, text);
+    db.run("INSERT INTO trigger_warnings (message_id, text) VALUES (?, ?)", response.id, text);
 
     await response.react(emoji.reactionString);
     return null;

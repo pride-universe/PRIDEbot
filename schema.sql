@@ -1,4 +1,9 @@
 BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS `users` (
+	`user`	TEXT UNIQUE,
+	`data`	TEXT,
+	PRIMARY KEY(`user`)
+);
 CREATE TABLE IF NOT EXISTS `trigger_warnings` (
 	`id`	INTEGER,
 	`message_id`	TEXT UNIQUE,
