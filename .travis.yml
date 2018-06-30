@@ -5,8 +5,7 @@ node_js:
 cache:
   directories:
     - "node_modules"
-addons:
-  apt:
-    update: true
-    packages:
-      - ffmpeg
+before_install:
+  - sudo add-apt-repository ppa:mc3man/trusty-media -y
+  - sudo apt-get update -q
+  - sudo apt-get install ffmpeg -y
