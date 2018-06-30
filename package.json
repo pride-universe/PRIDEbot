@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "PRIDEuniverse bot",
   "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Oppo",
   "license": "MIT",
@@ -18,5 +21,10 @@
     "sqlite": "^2.9.2",
     "wolfram-alpha": "^0.6.0",
     "ytdl-core": "^0.20.4"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^5.2.0"
   }
 }

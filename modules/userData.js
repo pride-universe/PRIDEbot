@@ -3,7 +3,8 @@ const { Collection, User, GuildMember, Message } = require('discord.js');
 const { CommandMessage } = require('discord.js-commando');
 const userDataCollection = new Collection();
 
-function resolveUserId(user) {
+async function resolveUserId(user) {
+  if (user instanceof Function) user = await user();
   if (user instanceof GuildMember || user instanceof User) return user.id;
   if (user instanceof Message || user instanceof CommandMessage) return user.author.id;
   if (typeof user === 'string' && user.match(/^\d+$/)) return user;
@@ -27,7 +28,7 @@ async function fetchUser(userId) {
 }
 
 async function getData(user) {
-  const userId = resolveUserId(user);
+  const userId = await resolveUserId(user);
   return await fetchUser(userId);
 }
 
@@ -38,13 +39,14 @@ async function getProp(user, prop, defValue) {
 }
 
 async function setData(user, data) {
-  const userId = resolveUserId(user);
-  if(typeof data !== 'object') throw new Error('Data must be object!');
+  const userId = await resolveUserId(user);
+  if(data && data instanceof Function) data = data(userId);
+  if(!data || data.constructor !== Object) throw new Error(`Data must be object. Got: ${data ? String(data) : data.constructor.name}`);
   userDataCollection.set(userId, data);
 }
 
 async function setProp(user, prop, value) {
-  const userId = resolveUserId(user);
+  const userId = await resolveUserId(user);
   const data = await fetchUser(userId);
   data[prop] = value;
   await updateUser(userId);

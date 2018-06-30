@@ -1,3 +1,4 @@
 secrets.json
 node_modules/
 main.sqlite
+main.test.sqlite
