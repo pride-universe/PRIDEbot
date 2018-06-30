@@ -16,11 +16,12 @@ module.exports = class YtCommand extends commando.Command {
       aliases: ['play'],
       group: 'util',
       memberName: 'yt',
-      description: 'Plays audio from a youtube video in the channel you\'re connected to',
-      examples: ['yt <https://www.youtube.com/watch?v=qRC4Vk6kisY>'],
+      description: stripIndents`Plays audio from a youtube video in the channel you're connected to.
+      Anyone who's connected to the same channel as PRIDEbot can control the queue and volume.`,
+      examples: ['yt <https://www.youtube.com/watch?v=qRC4Vk6kisY>', 'yt skip', 'yt stop', 'yt volume', 'yt volume 50'],
       guildOnly: true,
       clientPermissions: [],
-      format: '<URL>',
+      format: '<URL|COMMAND> [ARGS...]',
       argsType: 'multiple',
     });
   }
