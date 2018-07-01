@@ -20,7 +20,7 @@ bot.on('message', async msg => {
   if(!Cult) return;
 
   if(!Object.values(Cult.trackUsers()).includes(msg.author.id)) return;
-  const counts = JSON.parse((await db().get('SELECT value FROM jokes WHERE identifier = ?', 'cult') || {value: "{}"}).value);
+  const counts = JSON.parse((await db().get('SELECT value FROM jokes WHERE identifier = ?', 'cult') || {value: '{}'}).value);
   counts[msg.author.id] = (counts[msg.author.id] || 0) + cultCount;
-  db.run("INSERT OR REPLACE INTO jokes (identifier, value) VALUES (?, ?);", 'cult', JSON.stringify(counts));
+  db.run('INSERT OR REPLACE INTO jokes (identifier, value) VALUES (?, ?);', 'cult', JSON.stringify(counts));
 });

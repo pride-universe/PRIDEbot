@@ -2,7 +2,7 @@ const bot = require('../bot');
 const emoji = new (require('discord.js').Emoji)(bot, require('../config').spoilerEmoji);
 const { dbPromise } = require('../db');
 
-bot.on("messageReactionAdd", async function (reaction, user) {
+bot.on('messageReactionAdd', async function (reaction, user) {
   const db = await dbPromise;
   if(user.id === bot.user.id) return;
   if(reaction.emoji.reactionString !== emoji.reactionString) return;

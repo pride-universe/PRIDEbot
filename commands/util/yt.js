@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const { stripIndents, oneLine } = require('common-tags');
+const { stripIndents } = require('common-tags');
 const ytdl = require('ytdl-core');
 const { tryJoin } = require('../../modules/voiceChannelManager');
 
@@ -39,11 +39,7 @@ module.exports = class YtCommand extends commando.Command {
       if(!url) return connection.disconnect();
 
       const stream = ytdl(url, { filter: 'audioonly' });
-
-      const response = await new Promise((resolve, reject)=>stream.on('response', response=>{
-        resolve(response);
-      }));
-      console.log(`Status: ${response.statusCode} - ${response.statusMessage}`);
+      
       const dispatcher = connection.play(stream, { volume });
       dispatcher.on('finish', ()=>{
         dispatcher.pause();
@@ -67,36 +63,36 @@ module.exports = class YtCommand extends commando.Command {
       return msg.reply('Please enter a number between 0 and 100');
     } else {
       if(!connection.dispatcher) return msg.reply('Can\'t read volume, not playing anything.');
-      return msg.reply(`Current volume is ${Math.round(connection.dispatcher.volumeLogarithmic*100)}%`)
+      return msg.reply(`Current volume is ${Math.round(connection.dispatcher.volumeLogarithmic*100)}%`);
     }
   }
 
   async parseCommand(msg, connection, args) {
     if(!connection) {
-      return msg.reply("I need to be playing something before commands can be executed.");
+      return msg.reply('I need to be playing something before commands can be executed.');
     }
     switch(args[0]) {
-      case 'stop':
-        connection.disconnect();
-        return await msg.reply('Stopped playing');
-      case 'skip':
-      case 'next':
-        this.doQueue(connection, true);
-        return await msg.reply('Skipping to next song');
-      case 'volume':
-      case 'vol':
-        return await this.setVolume(msg, connection, args[1]);
-      default:
-        return await msg.reply('Unknown command, or failed to fetch video information.');
+    case 'stop':
+      connection.disconnect();
+      return await msg.reply('Stopped playing');
+    case 'skip':
+    case 'next':
+      this.doQueue(connection, true);
+      return await msg.reply('Skipping to next song');
+    case 'volume':
+    case 'vol':
+      return await this.setVolume(msg, connection, args[1]);
+    default:
+      return await msg.reply('Unknown command, or failed to fetch video information.');
     }
   }
 
   async run(msg, args) {
-    if(!(msg.member && msg.member.voiceChannel)) return msg.reply("You're not in a voice channel, you need to join a channel before playing audio from youtube in it.");
+    if(!(msg.member && msg.member.voiceChannel)) return msg.reply('You\'re not in a voice channel, you need to join a channel before playing audio from youtube in it.');
     let connection;
     if(msg.guild.voiceConnection) {
       if(msg.guild.voiceConnection.channel !== msg.member.voiceChannel) {
-        return msg.reply("I'm already in a voice channel. I can only be in one voice channel at once.");
+        return msg.reply('I\'m already in a voice channel. I can only be in one voice channel at once.');
       } else {
         connection = msg.guild.voiceConnection;
       }

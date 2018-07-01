@@ -7,8 +7,8 @@ const config = require('./config');
 const { parseVoiceUpdate } = require('./modules/voiceChannelManager');
 
 const bot = new commando.Client({
-	owner: config.owners,
-	commandPrefix: config.prefix,
+  owner: config.owners,
+  commandPrefix: config.prefix,
   unknownCommandResponse: false,
 });
 
@@ -17,8 +17,8 @@ bot
   .on('warn', console.warn)
   .on('debug', msg=>console.log(msg.replace(token,'<TOKEN>')))
   .on('ready', () => {
-		console.log(`Client ready; logged in as ${bot.user.username}#${bot.user.discriminator} - (${bot.user.id})`);
-	})
+    console.log(`Client ready; logged in as ${bot.user.username}#${bot.user.discriminator} - (${bot.user.id})`);
+  })
   .on('disconnect', () => { console.warn('Disconnected!'); })
   .on('reconnecting', () => { console.warn('Reconnecting...'); })
   .on('commandError', (cmd, err) => {
@@ -66,24 +66,24 @@ bot
     bot.emit('messageReactionAdd', reaction, user);
 
   })
-	.on('voiceStateUpdate', (oldMember, newMember) => {
-		parseVoiceUpdate(newMember);
-	});
+  .on('voiceStateUpdate', (oldMember, newMember) => {
+    parseVoiceUpdate(newMember);
+  });
 
 bot.setProvider(
-	dbPromise.then(db => new commando.SQLiteProvider(db))
+  dbPromise.then(db => new commando.SQLiteProvider(db))
 ).catch(console.error);
 
 bot.registry
   .registerDefaultTypes()
   .registerDefaultGroups()
-	.registerGroup('jokes', 'Jokes')
-	.registerGroup('privacy', 'Privacy')
-	.registerDefaultCommands({
+  .registerGroup('jokes', 'Jokes')
+  .registerGroup('privacy', 'Privacy')
+  .registerDefaultCommands({
     'prefix': false,
   })
   .registerTypesIn(path.join(__dirname, 'types'))
-  .registerCommandsIn(path.join(__dirname, 'commands'));;
+  .registerCommandsIn(path.join(__dirname, 'commands'));
 
 bot.login(token);
 

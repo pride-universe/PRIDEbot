@@ -6,9 +6,9 @@ const channels = [
   '456591307511693327',
   '448171713444708364',
 ];
-const keyword = "banned";
+const keyword = 'banned';
 
-const cooldown = "1200";
+const cooldown = '1200';
 
 const staffroles = [
   '399326671058108417',
@@ -28,5 +28,5 @@ bot.on('message', async msg => {
     if (staffroles.includes(role)) return;
   }
   lastMessage = Date.now();
-  msg.channel.send("NO U BANNED! OwO");
+  msg.channel.send('NO U BANNED! OwO');
 });

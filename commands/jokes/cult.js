@@ -1,6 +1,5 @@
 const commando = require('discord.js-commando');
-const { waSecret } = require('../../secrets');
-const { stripIndents, oneLine } = require('common-tags');
+const { oneLine } = require('common-tags');
 const db = require('../../db');
 
 const trackUsers = {
@@ -22,7 +21,7 @@ module.exports = class CultCommand extends commando.Command {
     });
   }
   async run(msg, args) {
-    const counts = JSON.parse((await db().get('SELECT value FROM jokes WHERE identifier = ?', 'cult') || {value: "{}"}).value);
+    const counts = JSON.parse((await db().get('SELECT value FROM jokes WHERE identifier = ?', 'cult') || {value: '{}'}).value);
     const user = trackUsers[args.toLowerCase()] ? {name: args.toLowerCase(), id: trackUsers[args.toLowerCase()]} : {name: 'jo', id: trackUsers['jo']};
     const count = counts[user.id] || 0;
     return msg.reply(oneLine`${msg.guild && msg.guild.members.get(user.id) ? msg.guild.members.get(user.id).displayName : user.name.replace(/^\w/,l=>l.toUpperCase())}

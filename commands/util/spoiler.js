@@ -2,7 +2,7 @@ const bot = require('../../bot');
 const commando = require('discord.js-commando');
 const { dbPromise } = require('../../db');
 const config = require('../../config');
-const { stripIndents, oneLine } = require('common-tags');
+const { stripIndents } = require('common-tags');
 const emoji = new (require('discord.js').Emoji)(bot, config.spoilerEmoji);
 
 module.exports = class SpoilerCommand extends commando.Command {
@@ -30,12 +30,12 @@ module.exports = class SpoilerCommand extends commando.Command {
       stripIndents`
       ${msg.author} sent a spoiler.
       Click ${emoji} to have the message sent in PM ${
-        subject ? `\n\nSubject of the spoiler is: ${subject}` : ''
-      }`,
+  subject ? `\n\nSubject of the spoiler is: ${subject}` : ''
+}`,
       { reply: null }
     );
 
-    db.run("INSERT INTO spoilers (message_id, text) VALUES (?, ?)", response.id, text);
+    db.run('INSERT INTO spoilers (message_id, text) VALUES (?, ?)', response.id, text);
 
     await response.react(emoji.reactionString);
     return null;

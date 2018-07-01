@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const { stripIndents, oneLine } = require('common-tags');
+const { stripIndents } = require('common-tags');
 const userData = require('../../modules/userData');
 const voiceChannelManager = require('../../modules/voiceChannelManager');
 

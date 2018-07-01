@@ -1,7 +1,8 @@
+/* eslint-env node, mocha */
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
-const should = chai.should();
+const should = chai.should(); // eslint-disable-line no-unused-vars
 //const expect = chai.expect;
 
 var db = null;

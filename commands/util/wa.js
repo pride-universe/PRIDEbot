@@ -1,6 +1,5 @@
 const commando = require('discord.js-commando');
 const { waSecret } = require('../../secrets');
-const { stripIndents, oneLine } = require('common-tags');
 const wolfram = require('wolfram-alpha').createClient(waSecret);
 
 module.exports = class WaCommand extends commando.Command {
@@ -24,18 +23,18 @@ module.exports = class WaCommand extends commando.Command {
       response = await wolfram.query(args);
     } catch (e) {
       msg.channel.stopTyping();
-      msg.reply("Error whith connection to WolframAlpha.");
+      msg.reply('Error whith connection to WolframAlpha.');
       return;
     }
     response = response.find(e=>e.primary);
     console.log(response);
     if(!response) {
       msg.channel.stopTyping();
-      msg.reply("WolframAlpha did not respond with any result.");
+      msg.reply('WolframAlpha did not respond with any result.');
       return;
     }
     const title = response.title;
-    response = response.subpods.map(e=>e.text).join("\n\n");
+    response = response.subpods.map(e=>e.text).join('\n\n');
     msg.channel.stopTyping();
     msg.reply(`**${title}:**\n${response}`);
   }

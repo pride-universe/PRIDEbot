@@ -23,7 +23,7 @@ async function checkChannel(channel) {
 }
 
 async function tryJoin(channel) {
-  if(!await checkChannel(channel)) throw new FriendlyError(`There are unmuted users who have requested to not have me in the same voice channel as them in the channel you're trying to get me to join. I cannot join until they have muted themselves or left. Please don't try to force any user to leave or mute, their privacy, right to feel safe and right to partake in this community is more important than whatever you're trying to get me to do!`)
+  if(!await checkChannel(channel)) throw new FriendlyError('There are unmuted users who have requested to not have me in the same voice channel as them in the channel you\'re trying to get me to join. I cannot join until they have muted themselves or left. Please don\'t try to force any user to leave or mute, their privacy, right to feel safe and right to partake in this community is more important than whatever you\'re trying to get me to do!');
   return await channel.join();
 }
 
@@ -37,4 +37,4 @@ module.exports = {
   parseVoiceUpdate,
   tryJoin,
   forceRecheck,
-}
+};
