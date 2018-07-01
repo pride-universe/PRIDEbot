@@ -9,7 +9,12 @@
   "scripts": {
     "test": "eslint . && mocha -t 10000"
   },
-  "author": "Oppo",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
+  "author": "NbOpposite",
   "license": "MIT",
   "dependencies": {
     "common-tags": "^1.8.0",
@@ -26,6 +31,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^5.0.1",
+    "husky": "^1.0.0-rc.9",
     "mocha": "^5.2.0"
   }
 }
