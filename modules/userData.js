@@ -33,6 +33,8 @@ async function getData(user) {
 }
 
 async function getProp(user, prop, defValue) {
+  if(prop instanceof Function) prop = await prop();
+  if(typeof prop !== 'string') throw new Error('Property must be string.');
   const data = await getData(user);
   if(!data.hasOwnProperty(prop)) return defValue;
   return data[prop];
@@ -43,13 +45,24 @@ async function setData(user, data) {
   if(data && data instanceof Function) data = data(userId);
   if(!data || data.constructor !== Object) throw new Error(`Data must be object. Got: ${data ? String(data) : data.constructor.name}`);
   userDataCollection.set(userId, data);
+  await updateUser(userId);
 }
 
 async function setProp(user, prop, value) {
+  if(prop instanceof Function) prop = await prop();
+  if(typeof prop !== 'string') throw new Error('Property must be string.');
   const userId = await resolveUserId(user);
   const data = await fetchUser(userId);
   data[prop] = value;
   await updateUser(userId);
+}
+
+async function clearCache(user) {
+  if(!user) {
+    userDataCollection.clear();
+    return true;
+  }
+  return userDataCollection.delete(await resolveUserId(user));
 }
 
 module.exports = {
@@ -57,4 +70,5 @@ module.exports = {
   setData,
   getProp,
   setProp,
+  clearCache,
 }
