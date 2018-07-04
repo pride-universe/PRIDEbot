@@ -1,12 +1,14 @@
+#!/usr/bin/node
+require('./extensions');
 const commando = require('discord.js-commando');
 const path = require('path');
 const oneLine = require('common-tags').oneLine;
-const token = require('./secrets').discordToken;
+const token = require('../secrets').discordToken;
 const { dbPromise } = require('./db');
-const config = require('./config');
+const config = require('../config');
 const { parseVoiceUpdate } = require('./modules/voiceChannelManager');
 
-const bot = new commando.Client({
+const bot = module.exports = new commando.Client({
   owner: config.owners,
   commandPrefix: config.prefix,
   unknownCommandResponse: false,
@@ -87,4 +89,7 @@ bot.registry
 
 bot.login(token);
 
-module.exports = bot;
+require('./modules/triggerWarnings');
+require('./modules/spoilers');
+//require('./jokes/banned');
+require('./jokes/cultTracker');

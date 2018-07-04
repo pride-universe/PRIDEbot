@@ -1,13 +1,14 @@
 {
-  "name": "PRIDEbot",
+  "name": "pridebot",
   "version": "1.0.0",
   "description": "PRIDEuniverse bot",
-  "main": "index.js",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "eslint . && mocha -t 10000"
+    "test": "eslint . && mocha -t 10000",
+    "run": "node ."
   },
   "husky": {
     "hooks": {

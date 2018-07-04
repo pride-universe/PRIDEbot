@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const { waSecret } = require('../../secrets');
+const { waSecret } = require('../../../secrets');
 const wolfram = require('wolfram-alpha').createClient(waSecret);
 
 module.exports = class WaCommand extends commando.Command {

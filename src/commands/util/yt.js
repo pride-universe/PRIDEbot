@@ -39,7 +39,7 @@ module.exports = class YtCommand extends commando.Command {
       if(!url) return connection.disconnect();
 
       const stream = ytdl(url, { filter: 'audioonly' });
-      
+
       const dispatcher = connection.play(stream, { volume });
       dispatcher.on('finish', ()=>{
         dispatcher.pause();
@@ -102,6 +102,7 @@ module.exports = class YtCommand extends commando.Command {
     try {
       info = await ytdl.getInfo(args[0], { filter: 'audioonly' });
     } catch (err) {
+      console.log(err);
       return this.parseCommand(msg, connection, args);
     }
     const queue = queues[msg.member.voiceChannel.id] || (queues[msg.member.voiceChannel.id] = {starting: false, list: []});
