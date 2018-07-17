@@ -1,18 +1,20 @@
 #!/usr/bin/node
 require('./extensions');
 const commando = require('discord.js-commando');
+const plugins = require('discord.js-plugins');
 const path = require('path');
 const oneLine = require('common-tags').oneLine;
 const token = require('../secrets').discordToken;
 const { dbPromise } = require('./db');
 const config = require('../config');
-const { parseVoiceUpdate } = require('./modules/voiceChannelManager');
 
-const bot = module.exports = new commando.Client({
+const bot = module.exports = new commando.CommandoClient({
   owner: config.owners,
   commandPrefix: config.prefix,
   unknownCommandResponse: false,
 });
+
+plugins.inject(bot);
 
 bot
   .on('error', console.error)
@@ -67,9 +69,6 @@ bot
     const reaction = message.reactions.get(emojiKey);
     bot.emit('messageReactionAdd', reaction, user);
 
-  })
-  .on('voiceStateUpdate', (oldMember, newMember) => {
-    parseVoiceUpdate(newMember);
   });
 
 bot.setProvider(
@@ -86,10 +85,15 @@ bot.registry
   })
   .registerTypesIn(path.join(__dirname, 'types'))
   .registerCommandsIn(path.join(__dirname, 'commands'));
+bot.plugins
+  .registerGroup('default', 'Default')
+  .registerGroup('privacy', 'Privacy')
+  .registerGroup('jokes', 'Jokes')
+  .registerGroup('util', 'Util')
+  .registerGroup('media', 'Media')
+  .loadPluginsIn(path.join(__dirname, 'plugins'));
 
 bot.login(token);
 
-require('./modules/triggerWarnings');
-require('./modules/spoilers');
 //require('./jokes/banned');
 require('./jokes/cultTracker');

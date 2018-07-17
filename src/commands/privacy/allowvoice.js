@@ -1,7 +1,6 @@
 const commando = require('discord.js-commando');
 const { stripIndents } = require('common-tags');
 const userData = require('../../modules/userData');
-const voiceChannelManager = require('../../modules/voiceChannelManager');
 
 module.exports = class AllowVoiceCommand extends commando.Command {
   constructor(client) {
@@ -30,7 +29,7 @@ module.exports = class AllowVoiceCommand extends commando.Command {
     if(args.value) {
       return msg.reply('I will now stop avoiding you in voice channels.');
     } else {
-      voiceChannelManager.forceRecheck(msg.client);
+      this.client.plugins.get('voiceprivacy').forceRecheck(msg.client);
       return msg.reply(stripIndents`I'll avoid you in voice channels as long as you are unmuted.
       If you have your microphone muted I'll join and stay in a voice channel as long as you are muted. I'll leave as soon as you unmute your microphone if I happen to be in the voice channel at the time.`);
     }
