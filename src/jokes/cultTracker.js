@@ -1,5 +1,5 @@
-const bot = require('../bot.js');
-const { dbPromise } = require('../db.js');
+const bot = require('../index');
+const { dbPromise } = require('../db');
 
 function getCommand () {
   try {

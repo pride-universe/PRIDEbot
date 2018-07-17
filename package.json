@@ -1,20 +1,27 @@
 {
-  "name": "PRIDEbot",
+  "name": "pridebot",
   "version": "1.0.0",
   "description": "PRIDEuniverse bot",
-  "main": "index.js",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "eslint . && mocha -t 10000"
+    "test": "eslint . && mocha -t 10000",
+    "run": "node ."
   },
-  "author": "Oppo",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
+  "author": "NbOpposite",
   "license": "MIT",
   "dependencies": {
     "common-tags": "^1.8.0",
-    "discord.js": "git://github.com/discordjs/discord.js.git",
-    "discord.js-commando": "git://github.com/NbOpposite/Commando.git#backticks",
+    "discord.js": "git+https://github.com/discordjs/discord.js.git",
+    "discord.js-commando": "git+https://github.com/discordjs/Commando.git",
+    "discord.js-plugins": "git+https://github.com/NbOpposite/discord.js-plugins.git",
     "mime-types": "^2.1.18",
     "node-opus": "^0.3.0",
     "request": "^2.87.0",
@@ -26,6 +33,10 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^5.0.1",
+    "husky": "^1.0.0-rc.9",
     "mocha": "^5.2.0"
+  },
+  "localDependencies": {
+    "discord.js-plugins": "../discord.js-plugins"
   }
 }

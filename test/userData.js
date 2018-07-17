@@ -11,23 +11,23 @@ async function getCleanDb() {
   if(db) await db.clear();
   delete require.cache[require.resolve('./modules/db')];
   db = require('./modules/db');
-  const resolved = require.resolve('../db');
+  const resolved = require.resolve('../src/db');
   require.cache[resolved] = require.cache[require.resolve('./modules/db')];
   return db;
 }
 
 describe('userData', function () {
   let userData;
-  beforeEach(async function() {
-    db = await getCleanDb();
-    delete require.cache[require.resolve('../modules/userData')];
-    userData = require('../modules/userData');
-    return db;
-  });
   after(function() {
     if(db) return db.clear();
   });
   describe('#setData(user, data)', function () {
+    before(async function() {
+      db = await getCleanDb();
+      delete require.cache[require.resolve('../src/modules/userData')];
+      userData = require('../src/modules/userData');
+      return db;
+    });
     it('user: 1234, data: null', function () {
       return userData.setData('12345', null).should.be.rejected;
     });
@@ -68,6 +68,12 @@ describe('userData', function () {
   });
 
   describe('#getData(user)', function () {
+    before(async function() {
+      db = await getCleanDb();
+      delete require.cache[require.resolve('../src/modules/userData')];
+      userData = require('../src/modules/userData');
+      return db;
+    });
     it('user: notAUser', function () {
       return userData.getData('notAUser').should.be.rejected;
     });
@@ -87,6 +93,12 @@ describe('userData', function () {
   });
 
   describe('#setProp(user, prop, value)', function () {
+    before(async function() {
+      db = await getCleanDb();
+      delete require.cache[require.resolve('../src/modules/userData')];
+      userData = require('../src/modules/userData');
+      return db;
+    });
     it('user: notAUser, prop: dummy', function () {
       return userData.setProp('notAUser', 'dummy').should.be.rejected;
     });
@@ -114,6 +126,12 @@ describe('userData', function () {
   });
 
   describe('#getProp(user, prop, default)', function () {
+    before(async function() {
+      db = await getCleanDb();
+      delete require.cache[require.resolve('../src/modules/userData')];
+      userData = require('../src/modules/userData');
+      return db;
+    });
     it('user: notAUser, prop: dummy', function () {
       return userData.getProp('notAUser', 'dummy').should.be.rejected;
     });
