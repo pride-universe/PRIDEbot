@@ -2,7 +2,7 @@ const EventEmitter = require('events');
 const { stripIndents, oneLine } = require('common-tags');
 
 const UPDATE_INTERVAL = 5000;
-const MAX_MESSAGES_BELOW = 20;
+const MAX_MESSAGES_BELOW = 10;
 const PROGRESS_BAR_LEN = 13;
 
 function formatTime(time) {
