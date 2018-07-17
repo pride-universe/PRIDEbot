@@ -103,23 +103,28 @@ class MediaController extends EventEmitter {
     const current = this.mediaPlayer.current;
     this._updating = true;
 
-    if(this.message && this.message.deleted) {
-      this.message = null;
-    }
-    if(this.message && !this.channel.messages.last(MAX_MESSAGES_BELOW).includes(this.message)) {
-      await this.message.delete();
-      this.message = null;
-    }
+    try {
+      if(this.message && this.message.deleted) {
+        this.message = null;
+      }
+      if(this.message && !this.channel.messages.last(MAX_MESSAGES_BELOW).includes(this.message)) {
+        await this.message.delete();
+        this.message = null;
+      }
 
-    if(!this.message) {
-      this.message = await this.channel.send(this.controllerContent);
-      this.fixReactions();
-    } else {
-      await this.message.edit(this.controllerContent);
+      if(!this.message) {
+        this.message = await this.channel.send(this.controllerContent);
+        this.fixReactions();
+      } else {
+        await this.message.edit(this.controllerContent);
+      }
+      // TODO: https://github.com/discordjs/discord.js/issues/2653
+      //await this.fixReactions();
+    } catch (err) {
+      this.client.emit('warn', `Failed to update mediaplayer controller message: ${err}`);
+      this._updating = false;
+      this._timeout = setTimeout(Reflect.apply, UPDATE_INTERVAL, this.updateMessage, this, []);
     }
-
-    // TODO: https://github.com/discordjs/discord.js/issues/2653
-    //await this.fixReactions();
 
     if(current && current.isPlaying) {
       this._timeout = setTimeout(Reflect.apply, UPDATE_INTERVAL, this.updateMessage, this, []);
