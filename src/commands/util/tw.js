@@ -24,16 +24,16 @@ module.exports = class TwCommand extends commando.Command {
     const match = args.match(/\s*(?:(``?)(.*?)\1)?\s*(.*)/);
     const subject = match[2];
     const text = match[3];
-
+    /* eslint-disable indent */
     const response = await msg.channel.send(
       stripIndents`
       ${msg.author} sent a message that may be triggering.
       Click ${emoji} to have the message sent in PM ${
-  subject ? `\n\nSubject of the message is: ${subject}` : ''
-}`,
+        subject ? `\n\nSubject of the message is: ${subject}` : ''
+      }`,
       { reply: null }
     );
-
+    /* eslint-enable indent */
     db.run('INSERT INTO trigger_warnings (message_id, text) VALUES (?, ?)', response.id, text);
 
     await response.react(emoji.reactionString);

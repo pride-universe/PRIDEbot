@@ -96,4 +96,4 @@ bot.plugins
 bot.login(token);
 
 //require('./jokes/banned');
-require('./jokes/cultTracker');
+//require('./jokes/cultTracker');

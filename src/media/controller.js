@@ -4,6 +4,7 @@ const { stripIndents, oneLine } = require('common-tags');
 const UPDATE_INTERVAL = 5000;
 const MAX_MESSAGES_BELOW = 10;
 const PROGRESS_BAR_LEN = 13;
+const INACTIVITY = Symbol('inactivity');
 
 function formatTime(time) {
   let seconds = parseInt((time / 1000) % 60);
@@ -180,15 +181,20 @@ class MediaController extends EventEmitter {
 
   destroy(member) {
     this._destroyed = true;
-    this.message.reactions.removeAll();
-    this.message.edit(`Media player closed${member?` by ${member.displayName}.`:''}`);
-    this.removeAllListeners();
+    if(this.message) {
+      this.message.reactions.removeAll();
+      let endString = '';
+      if(member) endString = `${member === INACTIVITY? ' due to inactivity' : ` by ${member.displayName}`}`;
+      this.message.edit(`Media player closed${endString}`);
+      this.removeAllListeners();
+      this.message = null;
+    }
     this.client.off('messageReactionAdd', this.handleReaction);
-    this.message = null;
     this.mediaPlayer = null;
     this.channel = null;
     this.client = null;
   }
 }
+MediaController.INACTIVITY = INACTIVITY;
 
 module.exports = MediaController;

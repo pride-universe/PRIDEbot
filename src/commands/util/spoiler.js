@@ -24,16 +24,16 @@ module.exports = class SpoilerCommand extends commando.Command {
     const match = args.match(/\s*(?:(``?)(.*?)\1)?\s*(.*)/);
     const subject = match[2];
     const text = match[3];
-
+    /* eslint-disable indent */
     const response = await msg.channel.send(
       stripIndents`
       ${msg.author} sent a spoiler.
       Click ${emoji} to have the message sent in PM ${
-  subject ? `\n\nSubject of the spoiler is: ${subject}` : ''
-}`,
+        subject ? `\n\nSubject of the spoiler is: ${subject}` : ''
+      }`,
       { reply: null }
     );
-
+    /* eslint-enable indent */
     db.run('INSERT INTO spoilers (message_id, text) VALUES (?, ?)', response.id, text);
 
     await response.react(emoji.reactionString);

@@ -2,11 +2,16 @@ const { Plugin } = require('discord.js-plugins');
 const { Collection } = require('discord.js');
 const { FriendlyError } = require('discord.js-commando');
 const MediaController = require('../../media/controller');
+const MAX_INACTIVITY_TIME = 300000;
 
 class MediaPlayer {
   constructor(client, guild) {
     const settings =  guild.settings.get('music');
     if(!settings || !settings.voiceChannel || !settings.commandChannel) throw new FriendlyError('Music is not configured on this server');
+
+    this.onChange = this.onChange.bind(this);
+    this.onVoiceStateUpdate = this.onVoiceStateUpdate.bind(this);
+
     this.client = client;
     this.guild = guild;
     this.commandChannel = client.channels.get(settings.commandChannel);
@@ -16,6 +21,8 @@ class MediaPlayer {
     this.backlog = [];
     this.current = null;
     this.playing = false;
+    this.aloneTimeot = null;
+    this.notPlayingTimeout = null;
     this.controller = new MediaController(this);
     this.controller.on('next', ()=>this.next());
     this.controller.on('play/pause', ()=>this.playPause());
@@ -25,9 +32,7 @@ class MediaPlayer {
     this.controller.on('louder', ()=>this.louder());
     this.controller.on('help', ()=>this.louder());
     this.controller.on('quit', (member)=>this.destroy(member));
-
-    this.onChange = this.onChange.bind(this);
-
+    this.client.on('voiceStateUpdate', this.onVoiceStateUpdate);
     this._destroyed = false;
   }
 
@@ -82,6 +87,27 @@ class MediaPlayer {
 
   onChange() {
     setImmediate(()=>this.controller.updateMessage());
+    if(!this.isPlaying && !this.notPlayingTimeout) {
+      this.notPlayingTimeout = setTimeout(()=>this.destroy(MediaController.INACTIVITY), MAX_INACTIVITY_TIME);
+    }
+    if(this.isPlaying && this.notPlayingTimeout) {
+      clearTimeout(this.notPlayingTimeout);
+      this.notPlayingTimeout = null;
+    }
+  }
+
+  onVoiceStateUpdate(oldMember, newMember) {
+    const guild = oldMember.guild || newMember.guild;
+    if(guild !== this.guild) return;
+    const voiceConnection = this.voiceChannel.guild.voiceConnection;
+    if(!voiceConnection) return;
+    if(voiceConnection.channel.members.size <= 1 && !this.aloneTimeot) {
+      this.aloneTimeot = setTimeout(()=>this.destroy(MediaController.INACTIVITY), MAX_INACTIVITY_TIME);
+    }
+    if(voiceConnection.channel.members.size > 1 && this.aloneTimeot) {
+      clearTimeout(this.aloneTimeot);
+      this.aloneTimeot = null;
+    }
   }
 
   async play() {
@@ -102,6 +128,7 @@ class MediaPlayer {
       }
     } else {
       voiceConnection = await this.voiceChannel.join();
+      voiceConnection.once('disconnect', ()=>this.destroy());
     }
     try {
       this.current.play(voiceConnection).setVolumeLogarithmic(this.volume);
@@ -137,7 +164,10 @@ class MediaPlayer {
 
   destroy(member) {
     if(this._destroyed) return;
+    if(this.aloneTimeot) clearTimeout(this.aloneTimeot);
+    if(this.notPlayingTimeout) clearTimeout(this.notPlayingTimeout);
     this._destroyed = true;
+    this.client.off('voiceStateUpdate', this.onVoiceStateUpdate);
     this.controller.destroy(member);
     if(this.current) this.current.stop();
     if(this.voiceChannel.guild.voiceConnection) {

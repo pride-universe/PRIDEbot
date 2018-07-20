@@ -13,7 +13,7 @@ module.exports = class YtCommand extends commando.Command {
       Anyone who's connected to the same channel as PRIDEbot can control the queue and volume.`,
       examples: ['yt <https://www.youtube.com/watch?v=qRC4Vk6kisY>'],
       guildOnly: true,
-      clientPermissions: [],
+      clientPermissions: ['CONNECT', 'SPEAK'],
       format: '<URL|COMMAND> [ARGS...]',
     });
   }
