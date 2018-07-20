@@ -48,8 +48,14 @@ class NewMember extends Plugin {
     const guild = message.guild;
     const newUserConf = guild.settings.get('newUserConfig');
     if(!newUserConf || !newUserConf.enabled) return;
-    if(!message.member.roles.has(newUserConf.newRole)) return;
     const newUsers = guild.settings.get('newUsers', {});
+    if(!message.member.roles.has(newUserConf.newRole)) {
+      if(newUsers.hasOwnProperty(message.author.id)) {
+        delete newUsers[message.author.id];
+        guild.settings.set('newUsers', newUsers);
+      }
+      return;
+    }
     let newUser = newUsers[message.author.id];
     if(!newUser) {
       newUser = newUsers[message.author.id] = {
