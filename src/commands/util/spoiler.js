@@ -8,7 +8,7 @@ module.exports = class SpoilerCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'spoiler',
-      aliases: [],
+      aliases: ['sp'],
       group: 'util',
       memberName: 'spoiler',
       description: 'Hides the message and require user interaction to view it',
