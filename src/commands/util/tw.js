@@ -12,16 +12,16 @@ module.exports = class TwCommand extends commando.Command {
       group: 'util',
       memberName: 'tw',
       description: 'Hides the message and require user interaction to view it',
-      examples: ['tw I stubbed my toe on a table', 'tw \\`physical harm` I stubbed my toe on a table'],
+      examples: ['tw I stubbed my toe on a table', 'tw ;physical harm; I stubbed my toe on a table'],
       guildOnly: true,
       clientPermissions: ['MANAGE_MESSAGES', 'ADD_REACTIONS'],
-      format: '[`subject`] <message>',
+      format: '[;subject;] <message>',
     });
   }
   async run(msg, args) {
     await msg.delete();
     const db = await dbPromise;
-    const match = args.match(/\s*(?:(``?)(.*?)\1)?\s*(.*)/);
+    const match = args.match(/\s*(?:(``?|;)(.*?)\1)?\s*(.*)/);
     const subject = match[2];
     const text = match[3];
     /* eslint-disable indent */
