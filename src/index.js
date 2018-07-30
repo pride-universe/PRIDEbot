@@ -12,6 +12,7 @@ const bot = module.exports = new commando.CommandoClient({
   owner: config.owners,
   commandPrefix: config.prefix,
   unknownCommandResponse: false,
+  disableEveryone: true,
 });
 
 plugins.inject(bot);
