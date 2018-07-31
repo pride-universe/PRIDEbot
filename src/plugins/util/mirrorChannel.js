@@ -10,6 +10,7 @@ class MirrorChannel extends Plugin {
       group: 'util',
       description: 'Mirrors a channel to another on a server',
       guarded: false,
+      autostart: false,
       startOn: ['ready', 'providerReady']
     };
     super(client, info);
