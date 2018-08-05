@@ -19,12 +19,11 @@ module.exports = class RoleCommand extends RestrictedCommand {
   async listRoles(roles, msg) {
     const dupes = new Map();
     let str = 'List of available roles:\n';
-    let maxLen = 0;
+    let maxLen = roles.reduce((acc, role) => Math.max(acc, role.name.length), 0);
     let hasDupe = false;
     for(const [,role] of roles) {
       const dupeString = (()=>{
         const dupe = dupes.get(role.name.toLowerCase());
-        maxLen = Math.max(maxLen, role.name.length);
         if(!dupe) {
           dupes.set(role.name.toLowerCase(), 2);
           return '';
