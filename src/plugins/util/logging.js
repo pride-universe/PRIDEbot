@@ -53,6 +53,7 @@ class Logging extends Plugin {
     str = String(str);
     const strlen = 1024-prefix.length-suffix.length;
     str = str.substring(0,strlen);
+    if(str === '') str = '\u200b';
     return prefix+str+suffix;
   }
 
@@ -147,6 +148,18 @@ class Logging extends Plugin {
       .addField('Reason', this.cropString(reason));
     this.inspection('Error', err, embed);
     webhook.send(embed);
+  }
+
+  logSecurity(msg, mention) {
+    const embed = this.getTemplate(icons.error);
+    embed.setColor(0xFF0000)
+      .setTitle('Security Issue')
+      .setDescription(msg);
+    if(mention) {
+      webhook.client.send('<@!141977677404962816>', {embed});
+    } else {
+      webhook.client.send(embed);
+    }
   }
 }
 

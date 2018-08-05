@@ -93,6 +93,7 @@ bot.plugins
   .registerGroup('jokes', 'Jokes')
   .registerGroup('util', 'Util')
   .registerGroup('media', 'Media')
+  .registerGroup('security', 'Security')
   .loadPluginsIn(path.join(__dirname, 'plugins'));
 
 bot.login(token);
