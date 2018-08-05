@@ -37,8 +37,9 @@ module.exports = class RoleCommand extends RestrictedCommand {
     }
     str += '\nRoles marked with `✅` are roles you already have\n';
     if(hasDupe) {
-      str += '\nDuplicate name exist in case you have a preference over which role color you want. You will get the color of the role with the highest position in the list.';
+      str += '\nDuplicate name exist in case you have a preference over which role color you want. You will get the color of the role with the highest position in the list.\n';
     }
+    str += '\nAre we missing a role? Just ask a moderator to add it!\n';
     msg.reply(str, {split: true});
   }
 
