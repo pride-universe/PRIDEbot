@@ -58,6 +58,7 @@ class MediaPlayer {
     } else {
       this.queue.unshift(streamable);
     }
+    streamable.once('invalid', err => console.log('INVALID STREAM:', err));
     this.onChange();
     if(!this.current) this.next();
   }
@@ -131,7 +132,7 @@ class MediaPlayer {
       voiceConnection.once('disconnect', ()=>this.destroy());
     }
     try {
-      this.current.play(voiceConnection).setVolumeLogarithmic(this.volume);
+      (await this.current.play(voiceConnection)).setVolumeLogarithmic(this.volume);
       this.onChange();
       this.current.on('change', this.onChange);
       this.current.on('error', ()=>{this.current=null; this.next();});

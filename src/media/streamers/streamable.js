@@ -25,13 +25,14 @@ class Streamable extends EventEmitter {
     return this.dispatcher && this.dispatcher.streamTime;
   }
   
-  play(voiceConnection, stream) {
+  async play(voiceConnection, stream) {
     if(this.isPaused) {
       this.stream.resume();
       return this.dispatcher;
     }
+    const options = { type: stream.streamType };
     this.stream = stream;
-    this.dispatcher = voiceConnection.play(this.stream);
+    this.dispatcher = voiceConnection.play(this.stream, options);
 
     this.dispatcher.on('finish', this.onEnd);
     this.dispatcher.on('error', this.onError);
