@@ -1,4 +1,4 @@
-const commando = require('discord.js-commando');
+const RestrictedCommand = require('../../restrictedCommand');
 
 const SPACER = Symbol('spacer');
 
@@ -34,7 +34,7 @@ function formatOutput(output) {
   return str;
 }
 
-module.exports = class StatsCommand extends commando.Command {
+module.exports = class StatsCommand extends RestrictedCommand {
   constructor(client) {
     super(client, {
       name: 'stats',
@@ -46,6 +46,7 @@ module.exports = class StatsCommand extends commando.Command {
       guildOnly: true,
       clientPermissions: [],
       format: '[server]',
+      permGroup: 'Member',
     });
   }
   async run(msg, args) {
