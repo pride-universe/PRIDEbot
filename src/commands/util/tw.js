@@ -21,7 +21,7 @@ module.exports = class TwCommand extends commando.Command {
   async run(msg, args) {
     await msg.delete();
     const db = await dbPromise;
-    const match = args.match(/\s*(?:(``?|;)(.*?)\1)?\s*(.*)/);
+    const match = args.match(/\s*(?:(``?|;)(.*?)\1)?\s*([\s\S]*)/);
     const subject = match[2];
     const text = match[3];
     /* eslint-disable indent */
