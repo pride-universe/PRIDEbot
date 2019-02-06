@@ -1,17 +1,17 @@
 const commando = require('discord.js-commando');
 
 const CHARMAP = {
-  "0": "0⃣",
-  "1": "1⃣",
-  "2": "2⃣",
-  "3": "3⃣",
-  "4": "4⃣",
-  "5": "5⃣",
-  "6": "6⃣",
-  "7": "7⃣",
-  "8": "8⃣",
-  "9": "9⃣",
-  "X": "💣"
+  "0": "`0️⃣`",
+  "1": "`1️⃣`",
+  "2": "`2️⃣`",
+  "3": "`3️⃣`",
+  "4": "`4️⃣`",
+  "5": "`5️⃣`",
+  "6": "`6️⃣`",
+  "7": "`7️⃣`",
+  "8": "`8️⃣`",
+  "9": "`9️⃣`",
+  "X": "`💣`"
 }
 
 module.exports = class MinesweeperCommand extends commando.Command {
@@ -30,7 +30,7 @@ module.exports = class MinesweeperCommand extends commando.Command {
           label: 'Grid Size',
           prompt: 'How large should the grid be?',
           type: 'integer',
-          max: 14,
+          max: 12,
           min: 1,
           default: 10,
         },
