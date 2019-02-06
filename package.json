@@ -10,11 +10,6 @@
     "test": "eslint . && mocha -t 10000",
     "run": "node ."
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm test"
-    }
-  },
   "author": "NbOpposite",
   "license": "MIT",
   "dependencies": {
@@ -34,7 +29,6 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^5.3.0",
-    "husky": "^1.0.0-rc.13",
     "mocha": "^5.2.0"
   },
   "localDependencies": {

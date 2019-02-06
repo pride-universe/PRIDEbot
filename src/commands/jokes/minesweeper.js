@@ -1,5 +1,19 @@
 const commando = require('discord.js-commando');
 
+const CHARMAP = {
+  "0": "0⃣",
+  "1": "1⃣",
+  "2": "2⃣",
+  "3": "3⃣",
+  "4": "4⃣",
+  "5": "5⃣",
+  "6": "6⃣",
+  "7": "7⃣",
+  "8": "8⃣",
+  "9": "9⃣",
+  "X": "💣"
+}
+
 module.exports = class MinesweeperCommand extends commando.Command {
   constructor(client) {
     super(client, {
@@ -38,7 +52,7 @@ module.exports = class MinesweeperCommand extends commando.Command {
     for(let row of grid) {
       let rowStr = "";
       for(let cell of row) {
-        rowStr += "||`"+cell+"`||";
+        rowStr += "||"+CHARMAP[cell]+"||";
       }
       retStr += rowStr+"\n";
     }
@@ -79,7 +93,11 @@ module.exports = class MinesweeperCommand extends commando.Command {
   getmines(grid, numberofmines) {
     let mines = [];
     for(let i = 0; i < numberofmines; i++) {
-      mines.push(this.getrandomcell(grid, mines));
+      try {
+        mines.push(this.getrandomcell(grid, mines));
+      } catch (e) {
+        throw new commando.FriendlyError("You can't have more bombs than tiles silly!");
+      }
     }
     return mines;
   }
