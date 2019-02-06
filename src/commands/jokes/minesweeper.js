@@ -104,14 +104,9 @@ module.exports = class MinesweeperCommand extends commando.Command {
 
   getrandomcell(grid, forbidden) {
     forbidden = forbidden.map(p=>p[0]*grid[0].length+p[1]).sort();
-    if(grid.length*grid[0].length-forbidden.length <= 0) throw new Error("Can't pick random cell when all cells are picked");
-    let pos = Math.floor(Math.random() * (grid.length*grid[0].length-forbidden.length));
-    let oldPos = -1;
-    let incr;
-    while ((incr = this.countRange(oldPos, pos, forbidden)) !== 0) {
-      oldPos = pos;
-      pos+=incr;
-    }
+    let allowed = Array(grid.length*grid[0].length).fill(undefined).map((c, i)=>i).filter(e=>!forbidden.includes(e));
+    if(allowed.length <= 0) throw new Error("Can't pick random cell when all cells are picked");
+    let pos = allowed[Math.floor(Math.random() * allowed.length)];
     return [Math.floor(pos/grid[0].length), pos%grid[0].length];
   }
 
