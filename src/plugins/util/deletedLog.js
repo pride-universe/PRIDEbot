@@ -61,7 +61,8 @@ class MirrorChannel extends Plugin {
     const embed = new MessageEmbed()
       .setColor(message.member.displayColor)
       .setAuthor(message.author.tag, message.author.avatarURL())
-      .setDescription(message.content);
+      .setDescription(message.content)
+      .setTimestamp();
     if(this.history[message.id]) {
       embed.setTitle('Final message');
       for(let i = this.history[message.id].length - 1; i >= 0; i--) {
