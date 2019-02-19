@@ -1,6 +1,6 @@
 #!/usr/bin/node
 require('./extensions');
-const commando = require('discord.js-commando');
+const Commando = require('discord.js-commando');
 const plugins = require('discord.js-plugins');
 const path = require('path');
 const oneLine = require('common-tags').oneLine;
@@ -8,7 +8,7 @@ const token = require('../secrets').discordToken;
 const { dbPromise } = require('./db');
 const config = require('../config');
 
-const bot = module.exports = new commando.CommandoClient({
+const bot = module.exports = new Commando.CommandoClient({
   owner: config.owners,
   commandPrefix: config.prefix,
   unknownCommandResponse: false,
@@ -27,7 +27,7 @@ bot
   .on('disconnect', () => { console.warn('Disconnected!'); })
   .on('reconnecting', () => { console.warn('Reconnecting...'); })
   .on('commandError', (cmd, err) => {
-    if(err instanceof commando.FriendlyError) return;
+    if(err instanceof Commando.FriendlyError) return;
     console.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err);
   })
   .on('commandBlocked', (msg, reason) => {
@@ -73,9 +73,9 @@ bot
   });
 
 bot.setProvider(
-  dbPromise.then(db => new commando.SQLiteProvider(db))
+  dbPromise.then(db => new Commando.SQLiteProvider(db))
 ).catch(console.error);
-
+console.log(Commando);
 bot.registry
   .registerDefaultTypes()
   .registerDefaultGroups()
@@ -86,6 +86,7 @@ bot.registry
     'prefix': false,
   })
   .registerTypesIn(path.join(__dirname, 'types'))
+  //.registerType(new Commando.ArgumentUnionType(bot, 'searchablemessage|plusminusint'))
   .registerCommandsIn(path.join(__dirname, 'commands'));
 bot.plugins
   .registerGroup('default', 'Default')
