@@ -16,7 +16,7 @@ function formatDate(dateObj) {
   return `${year.padStart(4,'0')}-${month.padStart(2,'0')}-${date.padStart(2,'0')} ${hours.padStart(2,'0')}:${minutes.padStart(2,'0')} UTC`;
 }
 
-module.exports = class StatsCommand extends RestrictedCommand {
+module.exports = class IdCommand extends RestrictedCommand {
   constructor(client) {
     super(client, {
       name: 'id',
