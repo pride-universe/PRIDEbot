@@ -44,9 +44,9 @@ module.exports = class StatsCommand extends RestrictedCommand {
     if(args === '') {
       guild = msg.guild;
     } else if(msg.guild.id === servers.mod.id) {
-      guild = this.client.servers.get(servers[args.toLowerCase()].id);
+      guild = this.client.guilds.get(servers[args.toLowerCase()].id);
     } else {
-      if(msg.guild && msg.guild.id === servers[args.toLowerCase()]) {
+      if(msg.guild && msg.guild.id === servers[args.toLowerCase()].id) {
         guild = msg.guild;
       } else {
         return msg.reply('Showing statistics for servers outside the current one is only acceptable from the moderator server');
