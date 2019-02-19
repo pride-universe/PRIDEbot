@@ -40,10 +40,11 @@ module.exports = class StatsCommand extends RestrictedCommand {
     let user;
     try {
       user = await this.client.users.fetch(args);
-    } catch (err) {
-      throw new Commando.FriendlyError('Could not find a user with that ID');
+    } catch {}
+    if(!user) {
+      msg.reply('Could not find a user with that ID');
+      return;
     }
-    if(!user) throw new Commando.FriendlyError('Could not find a user with that ID');
     const guilds = await this.fetchGuilds(user);
     const embed = new MessageEmbed();
     embed.setAuthor(user.tag, user.displayAvatarURL({size: 128}));
