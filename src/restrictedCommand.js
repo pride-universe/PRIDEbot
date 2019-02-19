@@ -16,8 +16,8 @@ module.exports = class RestrictedCommand extends commando.Command {
     if(ownerOverride && this.client.isOwner(message.author)) return true;
 
     const perms = message.guild.settings.get('permissionRoles');
-    if(!perms) return `The \`${this.name}\` command can only be used by members.`;
-    if(!perms[this.permGroup]) return `The \`${this.name}\` command can only be used by members.`;
+    if(!perms) return `The \`${this.name}\` command can only be used by ${this.permGroup}.`;
+    if(!perms[this.permGroup]) return `The \`${this.name}\` command can only be used by ${this.permGroup}.`;
     const roles = Array.isArray(perms[this.permGroup])
       ? perms[this.permGroup]
       : [perms[this.permGroup]];
@@ -27,6 +27,6 @@ module.exports = class RestrictedCommand extends commando.Command {
         return true;
       }
     }
-    return `The \`${this.name}\` command can only be used by members.`;
+    return `The \`${this.name}\` command can only be used by ${this.permGroup}.`;
   }
 };

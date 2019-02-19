@@ -45,7 +45,7 @@ module.exports = class StatsCommand extends RestrictedCommand {
       examples: ['stats', 'stats dru'],
       clientPermissions: [],
       format: '[server]',
-      permGroup: 'Member',
+      permGroup: 'members',
     });
   }
   async run(msg, args) {

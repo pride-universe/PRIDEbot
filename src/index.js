@@ -81,7 +81,7 @@ bot.registry
   .registerDefaultGroups()
   .registerGroup('jokes', 'Jokes')
   .registerGroup('privacy', 'Privacy')
-  .registerGroup('mod', 'Moderator')
+  .registerGroup('staff', 'Staff')
   .registerDefaultCommands({
     'prefix': false,
   })

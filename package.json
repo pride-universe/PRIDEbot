@@ -18,17 +18,17 @@
     "discord.js": "git+https://github.com/discordjs/discord.js.git",
     "discord.js-commando": "git+https://github.com/discordjs/Commando.git",
     "discord.js-plugins": "git+https://github.com/NbOpposite/discord.js-plugins.git",
-    "mime-types": "^2.1.19",
-    "node-opus": "^0.3.0",
-    "request": "^2.87.0",
-    "sqlite": "^2.9.2",
+    "mime-types": "^2.1.22",
+    "node-opus": "^0.3.1",
+    "request": "^2.88.0",
+    "sqlite": "^2.9.3",
     "wolfram-alpha": "^0.6.0",
     "ytdl-core": "^0.20.4"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^5.3.0",
+    "eslint": "^5.14.0",
     "mocha": "^5.2.0"
   },
   "localDependencies": {

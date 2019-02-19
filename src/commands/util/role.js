@@ -11,7 +11,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
       examples: ['role', 'role They/Them', 'role He/Him~2'],
       clientPermissions: ['MANAGE_ROLES'],
       format: '[role[~<number>]]',
-      permGroup: 'Member',
+      permGroup: 'members',
     });
   }
 
