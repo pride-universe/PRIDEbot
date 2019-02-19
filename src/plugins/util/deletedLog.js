@@ -26,10 +26,6 @@ class MirrorChannel extends Plugin {
     this.history = {};
   }
 
-  async clear() {
-    this.client.emit('warn', 'TODO CLEAR THE OUTPUT CHANNEL');
-  }
-
   async start() {
     this.client.on('messageDelete', (...args) => this.onMessageDelete(...args));
     this.client.on('messageUpdate', (...args) => this.onMessageUpdate(...args));
@@ -38,6 +34,29 @@ class MirrorChannel extends Plugin {
 
   async stop() {
     this.client.clearInterval(this.interval);
+  }
+
+  async clear() {
+    const channels = [];
+    for(let guildId in this.guilds) {
+      try {
+        const guild = this.client.guilds.get(guildId);
+        if(!guild) continue;
+        const outputChannel = this.client.guilds.get(this.guilds[guildId][0]).channels.get(this.guilds[guildId][1]);
+        if(!outputChannel) throw new ChannelNotFoundError("Cannot find the channel specified");
+        channels.push([guild, outputChannel]);
+      } catch (err) {
+        this.client.emit('error', err);
+        continue;
+      }
+    }
+    for(let [guild, channel] of channels) {
+      const storageTime = guild.settings.get('deletedMessageStorageTime', 86400000);
+      (await channel.messages.fetch()).forEach(message=>{
+        if(Date.now() - message.createdTimestamp > storageTime)
+          message.delete();
+      });
+    }
   }
 
   createEmbed(message) {
