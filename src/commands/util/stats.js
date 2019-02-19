@@ -1,16 +1,7 @@
 const RestrictedCommand = require('../../restrictedCommand');
+const { servers } = require('../../../config');
 
 const SPACER = Symbol('spacer');
-
-const guilds = {
-  gru: '456590512842080268',
-  dru: '389948828872343552',
-  eru: '399619671281762304',
-  pv: '402947178051665922',
-  ta: '402269468178251777',
-  mod: '407894440208760832',
-  bru: '448171713444708362'
-};
 
 function formatOutput(output) {
   const sizes = [0,0];
@@ -52,10 +43,10 @@ module.exports = class StatsCommand extends RestrictedCommand {
     let guild;
     if(args === '') {
       guild = msg.guild;
-    } else if(msg.guild.id === guilds.mod) {
-      guild = this.client.guilds.get(guilds[args.toLowerCase()]);
+    } else if(msg.guild.id === servers.mod.id) {
+      guild = this.client.servers.get(servers[args.toLowerCase()].id);
     } else {
-      if(msg.guild && msg.guild.id === guilds[args.toLowerCase()]) {
+      if(msg.guild && msg.guild.id === servers[args.toLowerCase()]) {
         guild = msg.guild;
       } else {
         return msg.reply('Showing statistics for servers outside the current one is only acceptable from the moderator server');

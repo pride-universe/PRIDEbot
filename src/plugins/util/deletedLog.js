@@ -1,8 +1,6 @@
 const { Plugin } = require('discord.js-plugins');
 const { MessageEmbed } = require('discord.js');
 const { servers } = require('../../../config');
-const commando = require('discord.js-commando');
-const MESSAGE_BUFFER = 100;
 
 class ChannelNotFoundError extends Error {}
 
