@@ -1,5 +1,6 @@
 const RestrictedCommand = require('../../restrictedCommand');
 const MessageEmbed = require('discord.js').MessageEmbed;
+const Commando = require('discord.js-commando');
 
 /**
  * 
@@ -36,8 +37,13 @@ module.exports = class StatsCommand extends RestrictedCommand {
   }
 
   async run(msg, args) {
-    const user = await this.client.users.fetch(args);
-    if(!user) msg.relpy('Could not find a user with that ID');
+    let user;
+    try {
+      user = await this.client.users.fetch(args);
+    } catch (err) {
+      throw new Commando.FriendlyError('Could not find a user with that ID');
+    }
+    if(!user) throw new Commando.FriendlyError('Could not find a user with that ID');
     const guilds = await this.fetchGuilds(user);
     const embed = new MessageEmbed();
     embed.setAuthor(user.tag, user.displayAvatarURL({size: 128}));
