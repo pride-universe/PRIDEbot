@@ -42,8 +42,7 @@ module.exports = class IdCommand extends RestrictedCommand {
       user = await this.client.users.fetch(args);
     } catch {}
     if(!user) {
-      msg.reply('Could not find a user with that ID');
-      return;
+      return msg.reply('Could not find a user with that ID');
     }
     const guilds = await this.fetchGuilds(user);
     const embed = new MessageEmbed();
@@ -53,6 +52,6 @@ module.exports = class IdCommand extends RestrictedCommand {
 ${guilds.length ? '**I can see this user on these servers:**' : '**I do not share a server with this user**'}
 ${guilds.map(([g,m])=>`\`${g.name}\` as \`${m.displayName}\``).join('\n')}`);
     embed.setTimestamp();
-    msg.replyEmbed(embed);
+    return msg.replyEmbed(embed);
   }
 };
