@@ -4,7 +4,7 @@ const { servers } = require('../../../config');
 
 class ChannelNotFoundError extends Error {}
 
-class MirrorChannel extends Plugin {
+class DeletedLog extends Plugin {
   constructor(client) {
     const info = {
       name: 'deletedLog',
@@ -106,4 +106,4 @@ class MirrorChannel extends Plugin {
   }
 }
 
-module.exports = MirrorChannel;
+module.exports = DeletedLog;
