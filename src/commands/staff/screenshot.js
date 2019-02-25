@@ -24,7 +24,7 @@ module.exports = class ScreenshotCommand extends RestrictedCommand {
   constructor(client) {
     super(client, {
       name: 'screenshot',
-      aliases: ['ss'],
+      aliases: ['ss', 'sc'],
       group: 'staff',
       memberName: 'screenshot',
       description: 'Screenshots messages',
