@@ -22,7 +22,7 @@ class ScreenshotGenerator {
 
   async startBrowser() {
     console.log('starting browser')
-    const browser = this._browser = await puppeteer.launch();
+    const browser = this._browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
     const page = await browser.newPage();
     // This does not have to be a page on the web, it can be a localhost page, or file://
     await page.goto(`file:${path.join(__dirname, '../template.html')}`, {
