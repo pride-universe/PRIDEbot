@@ -7,6 +7,8 @@ const oneLine = require('common-tags').oneLine;
 const token = require('../secrets').discordToken;
 const { dbPromise } = require('./db');
 const config = require('../config');
+require('moment/locale/en-gb');
+require('moment').locale('en-gb');
 
 const bot = module.exports = new Commando.CommandoClient({
   owner: config.owners,

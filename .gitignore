@@ -4,3 +4,5 @@ main.sqlite
 main.test.sqlite
 .vscode
 scrap.js
+ignore/
+src/rendered.html

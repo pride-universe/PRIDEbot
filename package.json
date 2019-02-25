@@ -15,20 +15,26 @@
   "dependencies": {
     "array-to-sentence": "^2.0.0",
     "common-tags": "^1.8.0",
+    "discord-markdown": "^2.1.2",
     "discord.js": "git+https://github.com/discordjs/discord.js.git",
     "discord.js-commando": "git+https://github.com/discordjs/Commando.git",
     "discord.js-plugins": "git+https://github.com/NbOpposite/discord.js-plugins.git",
-    "mime-types": "^2.1.22",
+    "emojis-list": "^2.1.0",
+    "jsdom": "^13.2.0",
+    "mime": "^2.4.0",
+    "moment": "^2.24.0",
     "node-opus": "^0.3.1",
+    "puppeteer": "^1.12.2",
     "request": "^2.88.0",
     "sqlite": "^2.9.3",
+    "twemoji": "^11.3.0",
     "wolfram-alpha": "^0.6.0",
     "ytdl-core": "^0.20.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^5.14.0",
+    "eslint": "^5.14.1",
     "mocha": "^5.2.0"
   },
   "localDependencies": {

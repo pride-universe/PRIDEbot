@@ -1,12 +1,8 @@
 const RestrictedCommand = require('../../restrictedCommand');
-const MessageEmbed = require('discord.js').MessageEmbed;
 const Commando = require('discord.js-commando');
-const util = require('util');
 const Discord = require('discord.js');
-const tags = require('common-tags');
-
 const nl = '!!NL!!';
-const nlPattern = new RegExp(nl, 'g');
+const screenshotGenerator = require('../../modules/screenshotGenerator');
 
 const args = [
   {
@@ -39,32 +35,6 @@ module.exports = class ScreenshotCommand extends RestrictedCommand {
     });
   }
 
-  makeResultMessages(result) {
-		const inspected = util.inspect(result, { depth: 2 })
-			.replace(nlPattern, '\n');
-		const split = inspected.split('\n');
-		const last = inspected.length - 1;
-		const prependPart = inspected[0] !== '{' && inspected[0] !== '[' && inspected[0] !== "'" ? split[0] : inspected[0];
-		const appendPart = inspected[last] !== '}' && inspected[last] !== ']' && inspected[last] !== "'" ?
-			split[split.length - 1] :
-			inspected[last];
-		const prepend = `\`\`\`javascript\n${prependPart}\n`;
-		const append = `\n${appendPart}\n\`\`\``;
-    return Discord.splitMessage(tags.stripIndents`
-      \`\`\`javascript
-      ${inspected}
-      \`\`\`
-    `, { maxLength: 1900, prepend, append });
-	}
-  replyInspect(msg, obj) {
-    const result = this.makeResultMessages(obj);
-    if(Array.isArray(result)) {
-			return result.map(item => msg.reply(item));
-		} else {
-			return msg.reply(result);
-		}
-  }
-
   async fetchFromUntil(from, until) {
     const collections = [];
     let curCollection;
@@ -90,7 +60,7 @@ module.exports = class ScreenshotCommand extends RestrictedCommand {
         acc += curCollection.size;
         if(acc > amount) break;
       }
-      return (new Discord.Collection()).concat(...collections).array().reverse().filter((_,i)=>{console.log(i);return i<amount;});
+      return (new Discord.Collection()).concat(...collections).array().reverse().filter((_,i)=>i<amount);
     } else {
       amount = Math.abs(amount);
       let acc = 0;
@@ -100,16 +70,15 @@ module.exports = class ScreenshotCommand extends RestrictedCommand {
         acc += curCollection.size;
         if(acc > amount) break;
       }
-      return (new Discord.Collection()).concat(...collections).array().filter((_,i)=>{console.log(i);return i<amount;}).reverse();
+      return (new Discord.Collection()).concat(...collections).array().filter((_,i)=>i<amount).reverse();
     }
   }
 
 
-  async fetchMessages(msg, {first, second} = args) {
+  async fetchMessages(msg, {first, second}) {
     if(first instanceof Commando.CommandoMessage && second instanceof Commando.CommandoMessage) {
       if(first.channel !== second.channel) throw new Commando.FriendlyError('Both messages need to be in the same channel');
       [first, second] = [first, second].sort((a,b)=>a.id-b.id);
-      console.log(first.id, second.id);
       return this.fetchFromUntil(first, second);
     }
     const pivot = first instanceof Commando.CommandoMessage ? first : second instanceof Commando.CommandoMessage ? second : msg;
@@ -126,12 +95,15 @@ module.exports = class ScreenshotCommand extends RestrictedCommand {
     if(second.down) {
       range.down = Math.max(second.down, range.down);
     }
+    if(pivot === msg) {
+      return this.fetchAmount(pivot, -range.up);
+    }
     return (await this.fetchAmount(pivot, -range.up)).concat(pivot, await this.fetchAmount(pivot, range.down));
-
   }
 
   async run(msg, args) {
-    return this.replyInspect(msg, (await this.fetchMessages(msg, args)).map(m=>m.content));
+    const buffer = await screenshotGenerator(await this.fetchMessages(msg, args));
+    return msg.reply('Here be screenshot', {files: [{attachment: buffer, name: 'screenshot.png'}]});
     //return replyInspect(msg, args);
   }
 };
