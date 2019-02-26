@@ -54,15 +54,16 @@ class ChannelInfo extends Plugin {
     const [roots, children] = guild.channels.filter(
       ch=>{
         if(!memberRoles) return true;
+        if (ch.type === 'category') return true;
+        if (ch.type !== 'text') return false;
         return memberRoles.find((id)=>ch.permissionsFor(id).has('VIEW_CHANNEL'));
       }
     ).partition(ch=>!ch.parent).map(col=>Util.discordSort(col));
-    const text = roots.map(ch=>({channel: ch, children: children.filter(child=>child.parentID === ch.id)})).map(root=>{
+    const text = roots.map(ch=>({channel: ch, children: children.filter(child=>child.parentID === ch.id)})).filter(root=>root.channel.type==='category' && root.children.size).map(root=>{
       if(root.channel.type === 'category') {
-        return root.channel.name.toUpperCase() + root.children.filter(ch=>ch.type === 'text').map(child=>`\n  ${child.toString()}${child.topic?' - ' + child.topic:''}`).join('');
-      } else if(root.channel.type === 'text') {
-        return `${root.channel.toString()}${root.channel.topic?' - ' + root.channel.topic:''}`;
+        return root.channel.name.toUpperCase() + root.children.map(child=>`\n  ${child.toString()}${child.topic?' - ' + child.topic:''}`).join('');
       }
+      return `${root.channel.toString()}${root.channel.topic?' - ' + root.channel.topic:''}`;
     }).join('\n\n');
     let newContent = Util.splitMessage(text);
     if(typeof newContent === 'string') newContent = [newContent];
