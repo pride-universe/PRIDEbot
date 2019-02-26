@@ -27,11 +27,6 @@ class ChannelInfo extends Plugin {
   async start() {
     this.client.on('channelCreate', (...args) => this.refreshChannelList(...args));
     this.client.on('channelUpdate', (...args) => this.refreshChannelList(...args));
-    this.interval = this.client.setInterval(()=>this.clear(), 3600000);
-  }
-
-  async stop() {
-    this.client.clearInterval(this.interval);
   }
 
   /**
