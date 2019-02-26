@@ -56,12 +56,12 @@ class ChannelInfo extends Plugin {
         if(!memberRoles) return true;
         if (ch.type === 'category') return true;
         if (ch.type !== 'text') return false;
-        return memberRoles.find((id)=>ch.permissionsFor(id).has('VIEW_CHANNEL'));
+        return memberRoles.find((id)=>ch.permissionsFor(id) && ch.permissionsFor(id).has('VIEW_CHANNEL'));
       }
     ).partition(ch=>!ch.parent).map(col=>Util.discordSort(col));
     const text = roots.map(ch=>({channel: ch, children: children.filter(child=>child.parentID === ch.id)})).filter(root=>root.channel.type==='category' && root.children.size).map(root=>{
       if(root.channel.type === 'category') {
-        return root.channel.name.toUpperCase() + root.children.map(child=>`\n  ${child.toString()}${child.topic?' - ' + child.topic:''}`).join('');
+        return root.channel.name.toUpperCase() + root.children.map(child=>`\n​  ${child.toString()}${child.topic?' - ' + child.topic:''}`).join('');
       }
       return `${root.channel.toString()}${root.channel.topic?' - ' + root.channel.topic:''}`;
     }).join('\n\n');
