@@ -77,7 +77,7 @@ class ChannelInfo extends Plugin {
       oldMessages.delete(oldMessages.firstKey());
     }
     if(oldMessages) {
-      oldMessages.array().forEach((msg,i)=>msg.edit(newContent[i]));
+      oldMessages.array().reverse().forEach((msg,i)=>msg.edit(newContent[i]));
     } else {
       for(let txt of newContent) {
         await channelList.send(txt);
