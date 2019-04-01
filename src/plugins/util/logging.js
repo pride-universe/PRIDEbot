@@ -27,7 +27,7 @@ class Logging extends Plugin {
     this.client.on('warn', (...args) => this.logWarn(...args));
     this.client.on('ready', (...args) => this.logReady(...args));
     this.client.on('disconnect', (...args) => this.logDisconnect(...args));
-    this.client.on('reconnecting', (...args) => this.logReconnect(...args));
+    //this.client.on('reconnecting', (...args) => this.logReconnect(...args));
     this.client.on('commandError', (...args) => this.logCommandError(...args));
     this.client.on('commandBlocked', (...args) => this.logCommandBlocked(...args));
     this.client.on('pluginError', (...args) => this.logPluginError(...args));
