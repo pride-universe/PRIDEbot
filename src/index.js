@@ -13,7 +13,6 @@ require('moment').locale('en-gb');
 const bot = module.exports = new Commando.CommandoClient({
   owner: config.owners,
   commandPrefix: config.prefix,
-  unknownCommandResponse: false,
   disableEveryone: true,
 });
 
