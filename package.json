@@ -1,17 +1,21 @@
 {
   "name": "pridebot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PRIDEuniverse bot",
+  "author": "NbOpposite",
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.15.3"
+  },
   "main": "src/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "eslint . && mocha -t 10000",
-    "run": "node ."
+    "test": "npm run lint && mocha -t 10000",
+    "lint": "eslint .",
+    "start": "node ."
   },
-  "author": "NbOpposite",
-  "license": "MIT",
   "dependencies": {
     "array-to-sentence": "^2.0.0",
     "common-tags": "^1.8.0",
@@ -21,14 +25,14 @@
     "discord.js-plugins": "git+https://github.com/NbOpposite/discord.js-plugins.git",
     "emojis-list": "^2.1.0",
     "jsdom": "^13.2.0",
+    "libxmljs": "0.19.5",
     "mime": "^2.4.3",
     "moment": "^2.24.0",
-    "node-opus": "^0.3.2",
     "puppeteer": "^1.17.0",
     "request": "^2.88.0",
     "sqlite": "^2.9.3",
     "twemoji": "^11.3.0",
-    "wolfram-alpha": "^0.6.0",
+    "wolfram-alpha": "git+https://github.com/bpkennedy/wolfram-alpha.git",
     "ytdl-core": "^0.20.4"
   },
   "devDependencies": {
