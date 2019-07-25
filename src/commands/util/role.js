@@ -8,7 +8,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
   constructor(client) {
     super(client, {
       name: 'role',
-      aliases: ['roles'],
+      alias: ['roles'],
       group: 'util',
       memberName: 'role',
       description: 'Gives you the specified role. To get a list of all available roles, run this command with no arguments. If there are multiple roles with the same name, use `~<number>` to select which role you want',
@@ -17,6 +17,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
       format: '[role[~<number>]]',
       permGroup: 'members',
     });
+
     this.cache = new Map();
     this.invalidateCache = (role) => this.cache.delete(role.guild.id);
     this.startListeners();
@@ -178,7 +179,9 @@ module.exports = class RoleCommand extends RestrictedCommand {
       }
     });
 
-    return [...groups].sort(([key1], [key2])=>key1-key2).map(([,group]) => group);
+    const groupsArr = [...groups].sort(([key1], [key2])=>key1-key2).map(([,group]) => group);
+    this.cache.set(guild.id, groupsArr);
+    return groupsArr;
   }
 
   getPermGroups(msg) {
@@ -201,6 +204,10 @@ module.exports = class RoleCommand extends RestrictedCommand {
 
   async run(msg, args) {
     if(!msg.guild) return;
+    if(msg.guild.settings.get('selfRoleLimits')) {
+      return this.client.registry.commands.get('legacyrole').run(msg, args);
+    }
+
     const permGroups = this.getPermGroups(msg);
 
     const groups = this.getSelfRoleGroups(msg.guild);
