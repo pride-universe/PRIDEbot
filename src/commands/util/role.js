@@ -217,10 +217,13 @@ module.exports = class RoleCommand extends RestrictedCommand {
         return !group.permGroup || permGroups.has(group.permGroup);
       });
       if(!listGroups.length) {
-        return msg.reply(`BLA`)
+        return msg.reply(`There are no self roles you can assign on this server`)
       }
       return this.listRoles(listGroups, msg);
     } else {
+      if(!groups.length) {
+        return msg.reply(`There are no self roles defined on this server`)
+      }
       const upper = [...groups.values()].reduce((acc, {start}) => acc ? acc.position < start.position ? start : acc : start, null);
       console.log(upper.name, upper.position);
       if(msg.guild.me.roles.highest.position < upper.position) return msg.reply(`Missing role high enough to give out roles. I require role \`\`${upper.name}\`\` or higher to be able to hand out roles.`);
