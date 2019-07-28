@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "eslint . && mocha -t 10000",
-    "run": "node ."
+    "start": "node ."
   },
   "author": "NbOpposite",
   "license": "MIT",
@@ -21,10 +21,10 @@
     "discord.js-plugins": "git+https://github.com/NbOpposite/discord.js-plugins.git",
     "emojis-list": "^2.1.0",
     "jsdom": "^13.2.0",
-    "mime": "^2.4.3",
+    "mime": "^2.4.4",
     "moment": "^2.24.0",
     "node-opus": "^0.3.2",
-    "puppeteer": "^1.17.0",
+    "puppeteer": "^1.19.0",
     "request": "^2.88.0",
     "sqlite": "^2.9.3",
     "twemoji": "^11.3.0",
