@@ -8,7 +8,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
   constructor(client) {
     super(client, {
       name: 'role',
-      alias: ['roles'],
+      aliases: ['roles'],
       group: 'util',
       memberName: 'role',
       description: 'Gives you the specified role. To get a list of all available roles, run this command with no arguments. If there are multiple roles with the same name, use `~<number>` to select which role you want',
