@@ -11,7 +11,7 @@ function requireNoCache (id) {
   const modKey = require.resolve(id);
   let oldCache;
   if(Object.prototype.hasOwnProperty.call(require.cache, modKey)) {
-    oldCache = require.cache[modKey]
+    oldCache = require.cache[modKey];
     delete require.cache[modKey];
   }
   const module = require(id);
@@ -48,85 +48,85 @@ function colorToRgba(col, a) {
 }
 
 function formatFileSize(size) {
-  if (size <= 0) return "0 bytes";
-  const units = ["bytes", "KB", "MB", "GB", "TB", "PB"];
+  if (size <= 0) return '0 bytes';
+  const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
   const unit = Math.min(Math.floor(Math.log2(Math.max(size,1))/10), units.length - 1);
   const precision = unit ? 2 : 0;
   size = size / Math.pow(1024, unit);
   const fixed = size.toFixed(precision);
   const fraction = precision ? fixed.substr(-precision) : null;
-  const int = parseInt(fixed)+"";
+  const int = parseInt(fixed)+'';
   const initialDigits = int.length > 3 ? int.length % 3 : 0;
-  return `${initialDigits ? int.substr(0, initialDigits) + ',' : ""}${int.substr(initialDigits).replace(/(\d{3})(?=\d)/g, '$1,')}${fraction ? '.' + fraction : ''} ${units[unit]}`;
+  return `${initialDigits ? int.substr(0, initialDigits) + ',' : ''}${int.substr(initialDigits).replace(/(\d{3})(?=\d)/g, '$1,')}${fraction ? '.' + fraction : ''} ${units[unit]}`;
 }
 
 function getFileIcon(type) {
   switch(type) {
-    case 'photoshop': return 'https://discordapp.com/assets/985ea67d2edab4424c62009886f12e44.svg'
-    case 'video': return 'https://discordapp.com/assets/985ea67d2edab4424c62009886f12e44.svg';
-    case 'image': return 'https://discordapp.com/assets/985ea67d2edab4424c62009886f12e44.svg';
-    case 'acrobat': return 'https://discordapp.com/assets/f167b4196f02faf2dc2e7eb266a24275.svg';
-    case 'ae': return 'https://discordapp.com/assets/982bd8aedd89b0607f492d1175b3b3a5.svg';
-    case 'sketch': return 'https://discordapp.com/assets/f812168e543235a62b9f6deb2b094948.svg';
-    case 'ai': return 'https://discordapp.com/assets/03ad68e1f4d47f2671d629cfeac048ef.svg';
-    case 'archive': return 'https://discordapp.com/assets/73d212e3701483c36a4660b28ac15b62.svg';
-    case 'code': return 'https://discordapp.com/assets/481aa700fab464f2332ca9b5f4eb6ba4.svg';
-    case 'document': return 'https://discordapp.com/assets/9f358f466473586417baee7bacfba5ca.svg';
-    case 'spreadsheet': return 'https://discordapp.com/assets/85f7a4063578f6e0e2c73f60bca0fcce.svg';
-    case 'webcode': return 'https://discordapp.com/assets/a11e895b46cde503a094dd31641060a6.svg';
-    case 'audio': return 'https://discordapp.com/assets/5b0da31dc2b00717c1e35fb1f84f9b9b.svg';
-    case 'unknown': return 'https://discordapp.com/assets/985ea67d2edab4424c62009886f12e44.svg';
-    default: return 'https://discordapp.com/assets/985ea67d2edab4424c62009886f12e44.svg';
+  case 'photoshop': return 'https://discordapp.com/assets/985ea67d2edab4424c62009886f12e44.svg';
+  case 'video': return 'https://discordapp.com/assets/985ea67d2edab4424c62009886f12e44.svg';
+  case 'image': return 'https://discordapp.com/assets/985ea67d2edab4424c62009886f12e44.svg';
+  case 'acrobat': return 'https://discordapp.com/assets/f167b4196f02faf2dc2e7eb266a24275.svg';
+  case 'ae': return 'https://discordapp.com/assets/982bd8aedd89b0607f492d1175b3b3a5.svg';
+  case 'sketch': return 'https://discordapp.com/assets/f812168e543235a62b9f6deb2b094948.svg';
+  case 'ai': return 'https://discordapp.com/assets/03ad68e1f4d47f2671d629cfeac048ef.svg';
+  case 'archive': return 'https://discordapp.com/assets/73d212e3701483c36a4660b28ac15b62.svg';
+  case 'code': return 'https://discordapp.com/assets/481aa700fab464f2332ca9b5f4eb6ba4.svg';
+  case 'document': return 'https://discordapp.com/assets/9f358f466473586417baee7bacfba5ca.svg';
+  case 'spreadsheet': return 'https://discordapp.com/assets/85f7a4063578f6e0e2c73f60bca0fcce.svg';
+  case 'webcode': return 'https://discordapp.com/assets/a11e895b46cde503a094dd31641060a6.svg';
+  case 'audio': return 'https://discordapp.com/assets/5b0da31dc2b00717c1e35fb1f84f9b9b.svg';
+  case 'unknown': return 'https://discordapp.com/assets/985ea67d2edab4424c62009886f12e44.svg';
+  default: return 'https://discordapp.com/assets/985ea67d2edab4424c62009886f12e44.svg';
   }
 }
 
 const fileTypes = [{
   reType: /^image\/vnd.adobe.photoshop/,
-  klass: "photoshop"
+  klass: 'photoshop'
 }, {
   reType: /^image\//,
-  klass: "image"
+  klass: 'image'
 }, {
   reType: /^video\//,
-  klass: "video"
+  klass: 'video'
 }, {
   reName: /\.pdf$/,
-  klass: "acrobat"
+  klass: 'acrobat'
 }, {
   reName: /\.ae/,
-  klass: "ae"
+  klass: 'ae'
 }, {
   reName: /\.sketch$/,
-  klass: "sketch"
+  klass: 'sketch'
 }, {
   reName: /\.ai$/,
-  klass: "ai"
+  klass: 'ai'
 }, {
   reName: /\.(?:rar|zip|7z|tar|tar\.gz)$/,
-  klass: "archive"
+  klass: 'archive'
 }, {
   reName: /\.(?:c\+\+|cpp|cc|c|h|hpp|mm|m|json|js|rb|rake|py|asm|fs|pyc|dtd|cgi|bat|rss|java|graphml|idb|lua|o|gml|prl|sls|conf|cmake|make|sln|vbe|cxx|wbf|vbs|r|wml|php|bash|applescript|fcgi|yaml|ex|exs|sh|ml|actionscript)$/,
-  klass: "code"
+  klass: 'code'
 }, {
   reName: /\.(?:txt|rtf|doc|docx|md|pages|ppt|pptx|pptm|key|log)$/,
-  klass: "document"
+  klass: 'document'
 }, {
   reName: /\.(?:xls|xlsx|numbers|csv)$/,
-  klass: "spreadsheet"
+  klass: 'spreadsheet'
 }, {
   reName: /\.(?:html|xhtml|htm|js|xml|xls|xsd|css|styl)$/,
-  klass: "webcode"
+  klass: 'webcode'
 }, {
   reName: /\.(?:mp3|ogg|wav|flac)$/,
-  klass: "audio"
+  klass: 'audio'
 }];
 function getFileType(name, type) {
-  name = name ? name.toLowerCase() : "";
+  name = name ? name.toLowerCase() : '';
   type = type || mime.getType(name);
   var foundType = fileTypes.find(function(entry) {
-      return entry.reType && type ? entry.reType.test(type) : !(!entry.reName || !name) && entry.reName.test(name)
+    return entry.reType && type ? entry.reType.test(type) : !(!entry.reName || !name) && entry.reName.test(name);
   });
-  return foundType ? foundType.klass : "unknown"
+  return foundType ? foundType.klass : 'unknown';
 }
 
 function parseImg(img, maxWidth, maxHeight) {
@@ -261,10 +261,10 @@ function buildVideoEmbed (embed, markdownOptions) {
       height: embed.video.height,
       url: url.href,
       proxyURL: url.href
-    }
+    };
   }
   const isPlain = !embed.title && !embed.fields.length && !embed.description && !embed.timestamp && !embed.footer && !embed.color && !embed.author;
-  if(!isPlain) return buildDefaultEmbed(embed, markdownOptions)
+  if(!isPlain) return buildDefaultEmbed(embed, markdownOptions);
   const vid = parseImg(embed.thumbnail, 400, 300);
   return buildPlainVideo(vid);
 }
@@ -450,7 +450,7 @@ function buildDefaultEmbed (embed, markdownOptions) {
       c('d-embedMarginLarge'),
       c('d-embedWrapper'));
     imgOuter.setAttribute('style', img.style);
-    imgEl = imgOuter.appendChild(document.createElement('img'));
+    const imgEl = imgOuter.appendChild(document.createElement('img'));
     imgEl.src = img.url;
     imgEl.setAttribute('style', img.style);
   }
@@ -462,7 +462,7 @@ function buildDefaultEmbed (embed, markdownOptions) {
   if(!footer && timestamp) {
     footer = {
       text: timestamp
-    }
+    };
     timestamp = null;
   }
 
@@ -506,13 +506,13 @@ function buildGifvEmbed(embed, markdownOptions) {
 
 function buildEmbed (embed, markdownOptions) {
   switch(embed.type) {
-    case 'video':
-      return buildVideoEmbed(embed, markdownOptions);
-    case 'image':
-      return buildImageEmbed(embed, markdownOptions);
-    case 'gifv': return buildGifvEmbed(embed, markdownOptions);
-    default:
-      return buildDefaultEmbed(embed, markdownOptions);
+  case 'video':
+    return buildVideoEmbed(embed, markdownOptions);
+  case 'image':
+    return buildImageEmbed(embed, markdownOptions);
+  case 'gifv': return buildGifvEmbed(embed, markdownOptions);
+  default:
+    return buildDefaultEmbed(embed, markdownOptions);
   }
 }
 
@@ -564,7 +564,7 @@ function buildAudioControls() {
   return rootEl;
 }
 
-function buildAudioAttachment(attachment, markdownOptions) {
+function buildAudioAttachment(attachment) {
   const rootEl = document.createElement('div');
   rootEl.classList.add(c('d-wrapperAudio'), c('d-wrapperAudioRound'), c('d-embedWrapper'));
   rootEl.style.width = '498px';
@@ -612,7 +612,7 @@ function buildAttachment (attachment, markdownOptions) {
         height: attachment.height,
         url: attachment.url,
         proxyURL: attachment.proxyURL,
-      }
+      };
       return buildEmbed(embed, markdownOptions);
     }
     const url = new URL(attachment.proxyURL);
@@ -650,7 +650,7 @@ function buildAttachment (attachment, markdownOptions) {
   innerEl.className = c('d-attachmentInner');
 
   const filenameWrapperEl = innerEl.appendChild(document.createElement('div'));
-  filenameWrapperEl.className = c('d-filenameLinkWrapper')
+  filenameWrapperEl.className = c('d-filenameLinkWrapper');
 
   const filenameLinkEl = filenameWrapperEl.appendChild(document.createElement('a'));
   filenameLinkEl.href = '#';
@@ -732,7 +732,7 @@ function getEmojiURL(emoji) {
 function buildMessage (message) {
   const discordCallback = {
     user({id}) {
-      let inner = `&lt;@${id}&gt;`
+      let inner = `&lt;@${id}&gt;`;
       const member = message.mentions.members.get(id) || message.guild.members.get(id);
       if (member) {
         inner = `@${member.displayName}`;
@@ -741,19 +741,19 @@ function buildMessage (message) {
         if(user) return `@${user.username}`;
       }
       
-      return `<span class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}" role="button">${DiscordMarkdown.sanitizeText(inner)}</span>`
+      return `<span class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}" role="button">${DiscordMarkdown.sanitizeText(inner)}</span>`;
     },
     channel({id}) {
       const channel = message.guild.channels.get(id);
       if(!channel) return '#deleted-channel';
       if(!channel.type !== 'text') return `#$${DiscordMarkdown.sanitizeText(channel.name)}`;
-      return `<span tabindex="0" class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}" role="button">#${DiscordMarkdown.sanitizeText(channel.name)}</span>`
+      return `<span tabindex="0" class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}" role="button">#${DiscordMarkdown.sanitizeText(channel.name)}</span>`;
     },
     role({id}) {
       const role = message.guild.roles.get(id);
       if(!role) return '@deleted-role';
-      if(role.color) return `<span class="${c('d-mention')}" style="color: ${role.hexColor}; background-color: rgba(${colorToRgba(role.color, .1).join()})">@${DiscordMarkdown.sanitizeText(role.name)}</span>`
-      return `<span class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}">@${DiscordMarkdown.sanitizeText(role.name)}</span>`
+      if(role.color) return `<span class="${c('d-mention')}" style="color: ${role.hexColor}; background-color: rgba(${colorToRgba(role.color, .1).join()})">@${DiscordMarkdown.sanitizeText(role.name)}</span>`;
+      return `<span class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}">@${DiscordMarkdown.sanitizeText(role.name)}</span>`;
     },
     emoji({id, name, animated}) {
       if(id) {
@@ -763,17 +763,17 @@ function buildMessage (message) {
       }
     },
     here() {
-      return `<span class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}">@here</span>`
+      return `<span class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}">@here</span>`;
     },
     everyone() {
-      return `<span class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}">@everyone</span>`
+      return `<span class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}">@everyone</span>`;
     }
-  }
-  const markdownOptions = {discordCallback, cssModuleNames, hideSpoilers: true}
+  };
+  const markdownOptions = {discordCallback, cssModuleNames, hideSpoilers: true};
   const rootEl = document.createElement('div');
   rootEl.classList.add(c('d-contentCozy'), c('d-content'));
   
-  const bodyEl = rootEl.appendChild(document.createElement('div'))
+  const bodyEl = rootEl.appendChild(document.createElement('div'));
   bodyEl.classList.add(c('d-containerCozyMessage'), c('d-containerMessage'));
   if(message.mentions.everyone) bodyEl.classList.add(c('d-isMentionedCozy'), c('d-isMentioned'));
   const bodyInnerEl = bodyEl.appendChild(document.createElement('div'));
@@ -799,7 +799,7 @@ function buildHTML (messages) {
   const groups = groupMessages(messages);
   const rootEl = document.createElement('div');
   rootEl.style.width = '100%';
-  for(group of groups) {
+  for(const group of groups) {
     let message = group.shift();
     const groupRootEl = rootEl.appendChild(document.createElement('div'));
     groupRootEl.classList.add(c('d-containerCozyBounded'), c('d-containerCozyGroup'), c('d-containerGroup'));

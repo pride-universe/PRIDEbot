@@ -1,7 +1,6 @@
 const RestrictedCommand = require('../../restrictedCommand');
 const Commando = require('discord.js-commando');
 const Discord = require('discord.js');
-const nl = '!!NL!!';
 const screenshotGenerator = require('../../modules/screenshotGenerator');
 
 const args = [
@@ -28,7 +27,7 @@ module.exports = class ScreenshotCommand extends RestrictedCommand {
       group: 'staff',
       memberName: 'screenshot',
       description: 'Screenshots messages',
-      examples: ['screenshot 547276594897485824', 'screenshot 547276594897485824 547283344627597313', , 'screenshot 547276594897485824 +-5', 'screenshot 547276594897485824 5', 'screenshot 20'],
+      examples: ['screenshot 547276594897485824', 'screenshot 547276594897485824 547283344627597313', 'screenshot 547276594897485824 +-5', 'screenshot 547276594897485824 5', 'screenshot 20'],
       clientPermissions: [],
       permGroup: 'staff',
       args,
@@ -51,7 +50,7 @@ module.exports = class ScreenshotCommand extends RestrictedCommand {
     if(amount === 0) return [];
     const collections = [];
     let curCollection;
-    let fromId = from.id
+    let fromId = from.id;
     if(amount > 0) {
       let acc = 0;
       while ((curCollection = await from.channel.messages.fetch({after: fromId, limit: amount}, false)).size > 0) {

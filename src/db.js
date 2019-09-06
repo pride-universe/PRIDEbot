@@ -1,16 +1,3 @@
-const sqlite = require('sqlite');
-var db;
-async function initDB () {
-  db = await sqlite.open('./main.sqlite', { Promise });
-  return db;
-}
-var promise = initDB();
+const db = require('better-sqlite3')('./main.sqlite');
 
-function getDBInstance() {
-  if(!db) throw new Error('Database is not yet open!');
-  return db;
-}
-
-getDBInstance.dbPromise = promise;
-
-module.exports = getDBInstance;
+module.exports = db;

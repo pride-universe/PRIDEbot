@@ -1,18 +1,18 @@
 const commando = require('discord.js-commando');
 
 const CHARMAP = {
-  "0": "`0️⃣`",
-  "1": "`1️⃣`",
-  "2": "`2️⃣`",
-  "3": "`3️⃣`",
-  "4": "`4️⃣`",
-  "5": "`5️⃣`",
-  "6": "`6️⃣`",
-  "7": "`7️⃣`",
-  "8": "`8️⃣`",
-  "9": "`9️⃣`",
-  "X": "`💣`"
-}
+  '0': '`0️⃣`',
+  '1': '`1️⃣`',
+  '2': '`2️⃣`',
+  '3': '`3️⃣`',
+  '4': '`4️⃣`',
+  '5': '`5️⃣`',
+  '6': '`6️⃣`',
+  '7': '`7️⃣`',
+  '8': '`8️⃣`',
+  '9': '`9️⃣`',
+  'X': '`💣`'
+};
 
 module.exports = class MinesweeperCommand extends commando.Command {
   constructor(client) {
@@ -26,35 +26,35 @@ module.exports = class MinesweeperCommand extends commando.Command {
       guildOnly: false,
       clientPermissions: [],
       args: [{
-          key: 'size',
-          label: 'Grid Size',
-          prompt: 'How large should the grid be?',
-          type: 'integer',
-          max: 12,
-          min: 1,
-          default: 10,
-        },
-        {
-          key: 'bombs',
-          label: 'Bombs',
-          prompt: 'How many bombs should there be?',
-          type: 'integer',
-          min: 1,
-          default: 7,
-        }
+        key: 'size',
+        label: 'Grid Size',
+        prompt: 'How large should the grid be?',
+        type: 'integer',
+        max: 12,
+        min: 1,
+        default: 10,
+      },
+      {
+        key: 'bombs',
+        label: 'Bombs',
+        prompt: 'How many bombs should there be?',
+        type: 'integer',
+        min: 1,
+        default: 7,
+      }
       ],
     });
   }
   
   run(msg, args) {
     let grid = this.setupgrid(args.size, args.bombs);
-    let retStr = "\n";
+    let retStr = '\n';
     for(let row of grid) {
-      let rowStr = "";
+      let rowStr = '';
       for(let cell of row) {
-        rowStr += "||"+CHARMAP[cell]+"||";
+        rowStr += '||'+CHARMAP[cell]+'||';
       }
-      retStr += rowStr+"\n";
+      retStr += rowStr+'\n';
     }
     msg.say(retStr);
   }
@@ -68,7 +68,7 @@ module.exports = class MinesweeperCommand extends commando.Command {
     for(let row = 0; row < grid.length; row++) {
       for(let col = 0; col < grid[row].length; col++) {
         if(grid[row][col] === 'X') continue;
-        grid[row][col] = this.getNeigbors(grid, row, col).reduce((acc, cell) => grid[cell[0]][cell[1]] === "X"?acc+1:acc, 0);
+        grid[row][col] = this.getNeigbors(grid, row, col).reduce((acc, cell) => grid[cell[0]][cell[1]] === 'X'?acc+1:acc, 0);
       }
     }
     return grid;
@@ -87,7 +87,7 @@ module.exports = class MinesweeperCommand extends commando.Command {
       }
     }
 
-    return neighbors
+    return neighbors;
   }
 
   getmines(grid, numberofmines) {
@@ -96,7 +96,7 @@ module.exports = class MinesweeperCommand extends commando.Command {
       try {
         mines.push(this.getrandomcell(grid, mines));
       } catch (e) {
-        throw new commando.FriendlyError("You can't have more bombs than tiles silly!");
+        throw new commando.FriendlyError('You can\'t have more bombs than tiles silly!');
       }
     }
     return mines;
@@ -105,7 +105,7 @@ module.exports = class MinesweeperCommand extends commando.Command {
   getrandomcell(grid, forbidden) {
     forbidden = forbidden.map(p=>p[0]*grid[0].length+p[1]).sort();
     let allowed = Array(grid.length*grid[0].length).fill(undefined).map((c, i)=>i).filter(e=>!forbidden.includes(e));
-    if(allowed.length <= 0) throw new Error("Can't pick random cell when all cells are picked");
+    if(allowed.length <= 0) throw new Error('Can\'t pick random cell when all cells are picked');
     let pos = allowed[Math.floor(Math.random() * allowed.length)];
     return [Math.floor(pos/grid[0].length), pos%grid[0].length];
   }

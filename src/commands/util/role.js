@@ -52,7 +52,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
     let hasDupe = false;
     for(const group of groups) {
       const maxLen = group.roleEntries.reduce((acc, {role}) => Math.max(acc, role.name.length), 0);
-      str += `\n**${group.name}:\n**`
+      str += `\n**${group.name}:\n**`;
       for(const {role} of group.roleEntries) {
         const dupeString = (()=>{
           const dupe = dupes.get(role.name.toLowerCase());
@@ -114,6 +114,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
     const groups = new Map();
     guild.roles.forEach(r => {
       let match;
+      // eslint-disable-next-line no-cond-assign
       if(match = r.name.match(startRegex)) {
         const id = match[1];
         const name = match[2];
@@ -131,6 +132,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
         group.permGroup = permGroup;
         group.start = r;
         group.roleEntries = [];
+      // eslint-disable-next-line no-cond-assign
       } else if(match = r.name.match(endRegex)) {
         const id = match[1];
         
@@ -154,14 +156,14 @@ module.exports = class RoleCommand extends RestrictedCommand {
         continue;
       
       groups.delete(key);
-      this.client.emit('warn', `Self role group with id "${key}" is invalid.`)
+      this.client.emit('warn', `Self role group with id "${key}" is invalid.`);
     }
     const groupMarkers = new Set();
     groups.forEach(({start, end}) => groupMarkers.add(start).add(end));
     guild.roles.sort((r1,r2) => r2.position - r1.position).forEach(r => {
       for(let [,group] of groups) {
         if(r.position < group.start.position && r.position > group.end.position) {
-          if(groupMarkers.has(r)) throw new FriendlyError("Overlapping self-role groups. This is not good.");
+          if(groupMarkers.has(r)) throw new FriendlyError('Overlapping self-role groups. This is not good.');
           if(r.managed) {
             this.client.emit('warn', `Role '${r.name}' in '${guild.name}' is managed by external service and not assignable, omitting from self-role.`);
             return;
@@ -190,8 +192,8 @@ module.exports = class RoleCommand extends RestrictedCommand {
     permLoop: for(const permGroupName of Object.keys(guildPerms)) {
       const permGroup = guildPerms[permGroupName];
       const roles = Array.isArray(permGroup)
-      ? permGroup
-      : [permGroup];
+        ? permGroup
+        : [permGroup];
       for(const role of roles) {
         if(msg.member.roles.has(role)) {
           permGroups.add(permGroupName);
@@ -217,12 +219,12 @@ module.exports = class RoleCommand extends RestrictedCommand {
         return !group.permGroup || permGroups.has(group.permGroup);
       });
       if(!listGroups.length) {
-        return msg.reply(`There are no self roles you can assign on this server`)
+        return msg.reply('There are no self roles you can assign on this server');
       }
       return this.listRoles(listGroups, msg);
     } else {
       if(!groups.length) {
-        return msg.reply(`There are no self roles defined on this server`)
+        return msg.reply('There are no self roles defined on this server');
       }
       const upper = [...groups.values()].reduce((acc, {start}) => acc ? acc.position < start.position ? start : acc : start, null);
       console.log(upper.name, upper.position);

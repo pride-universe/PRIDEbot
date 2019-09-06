@@ -21,7 +21,7 @@ class ScreenshotGenerator {
   }
 
   async startBrowser() {
-    console.log('starting browser')
+    console.log('starting browser');
     const browser = this._browser = await puppeteer.launch({executablePath: '/usr/bin/chromium-browser', args: ['--no-sandbox', '--disable-setuid-sandbox']});
     const page = await browser.newPage();
     // This does not have to be a page on the web, it can be a localhost page, or file://
@@ -39,12 +39,15 @@ class ScreenshotGenerator {
     })('./messageHTML');
     await this.fetchExtras(messages);
     const page = await this.getPage();
-    await page.evaluate((html)=>document.getElementById('message-mountpoint').innerHTML=html, messageHTML(messages));
+    // eslint-disable-next-line no-undef
+    await page.evaluate((html) => document.getElementById('message-mountpoint').innerHTML=html, messageHTML(messages));
     await this.waitForNetworkIdle(500);
 
     const {width, height} = page.viewport();
+    // eslint-disable-next-line no-undef
     const bodyHeight = await page.evaluate(() => document.body.offsetHeight);
 
+    // eslint-disable-next-line no-undef
     fs.writeFileSync('src/rendered.html', '<!DOCTYPE html>\n' + await page.evaluate(() => document.documentElement.outerHTML));
     // Output a page screenshot
     if(bodyHeight < height) {
@@ -81,7 +84,7 @@ class ScreenshotGenerator {
   }
 
   async stopBrowser() {
-    if(!!this._browser) console.error('Tried to stop already stopped browser?');
+    if(this._browser) console.error('Tried to stop already stopped browser?');
     if(this._working) return;
     console.log('stopping browser');
     this._pagePromise = null;
@@ -132,7 +135,7 @@ class ScreenshotGenerator {
       Promise.all(m.mentions.members.array().map(c=>c.fetch())),
       Promise.all(m.mentions.users.array().map(c=>c.fetch()))
     ])));
-  return messages;
+    return messages;
   }
 }
 

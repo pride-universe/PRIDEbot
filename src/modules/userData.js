@@ -1,4 +1,4 @@
-const { dbPromise } = require('../db');
+const db = require('../db');
 const { Collection, User, GuildMember, Message } = require('discord.js');
 const userDataCollection = new Collection();
 
@@ -10,19 +10,19 @@ async function resolveUserId(user) {
   throw new Error('User is not a user object or user id');
 }
 
-async function updateUser(userId) {
-  const db = await dbPromise;
+const saveUserStmt = db.prepare('INSERT OR REPLACE INTO users (user, data) VALUES (?, ?)');
+const fetchUserStmt = db.prepare('SELECT data FROM users WHERE user = ?');
 
-  const user = await fetchUser(userId);
-  db.run('INSERT OR REPLACE INTO users (user, data) VALUES (?, ?);', userId, JSON.stringify(user));
+function saveUser(userId) {
+  const user = fetchUser(userId);
+  saveUserStmt.run(userId, JSON.stringify(user));
 }
 
-async function fetchUser(userId) {
+function fetchUser(userId) {
   if(userDataCollection.has(userId)) return userDataCollection.get(userId);
 
-  const db = await dbPromise;
-  const data = JSON.parse((await db.get('SELECT data FROM users WHERE user = ?', userId) || { data: '{}'}).data);
-  await userDataCollection.set(userId, data);
+  const data = JSON.parse(fetchUserStmt.get(userId) || { data: '{}'}.data);
+  userDataCollection.set(userId, data);
   return data;
 }
 
@@ -44,7 +44,7 @@ async function setData(user, data) {
   if(data && data instanceof Function) data = data(userId);
   if(!data || data.constructor !== Object) throw new Error(`Data must be object. Got: ${data ? String(data) : data.constructor.name}`);
   userDataCollection.set(userId, data);
-  await updateUser(userId);
+  await saveUser(userId);
 }
 
 async function setProp(user, prop, value) {
@@ -53,7 +53,7 @@ async function setProp(user, prop, value) {
   const userId = await resolveUserId(user);
   const data = await fetchUser(userId);
   data[prop] = value;
-  await updateUser(userId);
+  await saveUser(userId);
 }
 
 async function clearCache(user) {

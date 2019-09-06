@@ -41,7 +41,7 @@ class DeletedLog extends Plugin {
         const guild = this.client.guilds.get(guildId);
         if(!guild) continue;
         const outputChannel = this.client.guilds.get(this.guilds[guildId][0]).channels.get(this.guilds[guildId][1]);
-        if(!outputChannel) throw new ChannelNotFoundError("Cannot find the channel specified");
+        if(!outputChannel) throw new ChannelNotFoundError('Cannot find the channel specified');
         channels.push([guild, outputChannel]);
       } catch (err) {
         this.client.emit('error', err);
@@ -80,10 +80,10 @@ class DeletedLog extends Plugin {
     if(!deleteWindow) return;
     if(Date.now() - message.createdAt > deleteWindow) return;
     const guild = message.guild;
-    let outputChannel
+    let outputChannel;
     try {
       outputChannel = this.client.guilds.get(this.guilds[guild.id][0]).channels.get(this.guilds[guild.id][1]);
-      if(!outputChannel) throw new ChannelNotFoundError("Cannot find the channel specified");
+      if(!outputChannel) throw new ChannelNotFoundError('Cannot find the channel specified');
     } catch (err) {
       this.client.emit('error', err);
       return;

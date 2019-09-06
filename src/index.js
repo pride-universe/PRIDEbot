@@ -5,7 +5,7 @@ const plugins = require('discord.js-plugins');
 const path = require('path');
 const oneLine = require('common-tags').oneLine;
 const token = require('../secrets').discordToken;
-const { dbPromise } = require('./db');
+const db = require('./db');
 const config = require('../config');
 require('moment/locale/en-gb');
 require('moment').locale('en-gb');
@@ -74,7 +74,7 @@ bot
   });
 
 bot.setProvider(
-  dbPromise.then(db => new Commando.SQLiteProvider(db))
+  new Commando.SyncSQLiteProvider(db)
 ).catch(console.error);
 console.log(Commando);
 bot.registry

@@ -1,6 +1,5 @@
 const RestrictedCommand = require('../../restrictedCommand');
 const MessageEmbed = require('discord.js').MessageEmbed;
-const Commando = require('discord.js-commando');
 
 /**
  * 
@@ -40,7 +39,7 @@ module.exports = class IdCommand extends RestrictedCommand {
     let user;
     try {
       user = await this.client.users.fetch(args);
-    } catch {}
+    } catch (_) { /* pass */ }
     if(!user) {
       return msg.reply('Could not find a user with that ID');
     }

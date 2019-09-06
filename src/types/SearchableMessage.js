@@ -1,11 +1,11 @@
 const Commando = require('discord.js-commando');
 const CACHE_SIZE = 10;
 class SearchableMessageArgumentType extends Commando.ArgumentType {
-	constructor(client) {
+  constructor(client) {
     super(client, 'searchablemessage');
     this._cache = new Array(CACHE_SIZE);
     this._cacheIndex = 0;
-	}
+  }
 
   cache(message) {
     this._cache[this._cacheIndex] = message;
@@ -52,18 +52,18 @@ class SearchableMessageArgumentType extends Commando.ArgumentType {
     return 'Cannot find message';
   }
 
-	async validate(val, msg) {
+  async validate(val, msg) {
     if(msg.targetChannel && msg.targetMessage) return true;
     const found = await this.search(val, msg);
     if(typeof found !== 'object') return found;
-		return true;
-	}
+    return true;
+  }
 
-	async parse(val, msg) {
+  async parse(val, msg) {
     const retobj = await this.search(val, msg, true);
     if(typeof retobj !== 'object') return null;
     return retobj;
-	}
+  }
 }
 
 module.exports = SearchableMessageArgumentType;

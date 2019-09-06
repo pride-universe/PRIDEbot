@@ -2,8 +2,6 @@ const { Plugin } = require('discord.js-plugins');
 const { Util } = require('discord.js');
 const { servers } = require('../../../config');
 
-class ChannelNotFoundError extends Error {}
-
 class ChannelInfo extends Plugin {
   constructor(client) {
     const info = {
@@ -56,6 +54,7 @@ class ChannelInfo extends Plugin {
     ).partition(ch=>!ch.parent).map(col=>Util.discordSort(col));
     const text = roots.map(ch=>({channel: ch, children: children.filter(child=>child.parentID === ch.id)})).filter(root=>root.channel.type==='category' && root.children.size).map(root=>{
       if(root.channel.type === 'category') {
+        // eslint-disable-next-line no-irregular-whitespace
         return root.channel.name.toUpperCase() + root.children.map(child=>`\n​  ${child.toString()}${child.topic?' - ' + child.topic:''}`).join('');
       }
       return `${root.channel.toString()}${root.channel.topic?' - ' + root.channel.topic:''}`;
