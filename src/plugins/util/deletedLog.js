@@ -88,6 +88,12 @@ class DeletedLog extends Plugin {
       this.client.emit('error', err);
       return;
     }
+    const replaceMessage = (await message.channel.messages.filter(m => 
+      m.author.bot 
+      && m.author.discriminator === '0000'
+      && m.createdTimestamp > message.createdTimestamp
+    )).first();
+    if(replaceMessage) return;
     const contextMessage = (await message.channel.messages.fetch({before: message.id, limit: 1})).first();
     
     outputChannel.send(contextMessage ? `Message was after: https://discordapp.com/channels/${contextMessage.guild.id}/${contextMessage.channel.id}/${contextMessage.id}` : null
