@@ -1,5 +1,4 @@
-const RestrictedCommand = require('../../restrictedCommand');
-const { FriendlyError } = require('discord.js-commando');
+const { FriendlyError, Command } = require('discord.js-commando');
 const { MessageEmbed } = require('discord.js');
 const axios = require('axios').create({
   baseURL: 'https://api.exchangeratesapi.io/',
@@ -60,11 +59,11 @@ async function makeEmbed([, val, _fcur, _tcur], channel) {
   return embed;
 }
 
-module.exports = class Currency extends RestrictedCommand {
+module.exports = class Currency extends Command {
   constructor(client) {
     super(client, {
       name: 'currency',
-      aliases: ['cur'],
+      aliases: ['cur', 'curr'],
       group: 'util',
       memberName: 'currency',
       description: 'Converts currency, because WolframAlpha stopped',
