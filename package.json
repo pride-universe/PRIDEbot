@@ -17,6 +17,7 @@
     "@types/better-sqlite3": "^5.4.0",
     "abort-controller": "^3.0.0",
     "array-to-sentence": "^2.0.0",
+    "axios": "^0.19.0",
     "better-sqlite3": "^5.4.3",
     "bufferutil": "^4.0.1",
     "common-tags": "^1.8.0",
@@ -46,5 +47,8 @@
     "discord.js-plugins": "../discord.js-plugins",
     "discord.js-commando": "../Commando",
     "discord.js": "../discord.js"
+  },
+  "engines": {
+    "node": ">=0.10.3 <0.12"
   }
 }

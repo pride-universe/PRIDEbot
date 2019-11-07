@@ -28,7 +28,7 @@ module.exports = class NewStatus extends RestrictedCommand {
   pluralString(str, params) {
     return str.replace(/{{([a-zA-Z]+)}}/g, (_,prop) => {
       console.log(prop);
-      return `${params[prop].val} ${params[prop].label}${params[prop].val !== 1 ? 's' : ''}`
+      return `${params[prop].val} ${params[prop].label}${params[prop].val !== 1 ? 's' : ''}`;
     });
   }
 
