@@ -61,8 +61,8 @@ module.exports = class IdCommand extends RestrictedCommand {
     const guild = msg.guild;
     const newUsersHold = await Promise.all(guild.settings.get('newUsersHold', []).map(async id => {
       const user = await this.client.users.fetch(id, false);
-      if(!user) return `\`${id}\` \`DELETED-USER\``;
-      return `\`${id}\` \`${user.tag}\``;
+      if(!user) return `\`${id}\` \`DELETED-USER\` <@${id}>`;
+      return `\`${id}\` \`${user.tag}\` <@${id}>`;
     }));
     return msg.reply(`Currently held users:\n${newUsersHold.join('\n')}`);
   }
