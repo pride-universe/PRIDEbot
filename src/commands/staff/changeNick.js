@@ -1,6 +1,4 @@
 const RestrictedCommand = require('../../restrictedCommand');
-const MessageEmbed = require('discord.js').MessageEmbed;
-const Commando = require('discord.js-commando');
 
 module.exports = class changeNickCommand extends RestrictedCommand {
   constructor(client) {
@@ -31,7 +29,7 @@ module.exports = class changeNickCommand extends RestrictedCommand {
     nickChange.processing = true;
     nickChange.active = true;
     nickChange.name = args;
-    nickChange.original = msg.guild.members.reduce((ret,m)=>(ret[m.id]=m.nickname||"",ret),{});
+    nickChange.original = msg.guild.members.reduce((ret,m)=>(ret[m.id]=m.nickname||'',ret),{});
     msg.guild.settings.set('nickChange', nickChange);
     for(let [,member] of msg.guild.members) {
       if(member.manageable) {

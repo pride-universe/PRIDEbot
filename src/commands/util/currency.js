@@ -13,7 +13,7 @@ async function getConvertedValue(val, fcur, tcur, channel) {
   fcur = fcur.toUpperCase();
   tcur = tcur.toUpperCase();
   if(!cache[fcur] || Date.now() > cache[fcur].expires) {
-    channel.startTyping();
+    channel && channel.startTyping();
     try {
       const res = await axios.get('/latest', {
         params: {
@@ -28,9 +28,9 @@ async function getConvertedValue(val, fcur, tcur, channel) {
         fetched: now,
         rates,
       };
-      channel.stopTyping();
+      channel && channel.stopTyping();
     } catch (err) {
-      channel.stopTyping();
+      channel && channel.stopTyping();
       if(!err.response) throw err;
       const res = err.response;
       if(!res.data || typeof res.data.error !== 'string') throw err;
@@ -55,12 +55,12 @@ async function makeEmbed([, val, _fcur, _tcur], channel) {
   const { fetched, rate, orgVal, value, fcur, tcur } = await getConvertedValue(val, _fcur, _tcur, channel);
   const embed = new MessageEmbed();
   embed.setDescription(`${orgVal.toFixed(2)} ${fcur} * ${rate.toFixed(3)} = ${value.toFixed(2)} ${tcur}`);
-  embed.setFooter('Fetched: ');
+  embed.setFooter('Fetched');
   embed.setTimestamp(fetched);
   return embed;
 }
 
-module.exports = class Currency extends RestrictedCommand {
+class Currency extends RestrictedCommand {
   constructor(client) {
     super(client, {
       name: 'currency',
@@ -81,4 +81,8 @@ module.exports = class Currency extends RestrictedCommand {
     if (!match) return msg.reply('Did not understand your input, do `p!help currency` for help');
     return msg.reply(await makeEmbed(match, msg.channel));
   }
-};
+}
+
+Currency.getConvertedValue = getConvertedValue;
+
+module.exports = Currency;

@@ -1,6 +1,5 @@
 const { Plugin } = require('discord.js-plugins');
 const { Util } = require('discord.js');
-const { servers } = require('../../../config');
 
 class ChannelInfo extends Plugin {
   constructor(client) {
@@ -13,13 +12,6 @@ class ChannelInfo extends Plugin {
       startOn: ['ready', 'providerReady']
     };
     super(client, info);
-    this.guilds = {};
-    for(let name in servers) {
-      const server = servers[name];
-      if(!server.deletedOutput) continue;
-      this.guilds[server.id] = server.deletedOutput;
-    }
-    this.history = {};
   }
 
   async start() {
