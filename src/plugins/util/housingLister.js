@@ -167,8 +167,6 @@ class HousingLister extends Plugin {
         await this.removedChannel.send(this.makeEmbed(listing))
       }
     }
-    console.log('ADDED:', await added);
-    console.log('REMOVED:', removed);
     this.client.settings.set('housingListings', this.listings);
     this.client.settings.set('housingListingsFetched', Date.now());
     this.timeout = this.client.setTimeout(() => this.updateHousings(), FETCH_INTERVAL);
