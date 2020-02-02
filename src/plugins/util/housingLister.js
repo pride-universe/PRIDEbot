@@ -66,7 +66,7 @@ class HousingLister extends Plugin {
     /**
      * @type {import("discord.js").TextChannel | null}
      */
-    this.removedChannel = guild && guild.channels.resolve(housing[1].removed);
+    this.removedChannel = guild && guild.channels.resolve(housing[1].deleted);
   }
 
   async stop() {
@@ -163,7 +163,7 @@ class HousingLister extends Plugin {
     }
     for(const toRemove of removed) {
       await this.activeChannel.messages.remove(toRemove._MSG_ID_).catch(console.error);
-      const index = this.listings.findIndex(l => l._MSG_ID_);
+      const index = this.listings.findIndex(l => l._MSG_ID_ === toRemove._MSG_ID_);
       if (index < 0) continue;
       this.listings.splice(index, 1);
       if(this.removedChannel && toRemove._COMPLETE_) {
