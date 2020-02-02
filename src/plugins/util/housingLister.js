@@ -65,7 +65,7 @@ class HousingLister extends Plugin {
     /**
      * @type {import("discord.js").TextChannel | null}
      */
-    this.removedChannel = guild && guild.channels.resolve(housing[1].removed);
+    this.removedChannel = guild && guild.channels.resolve(housing[1].deleted);
   }
 
   async stop() {
