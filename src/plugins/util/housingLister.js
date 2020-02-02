@@ -6,7 +6,7 @@ const moment = require('moment-timezone');
 const { getConvertedValue } = require('../../commands/util/currency');
 
 const FETCH_INTERVAL = 3 * 60 * 60 * 1000;
-
+const BASE_FAIL_TIME = 5000;
 /**
  * @typedef {{
   _COMPLETE_: boolean,
@@ -43,6 +43,7 @@ class HousingLister extends Plugin {
     };
     super(client, info);
     this.timeout = null;
+    this.failTime = BASE_FAIL_TIME;
   }
 
   async start() {
@@ -138,6 +139,8 @@ class HousingLister extends Plugin {
   }
 
   async updateHousings() {
+    this.timeout = null;
+    try {
     const fetched = await this.normalize(await fetchHouses());
     const added = fetched.filter(new_ => !this.listings.some(old => old.objectId === new_.objectId));
     const removed = this.listings.filter(old => !fetched.some(new_ => old.objectId === new_.objectId));
@@ -167,9 +170,18 @@ class HousingLister extends Plugin {
         await this.removedChannel.send(this.makeEmbed(listing))
       }
     }
-    this.client.settings.set('housingListings', this.listings);
     this.client.settings.set('housingListingsFetched', Date.now());
     this.timeout = this.client.setTimeout(() => this.updateHousings(), FETCH_INTERVAL);
+    this.failTime = BASE_FAIL_TIME;
+    } catch (err) {
+      this.client.emit('error', err);
+      if (!this.timeout) {
+        this.timeout = this.client.setTimeout(() => this.updateHousings(), Math.min(this.failTime, FETCH_INTERVAL));
+        this.failTime *= 2;
+      }
+    } finally {
+      this.client.settings.set('housingListings', this.listings);
+    }
   }
 }
 
