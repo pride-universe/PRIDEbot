@@ -167,7 +167,7 @@ class HousingLister extends Plugin {
       if (index < 0) continue;
       this.listings.splice(index, 1);
       if(this.removedChannel && toRemove._COMPLETE_) {
-        await this.removedChannel.send(this.makeEmbed(listing))
+        await this.removedChannel.send(this.makeEmbed(toRemove))
       }
     }
     this.client.settings.set('housingListingsFetched', Date.now());
