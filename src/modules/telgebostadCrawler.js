@@ -84,6 +84,10 @@ function getNextBody($) {
 function parsePage({ $ }, page)  {
   const [curPage, lastPage] = getPageStatus($);
   const hasNextPage = curPage !== lastPage && !Number.isNaN(curPage) && !Number.isNaN(lastPage);
+  
+  // No listings
+  if (Number.isNaN(curPage) && !hasNextPage && page === 1) return { entries: [], nextBody: null};
+
   if (curPage !== page) throw new Error('Wrong page loaded');
   /**
   * 
