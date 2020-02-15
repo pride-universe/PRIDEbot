@@ -97,7 +97,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
     const roleArr = dupes.get(roleName.toLowerCase());
     if(index >= roleArr.length) return msg.reply(`Can't find role \`\`${roleName}~${index+1}\`\``);
     const roleEntry = roleArr[index];
-    if(roleEntry.permGroup && !permGroups.has(roleEntry.permGroup)) return msg.reply(`You are not allowed to self-assign \`\`${roleName}${index?'~'+(index+1):''}\`\``);
+    if(roleEntry.permGroup && !permGroups.has(roleEntry.permGroup)) return msg.reply(`You are not allowed to self-assign \`\`${roleEntry.role.name}${index?'~'+(index+1):''}\`\``);
     const role = roleEntry.role;
     if(!msg.member.roles.has(role.id)) {
       msg.member.roles.add(role);
