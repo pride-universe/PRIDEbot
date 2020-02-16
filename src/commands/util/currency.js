@@ -38,7 +38,7 @@ async function getConvertedValue(val, fcur, tcur, channel) {
   }
   const { rates, fetched } = cache[fcur];
   if (rates[tcur] == null) {
-    throw FriendlyError(`Target '${tcur}'\`' is not supported.`);
+    throw new FriendlyError(`Target '${tcur}'\`' is not supported.`);
   }
   return {
     fetched,
