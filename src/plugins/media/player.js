@@ -4,6 +4,12 @@ const { FriendlyError } = require('discord.js-commando');
 const MediaController = require('../../media/controller');
 const MAX_INACTIVITY_TIME = 300000;
 
+function getVoiceConnection(guild) {
+  if (!guild.voice) return null;
+  if (!guild.voice.connection) return null;
+  return guild.voice.connection;
+}
+
 class MediaPlayer {
   constructor(client, guild) {
     const settings =  guild.settings.get('music');
@@ -100,7 +106,7 @@ class MediaPlayer {
   onVoiceStateUpdate(oldMember, newMember) {
     const guild = oldMember.guild || newMember.guild;
     if(guild !== this.guild) return;
-    const voiceConnection = this.voiceChannel.guild.voiceConnection;
+    const voiceConnection = getVoiceConnection(this.voiceChannel.guild);
     if(!voiceConnection) return;
     if(voiceConnection.channel.members.size <= 1 && !this.aloneTimeot) {
       this.aloneTimeot = setTimeout(()=>this.destroy(MediaController.INACTIVITY), MAX_INACTIVITY_TIME);
@@ -122,7 +128,7 @@ class MediaPlayer {
       return;
     }
 
-    let voiceConnection = this.voiceChannel.guild.voiceConnection;
+    let voiceConnection = getVoiceConnection(this.voiceChannel.guild);
     if(voiceConnection) {
       if(voiceConnection.channel !== this.voiceChannel) {
         throw new FriendlyError('I\'m connected to another voice channel, I cannot join the music channel to play music at this moment.');
@@ -171,8 +177,9 @@ class MediaPlayer {
     this.client.off('voiceStateUpdate', this.onVoiceStateUpdate);
     this.controller.destroy(member);
     if(this.current) this.current.stop();
-    if(this.voiceChannel.guild.voiceConnection) {
-      this.voiceChannel.guild.voiceConnection.disconnect();
+    const voiceConnection = getVoiceConnection(this.voiceChannel.guild);
+    if(voiceConnection) {
+      voiceConnection.disconnect();
     }
     this.client.plugins.get('media:player').remove(this.guild, member);
     this.current = null;

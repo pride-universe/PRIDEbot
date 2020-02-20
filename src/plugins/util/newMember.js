@@ -50,7 +50,7 @@ class NewMember extends Plugin {
     if(!newUserConf || !newUserConf.enabled) return;
     const newUsers = guild.settings.get('newUsers', {});
     if(!message.member.roles.has(newUserConf.newRole)) {
-      if(newUsers.hasOwnProperty(message.author.id)) {
+      if(Object.prototype.hasOwnProperty.call(newUsers, message.author.id)) {
         delete newUsers[message.author.id];
         guild.settings.set('newUsers', newUsers);
       }
@@ -100,7 +100,7 @@ class NewMember extends Plugin {
   onGuildMemberRemove(member) {
     const guild = member.guild;
     const newUsers = guild.settings.get('newUsers', {});
-    if(newUsers.hasOwnProperty(member.id)) {
+    if(Object.prototype.hasOwnProperty.call(newUsers, member.id)) {
       delete newUsers[member.id];
       guild.settings.set('newUsers', newUsers);
     }

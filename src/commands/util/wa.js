@@ -1,6 +1,6 @@
 const commando = require('discord.js-commando');
-const { waSecret } = require('../../../secrets');
-const wolfram = require('wolfram-alpha').createClient(waSecret);
+const waSecret = process.env.WA_SECRET;
+const wolfram = require('@dguttman/wolfram-alpha-api')(waSecret);
 
 module.exports = class WaCommand extends commando.Command {
   constructor(client) {
@@ -20,22 +20,17 @@ module.exports = class WaCommand extends commando.Command {
     msg.channel.startTyping();
     let response;
     try {
-      response = await wolfram.query(args);
+      response = await wolfram.getShort(args);
     } catch (e) {
+      console.error(e);
       msg.channel.stopTyping();
-      msg.reply('Error whith connection to WolframAlpha.');
-      return;
+      return msg.reply(e.message);
     }
-    response = response.find(e=>e.primary);
-    console.log(response);
     if(!response) {
       msg.channel.stopTyping();
-      msg.reply('WolframAlpha did not respond with any result.');
-      return;
+      return msg.reply('WolframAlpha did not respond with any result.');
     }
-    const title = response.title;
-    response = response.subpods.map(e=>e.text).join('\n\n');
     msg.channel.stopTyping();
-    msg.reply(`**${title}:**\n${response}`);
+    return msg.reply(`${response}`);
   }
 };

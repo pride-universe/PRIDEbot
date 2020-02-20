@@ -1,4 +1,5 @@
 const RestrictedCommand = require('../../restrictedCommand');
+const { bigIntToBase64 } = require('../../modules/snowflakeString');
 
 const startRegex = /^SELF-START\((\d+)\)\|([^|\n]+)(?:\|([^|\n]*))?$/;
 const endRegex = /^SELF-END\((\d+)\)$/;
@@ -73,6 +74,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
       str += '\nDuplicate name exist in case you have a preference over which role color you want. You will get the color of the role with the highest position in the list.\n';
     }
     str += '\nAre we missing a role? Just ask a moderator to add it!\n';
+    if (process.env.NODE_ENV === 'development') str += `\nTired of typing commands? Try https://localhost:3000/r/${bigIntToBase64(BigInt(msg.guild.id))}\n`;
     msg.reply(str, {split: {prepend: '\n'}});
   }
 

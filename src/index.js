@@ -1,10 +1,11 @@
 #!/usr/bin/node
+require('dotenv').config();
 require('./extensions');
 const Commando = require('discord.js-commando');
 const plugins = require('discord.js-plugins');
 const path = require('path');
 const oneLine = require('common-tags').oneLine;
-const token = require('../secrets').discordToken;
+const token = process.env.DISCORD_TOKEN;
 const db = require('./db');
 const config = require('../config');
 require('moment/locale/en-gb');
