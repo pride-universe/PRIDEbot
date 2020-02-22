@@ -31,5 +31,4 @@ if (env) {
   }
 }
 const conf = Object.assign({}, base, envConf, localConf, localEnvConf);
-console.log(conf);
 module.exports = conf;

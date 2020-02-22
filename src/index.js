@@ -77,7 +77,6 @@ bot
 bot.setProvider(
   new Commando.SyncSQLiteProvider(db)
 ).catch(console.error);
-console.log(Commando);
 bot.registry
   .registerDefaultTypes()
   .registerDefaultGroups()
