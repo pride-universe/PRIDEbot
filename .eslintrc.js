@@ -5,7 +5,10 @@ module.exports = {
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 2017
+        "ecmaVersion": 2020
+    },
+    "globals": {
+      "BigInt": true
     },
     "rules": {
         "indent": [

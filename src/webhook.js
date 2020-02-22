@@ -1,5 +1,6 @@
 const { WebhookClient } = require('discord.js');
-const { id, token } = require('../secrets.json').webhook;
+const id = process.env.WEBHOOK_ID;
+const token = process.env.WEBHOOK_TOKEN;
 
 class WebhookPride {
   constructor() {

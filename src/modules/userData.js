@@ -20,8 +20,7 @@ function saveUser(userId) {
 
 function fetchUser(userId) {
   if(userDataCollection.has(userId)) return userDataCollection.get(userId);
-
-  const data = JSON.parse(fetchUserStmt.get(userId) || { data: '{}'}.data);
+  const data = JSON.parse((fetchUserStmt.get(userId) || { data: '{}'}).data);
   userDataCollection.set(userId, data);
   return data;
 }
@@ -35,7 +34,7 @@ async function getProp(user, prop, defValue) {
   if(prop instanceof Function) prop = await prop();
   if(typeof prop !== 'string') throw new Error('Property must be string.');
   const data = await getData(user);
-  if(!data.hasOwnProperty(prop)) return defValue;
+  if(!Object.prototype.hasOwnProperty.call(data,prop)) return defValue;
   return data[prop];
 }
 

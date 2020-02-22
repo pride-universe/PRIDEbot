@@ -1,4 +1,4 @@
-secrets.json
+.env
 node_modules/
 main.sqlite
 main.test.sqlite
