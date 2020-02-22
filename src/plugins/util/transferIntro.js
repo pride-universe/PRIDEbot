@@ -17,6 +17,7 @@ class TransferIntro extends Plugin {
 
   async start() {
     this.client.on('guildMemberUpdate', (...args) => this.onGuildMemberUpdate(...args));
+    console.log(this.client.guilds);
     for(const [,guild] of this.client.guilds) {
       const introChannels = guild.settings.get('introChannels');
       if(!introChannels) continue;
