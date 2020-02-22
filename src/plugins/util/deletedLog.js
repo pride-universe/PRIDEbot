@@ -38,9 +38,9 @@ class DeletedLog extends Plugin {
     const channels = [];
     for(let guildId in this.guilds) {
       try {
-        const guild = this.client.guilds.get(guildId);
+        const guild = this.client.guilds.resolve(guildId);
         if(!guild) continue;
-        const outputChannel = this.client.guilds.get(this.guilds[guildId][0]).channels.get(this.guilds[guildId][1]);
+        const outputChannel = this.client.guilds.resolve(this.guilds[guildId][0]).channels.resolve(this.guilds[guildId][1]);
         if(!outputChannel) throw new ChannelNotFoundError('Cannot find the channel specified');
         channels.push([guild, outputChannel]);
       } catch (err) {
@@ -50,7 +50,7 @@ class DeletedLog extends Plugin {
     }
     for(let [guild, channel] of channels) {
       const storageTime = guild.settings.get('deletedMessageStorageTime', 86400000);
-      (await channel.messages.fetch()).forEach(message=>{
+      (await channel.messages.fetch()).cache.forEach(message=>{
         if(Date.now() - message.createdTimestamp > storageTime)
           message.delete();
       });
@@ -82,17 +82,17 @@ class DeletedLog extends Plugin {
     const guild = message.guild;
     let outputChannel;
     try {
-      outputChannel = this.client.guilds.get(this.guilds[guild.id][0]).channels.get(this.guilds[guild.id][1]);
+      outputChannel = this.client.guilds.resolve(this.guilds[guild.id][0]).channels.resolve(this.guilds[guild.id][1]);
       if(!outputChannel) throw new ChannelNotFoundError('Cannot find the channel specified');
     } catch (err) {
       this.client.emit('error', err);
       return;
     }
-    const replaceMessage = (await message.channel.messages.filter(m => 
+    const replaceMessage = (await message.channel.messages.fetch()).filter(m => 
       m.author.bot 
       && m.author.discriminator === '0000'
       && m.createdTimestamp > message.createdTimestamp
-    )).first();
+    ).first();
     if(replaceMessage) return;
     const contextMessage = (await message.channel.messages.fetch({before: message.id, limit: 1})).first();
     

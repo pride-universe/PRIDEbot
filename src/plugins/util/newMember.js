@@ -20,9 +20,9 @@ class NewMember extends Plugin {
 
   getNewChannels(guild) {
     const newUserConf = guild.settings.get('newUserConfig');
-    const newRole = guild.roles.get(newUserConf.newRole);
-    const regularRole = guild.roles.get(newUserConf.regularRole);
-    return guild.channels.filter(channel => {
+    const newRole = guild.roles.resolve(newUserConf.newRole);
+    const regularRole = guild.roles.resolve(newUserConf.regularRole);
+    return guild.channels.cache.filter(channel => {
       if(!['text','voice'].includes(channel.type)) return false;
       if(newRole.permissionsIn(channel).has('VIEW_CHANNEL')) return false;
       if(!regularRole.permissionsIn(channel).has('VIEW_CHANNEL')) return false;
@@ -32,9 +32,9 @@ class NewMember extends Plugin {
 
   getLostChannels(guild) {
     const newUserConf = guild.settings.get('newUserConfig');
-    const newRole = guild.roles.get(newUserConf.newRole);
-    const regularRole = guild.roles.get(newUserConf.regularRole);
-    return guild.channels.filter(channel => {
+    const newRole = guild.roles.resolve(newUserConf.newRole);
+    const regularRole = guild.roles.resolve(newUserConf.regularRole);
+    return guild.channels.cache.filter(channel => {
       if(!['text','voice'].includes(channel.type)) return false;
       if(!newRole.permissionsIn(channel).has('VIEW_CHANNEL')) return false;
       if(regularRole.permissionsIn(channel).has('VIEW_CHANNEL')) return false;
@@ -49,7 +49,7 @@ class NewMember extends Plugin {
     const newUserConf = guild.settings.get('newUserConfig');
     if(!newUserConf || !newUserConf.enabled) return;
     const newUsers = guild.settings.get('newUsers', {});
-    if(!message.member.roles.has(newUserConf.newRole)) {
+    if(!message.member.roles.cache.has(newUserConf.newRole)) {
       if(Object.prototype.hasOwnProperty.call(newUsers, message.author.id)) {
         delete newUsers[message.author.id];
         guild.settings.set('newUsers', newUsers);
@@ -90,8 +90,8 @@ class NewMember extends Plugin {
     const guild = (oldMember.guild || newMember.guild);
     const newUserConf = guild.settings.get('newUserConfig');
     if(!newUserConf || !newUserConf.enabled) return;
-    if(oldMember.roles.has(newUserConf.newRole)) return;
-    if(!newMember.roles.has(newUserConf.newRole)) return;
+    if(oldMember.roles.cache.has(newUserConf.newRole)) return;
+    if(!newMember.roles.cache.has(newUserConf.newRole)) return;
     const newUsers = guild.settings.get('newUsers', {});
     newUsers[newMember.id] = {joined: new Date().getTime(), messages: 0};
     guild.settings.set('newUsers', newUsers);

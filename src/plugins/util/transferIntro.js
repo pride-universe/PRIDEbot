@@ -17,11 +17,10 @@ class TransferIntro extends Plugin {
 
   async start() {
     this.client.on('guildMemberUpdate', (...args) => this.onGuildMemberUpdate(...args));
-    console.log(this.client.guilds);
-    for(const [,guild] of this.client.guilds) {
+    for(const [,guild] of this.client.guilds.cache) {
       const introChannels = guild.settings.get('introChannels');
       if(!introChannels) continue;
-      const source = guild.channels.get(introChannels[0]);
+      const source = guild.channels.resolve(introChannels[0]);
       if(!source) continue;
       source.messages.fetch({limit: 100});
       guild.members.fetch();
@@ -42,15 +41,15 @@ class TransferIntro extends Plugin {
     if(!guild) return;
     const noRole = guild.settings.get('noRole');
     if(!noRole) return;
-    if(!oldMember.roles.has(noRole) || newMember.roles.has(noRole)) return;
+    if(!oldMember.roles.cache.has(noRole) || newMember.roles.cache.has(noRole)) return;
     const introChannels = guild.settings.get('introChannels');
     if(!introChannels || !Array.isArray(introChannels)) return;
-    const sourceChannel = guild.channels.get(introChannels[0]);
-    const targetChannel = guild.channels.get(introChannels[1]);
+    const sourceChannel = guild.channels.resolve(introChannels[0]);
+    const targetChannel = guild.channels.resolve(introChannels[1]);
     if(!sourceChannel || !targetChannel) return;
     try {
       const now = new Date().getTime();
-      const messages = sourceChannel.messages.filter(e => now - e.createdAt.getTime() < TIME_LIMIT && e.author.id === oldMember.id);
+      const messages = (await sourceChannel.messages.fetch()).filter(e => now - e.createdAt.getTime() < TIME_LIMIT && e.author.id === oldMember.id);
       for(const [,message] of messages) {
         await targetChannel.send({embed: this.createEmbed(message)});
       }

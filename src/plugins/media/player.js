@@ -20,8 +20,8 @@ class MediaPlayer {
 
     this.client = client;
     this.guild = guild;
-    this.commandChannel = client.channels.get(settings.commandChannel);
-    this.voiceChannel = client.channels.get(settings.voiceChannel);
+    this.commandChannel = client.channels.resolve(settings.commandChannel);
+    this.voiceChannel = client.channels.resolve(settings.voiceChannel);
     this._volume = 1;
     this.queue = [];
     this.backlog = [];

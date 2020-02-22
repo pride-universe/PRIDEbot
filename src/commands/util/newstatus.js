@@ -21,13 +21,12 @@ module.exports = class NewStatus extends RestrictedCommand {
   }
 
   async fetchGuilds(user) {
-    const members = await Promise.all(this.client.guilds.map(g=>g.members.fetch().then(u=>[g,u])));
+    const members = await Promise.all(this.client.guilds.cache.map(g=>g.members.fetch().then(u=>[g,u])));
     return members.filter(([,m])=>m.has(user.id)).map(([g,m])=>[g,m.get(user.id)]);
   }
 
   pluralString(str, params) {
     return str.replace(/{{([a-zA-Z]+)}}/g, (_,prop) => {
-      console.log(prop);
       return `${params[prop].val} ${params[prop].label}${params[prop].val !== 1 ? 's' : ''}`;
     });
   }

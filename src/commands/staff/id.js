@@ -31,7 +31,7 @@ module.exports = class IdCommand extends RestrictedCommand {
   }
 
   async fetchGuilds(user) {
-    const members = await Promise.all(this.client.guilds.map(g=>g.members.fetch().then(u=>[g,u])));
+    const members = await Promise.all(this.client.guilds.cache.map(g=>g.members.fetch().then(u=>[g,u])));
     return members.filter(([,m])=>m.has(user.id)).map(([g,m])=>[g,m.get(user.id)]);
   }
 

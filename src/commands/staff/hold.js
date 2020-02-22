@@ -26,7 +26,7 @@ module.exports = class IdCommand extends RestrictedCommand {
     }
     const newUserConf = guild.settings.get('newUserConfig');
     if(!newUserConf || !newUserConf.enabled) msg.reply('newUser setup not enabled on this server.');
-    if(!member.roles.has(newUserConf.newRole)) return msg.reply(`Specified member \`${member.user.tag}\` is not a new member.`);
+    if(!member.roles.cache.has(newUserConf.newRole)) return msg.reply(`Specified member \`${member.user.tag}\` is not a new member.`);
 
     /**
      * @type {string[]}

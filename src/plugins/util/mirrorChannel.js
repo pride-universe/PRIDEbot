@@ -20,12 +20,12 @@ class MirrorChannel extends Plugin {
     this.client.on('message', (...args) => this.onMessage(...args));
     this.client.on('messageDelete', (...args) => this.onMessageDelete(...args));
     this.client.on('messageUpdate', (...args) => this.onMessageUpdate(...args));
-    for(const [,guild] of this.client.guilds) {
+    for(const [,guild] of this.client.guilds.cache) {
       const mirrorChannels = guild.settings.get('mirrorChannels');
       if(!mirrorChannels) continue;
       for(const mirror of mirrorChannels) {
-        const source = guild.channels.get(mirror[0]);
-        const target = guild.channels.get(mirror[1]);
+        const source = guild.channels.resolve(mirror[0]);
+        const target = guild.channels.resolve(mirror[1]);
         if(!source || !target) continue;
         source.messages.fetch({limit: MESSAGE_BUFFER});
         target.messages.fetch({limit: MESSAGE_BUFFER});
@@ -49,11 +49,11 @@ class MirrorChannel extends Plugin {
     if(!mirrorChannels) return;
     const mirror = mirrorChannels.find(e=>e[0]===message.channel.id);
     if(!mirror) return;
-    const targetChannel = guild.channels.get(mirror[1]);
+    const targetChannel = guild.channels.resolve(mirror[1]);
     if(!targetChannel) return;
     const mirrorMessages = guild.settings.get('mirrorMessages', {});
     const targetMessage = await targetChannel.send({embed: this.createEmbed(message)});
-    if(!mirrorMessages.hasOwnProperty(message.channel.id)) {
+    if(!Object.prototype.hasOwnProperty.call(mirrorMessages, message.channel.id)) {
       mirrorMessages[message.channel.id] = [];
     }
     mirrorMessages[message.channel.id].push([message.id, targetMessage.id]);
@@ -69,10 +69,10 @@ class MirrorChannel extends Plugin {
     if(!mirrorChannels) return;
     const mirror = mirrorChannels.find(e=>e[0]===message.channel.id);
     if(!mirror) return;
-    const targetChannel = guild.channels.get(mirror[1]);
+    const targetChannel = guild.channels.resolve(mirror[1]);
     if(!targetChannel) return;
     const mirrorMessages = guild.settings.get('mirrorMessages', {});
-    if(!mirrorMessages.hasOwnProperty(message.channel.id)) return;
+    if(!Object.prototype.hasOwnProperty.call(mirrorMessages, message.channel.id)) return;
     const targetIndex = mirrorMessages[message.channel.id].findIndex(e=>e[0] === message.id);
     if(targetIndex === -1) return;
     const targetMessage = targetChannel.messages.get(mirrorMessages[message.channel.id][targetIndex][1]);
@@ -90,10 +90,10 @@ class MirrorChannel extends Plugin {
     if(!mirrorChannels) return;
     const mirror = mirrorChannels.find(e=>e[0]===oldMessage.channel.id);
     if(!mirror) return;
-    const targetChannel = guild.channels.get(mirror[1]);
+    const targetChannel = guild.channels.resolve(mirror[1]);
     if(!targetChannel) return;
     const mirrorMessages = guild.settings.get('mirrorMessages', {});
-    if(!mirrorMessages.hasOwnProperty(oldMessage.channel.id)) return;
+    if(!Object.prototype.hasOwnProperty.call(mirrorMessages, oldMessage.channel.id)) return;
     
     const targetMessage = targetChannel.messages.get(mirrorMessages[oldMessage.channel.id].find(e=>e[0] === oldMessage.id)[1]);
     if(!targetMessage) return;

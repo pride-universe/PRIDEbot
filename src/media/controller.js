@@ -54,7 +54,7 @@ class MediaController extends EventEmitter {
     
     const control = controlEmojis.find(e=>reaction.emoji.name === e[1]);
     if(!control) return;
-    const member = this.channel.guild.members.get(user.id);
+    const member = this.channel.guild.members.resolve(user.id);
     this.emit(control[0], member);
   }
 
@@ -64,10 +64,10 @@ class MediaController extends EventEmitter {
     const reactions = this.message.reactions;
     let lookingForIndex = 0;
     let steps = [];
-    reactions.forEach(reaction => {
+    reactions.cache.forEach(reaction => {
       //console.log(reaction.users.size);
       //console.log(reaction.emoji.name , controlEmojis[lookingForIndex][1]);
-      reaction.users.forEach((user) => {
+      reaction.users.cache.forEach((user) => {
         if(user !== this.client.user || lookingForIndex >= controlEmojis.length || reaction.emoji.name !== controlEmojis[lookingForIndex][1]) {
           steps.push(() => reaction.users.remove(user));
         }
@@ -108,7 +108,7 @@ class MediaController extends EventEmitter {
       if(this.message && this.message.deleted) {
         this.message = null;
       }
-      if(this.message && !this.channel.messages.last(MAX_MESSAGES_BELOW).includes(this.message)) {
+      if(this.message && !this.channel.messages.cache.last(MAX_MESSAGES_BELOW).includes(this.message)) {
         await this.message.delete();
         this.message = null;
       }

@@ -55,7 +55,7 @@ class VoicePrivacyPlugin extends Plugin {
   }
 
   async forceRecheck(client) {
-    for(let voiceConnection of client.guilds.map(g=>g.voiceConnection).filter(g=>g)) {
+    for(let voiceConnection of client.guilds.cache.map(g=>g.voiceConnection).filter(g=>g)) {
       if(!await this.checkChannel(voiceConnection.channel)) {
         voiceConnection.emit('privacyabort');
         voiceConnection.disconnect();

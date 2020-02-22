@@ -29,9 +29,9 @@ module.exports = class changeNickCommand extends RestrictedCommand {
     nickChange.processing = true;
     nickChange.active = true;
     nickChange.name = args;
-    nickChange.original = msg.guild.members.reduce((ret,m)=>(ret[m.id]=m.nickname||'',ret),{});
+    nickChange.original = msg.guild.members.cache.reduce((ret,m)=>(ret[m.id]=m.nickname||'',ret),{});
     msg.guild.settings.set('nickChange', nickChange);
-    for(let [,member] of msg.guild.members) {
+    for(let [,member] of msg.guild.members.cache) {
       if(member.manageable) {
         await member.setNickname(nickChange.name);
       }
@@ -51,7 +51,7 @@ module.exports = class changeNickCommand extends RestrictedCommand {
     }
     nickChange.processing = true;
     msg.guild.settings.set('nickChange', nickChange);
-    for(let [,member] of msg.guild.members) {
+    for(let [,member] of msg.guild.members.cache) {
       if(member.nickname !== nickChange.name) continue;
       if(typeof nickChange.original[member.id] !== 'string') continue;
       if(member.manageable) {

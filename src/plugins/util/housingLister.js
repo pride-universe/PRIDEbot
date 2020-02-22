@@ -141,38 +141,38 @@ class HousingLister extends Plugin {
   async updateHousings() {
     this.timeout = null;
     try {
-    const fetched = await this.normalize(await fetchHouses());
-    const added = fetched.filter(new_ => !this.listings.some(old => old.objectId === new_.objectId));
-    const removed = this.listings.filter(old => !fetched.some(new_ => old.objectId === new_.objectId));
-    const updated = this.listings.filter(old => fetched.some(new_ => old.objectId === new_.objectId)).map(l => ({...fetched.find(f=>f.objectId === l.objectId), _MSG_ID_: l._MSG_ID_}));
-    for(const listing of added) {
-      const msg = await this.activeChannel.send(this.makeEmbed(listing));
-      this.listings.push({ ...listing, _MSG_ID_: msg.id});
-    }
-    for(const listing of updated) {
-      const oldIndex = this.listings.findIndex(l=>l.objectId === listing.objectId);
-      if (listing._COMPLETE_) {
-        this.listings[oldIndex] = listing;
-      }
-      const msg = await this.activeChannel.messages.fetch(listing._MSG_ID_).catch(console.error);
-      if (msg.edit(this.makeEmbed(listing)));
-      else {
+      const fetched = await this.normalize(await fetchHouses());
+      const added = fetched.filter(new_ => !this.listings.some(old => old.objectId === new_.objectId));
+      const removed = this.listings.filter(old => !fetched.some(new_ => old.objectId === new_.objectId));
+      const updated = this.listings.filter(old => fetched.some(new_ => old.objectId === new_.objectId)).map(l => ({...fetched.find(f=>f.objectId === l.objectId), _MSG_ID_: l._MSG_ID_}));
+      for(const listing of added) {
         const msg = await this.activeChannel.send(this.makeEmbed(listing));
-        this.listings[oldIndex]._MSG_ID_ = msg.id; 
+        this.listings.push({ ...listing, _MSG_ID_: msg.id});
       }
-    }
-    for(const toRemove of removed) {
-      await this.activeChannel.messages.remove(toRemove._MSG_ID_).catch(console.error);
-      const index = this.listings.findIndex(l => l._MSG_ID_ === toRemove._MSG_ID_);
-      if (index < 0) continue;
-      this.listings.splice(index, 1);
-      if(this.removedChannel && toRemove._COMPLETE_) {
-        await this.removedChannel.send(this.makeEmbed(toRemove))
+      for(const listing of updated) {
+        const oldIndex = this.listings.findIndex(l=>l.objectId === listing.objectId);
+        if (listing._COMPLETE_) {
+          this.listings[oldIndex] = listing;
+        }
+        const msg = await this.activeChannel.messages.fetch(listing._MSG_ID_).catch(console.error);
+        if (msg.edit(this.makeEmbed(listing)));
+        else {
+          const msg = await this.activeChannel.send(this.makeEmbed(listing));
+          this.listings[oldIndex]._MSG_ID_ = msg.id; 
+        }
       }
-    }
-    this.client.settings.set('housingListingsFetched', Date.now());
-    this.timeout = this.client.setTimeout(() => this.updateHousings(), FETCH_INTERVAL);
-    this.failTime = BASE_FAIL_TIME;
+      for(const toRemove of removed) {
+        await this.activeChannel.messages.delete(toRemove._MSG_ID_).catch(console.error);
+        const index = this.listings.findIndex(l => l._MSG_ID_ === toRemove._MSG_ID_);
+        if (index < 0) continue;
+        this.listings.splice(index, 1);
+        if(this.removedChannel && toRemove._COMPLETE_) {
+          await this.removedChannel.send(this.makeEmbed(toRemove));
+        }
+      }
+      this.client.settings.set('housingListingsFetched', Date.now());
+      this.timeout = this.client.setTimeout(() => this.updateHousings(), FETCH_INTERVAL);
+      this.failTime = BASE_FAIL_TIME;
     } catch (err) {
       this.client.emit('error', err);
       if (!this.timeout) {

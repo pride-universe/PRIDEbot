@@ -44,7 +44,7 @@ module.exports = class StatsCommand extends RestrictedCommand {
     if(args === '') {
       guild = msg.guild;
     } else if(msg.guild.id === servers.mod.id) {
-      guild = this.client.guilds.get(servers[args.toLowerCase()].id);
+      guild = this.client.guilds.resolve(servers[args.toLowerCase()].id);
     } else {
       if(msg.guild && msg.guild.id === servers[args.toLowerCase()].id) {
         guild = msg.guild;
@@ -57,12 +57,12 @@ module.exports = class StatsCommand extends RestrictedCommand {
     }
 
     const [members, bots] = (await guild.members.fetch()).partition(e=>!e.user.bot);
-    const roles = guild.roles.filter(e=>e.id!==guild.id).reduce((acc,role)=>(acc[role.id]={name: role.name, count: 0},acc), {none: {name:'<NO_ROLES>', count: 0}});
+    const roles = (await guild.roles.fetch()).cache.filter(e=>e.id!==guild.id).reduce((acc,role)=>(acc[role.id]={name: role.name, count: 0},acc), {none: {name:'<NO_ROLES>', count: 0}});
     for(const [,member] of members) {
-      if(member.roles.size === 1) {
+      if(member.roles.cache.size === 1) {
         roles.none.count++;
       } else {
-        for(const [,role] of member.roles.filter(e=>e.id!==guild.id)) {
+        for(const [,role] of member.roles.cache.filter(e=>e.id!==guild.id)) {
           roles[role.id].count++;
         }
       }

@@ -20,9 +20,9 @@ class SearchableMessageArgumentType extends Commando.ArgumentType {
     if(cacheHit) return cacheHit;
     if(isParsing) this.client.emit('warn', 'Researching for message in parse function.');
     if(match[1]) {
-      const guild = this.client.guilds.find(guild=>guild.channels.has(match[1]));
+      const guild = this.client.guilds.cache.find(guild=>guild.channels.cache.has(match[1]));
       if(!guild) return 'Cannot find provided channel';
-      const channel = guild.channels.get(match[1]);
+      const channel = guild.channels.resolve(match[1]);
       if (channel.type !== 'text') return 'Provided channel is not text channel';
       const message = await channel.messages.fetch(match[2]).catch(()=>null);
       if(!message) return 'Cannot find message in channel';
@@ -32,7 +32,7 @@ class SearchableMessageArgumentType extends Commando.ArgumentType {
       let message;
       msg.channel.startTyping();
       try {
-        search: for(let [,guild] of this.client.guilds) {
+        search: for(let [,guild] of this.client.guilds.cache) {
           for(let [,channel] of guild.channels) {
             if(channel.type !== 'text') continue;
             message = await channel.messages.fetch(match[2]).catch(()=>null);

@@ -22,7 +22,7 @@ module.exports = class RestrictedCommand extends commando.Command {
       : [perms[permGroup]];
 
     for(const role of roles) {
-      if(message.member.roles.has(role)) {
+      if(message.member.roles.cache.has(role)) {
         return true;
       }
     }

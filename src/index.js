@@ -61,15 +61,15 @@ bot
   .on('raw', async event => {
     if(event.t !== 'MESSAGE_REACTION_ADD') return;
     const { d: data } = event;
-    const user = bot.users.get(data.user_id);
-    const channel = bot.channels.get(data.channel_id) || await user.createDM();
+    const user = bot.users.resolve(data.user_id);
+    const channel = bot.channels.resolve(data.channel_id) || await user.createDM();
 
-    if (channel.messages.has(data.message_id)) return;
+    if (channel.messages.cache.has(data.message_id)) return;
 
     const message = await channel.messages.fetch(data.message_id);
 
     const emojiKey = (data.emoji.id) ? data.emoji.id : data.emoji.name;
-    const reaction = message.reactions.get(emojiKey);
+    const reaction = message.reactions.resolve(emojiKey);
     bot.emit('messageReactionAdd', reaction, user);
 
   });

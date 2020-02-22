@@ -733,24 +733,24 @@ function buildMessage (message) {
   const discordCallback = {
     user({id}) {
       let inner = `&lt;@${id}&gt;`;
-      const member = message.mentions.members.get(id) || message.guild.members.get(id);
+      const member = message.mentions.members.resolve(id) || message.guild.members.resolve(id);
       if (member) {
         inner = `@${member.displayName}`;
       } else {
-        const user = message.mentions.users.get(id) || message.client.users.get(id);
+        const user = message.mentions.users.resolve(id) || message.client.users.resolve(id);
         if(user) return `@${user.username}`;
       }
       
       return `<span class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}" role="button">${DiscordMarkdown.sanitizeText(inner)}</span>`;
     },
     channel({id}) {
-      const channel = message.guild.channels.get(id);
+      const channel = message.guild.channels.resolves(id);
       if(!channel) return '#deleted-channel';
       if(!channel.type !== 'text') return `#$${DiscordMarkdown.sanitizeText(channel.name)}`;
       return `<span tabindex="0" class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}" role="button">#${DiscordMarkdown.sanitizeText(channel.name)}</span>`;
     },
     role({id}) {
-      const role = message.guild.roles.get(id);
+      const role = message.guild.roles.resolve(id);
       if(!role) return '@deleted-role';
       if(role.color) return `<span class="${c('d-mention')}" style="color: ${role.hexColor}; background-color: rgba(${colorToRgba(role.color, .1).join()})">@${DiscordMarkdown.sanitizeText(role.name)}</span>`;
       return `<span class="${c('d-mention')} ${c('d-wrapperMentionHover')} ${c('d-wrapperMention')}">@${DiscordMarkdown.sanitizeText(role.name)}</span>`;

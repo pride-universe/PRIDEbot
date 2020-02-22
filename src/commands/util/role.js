@@ -66,7 +66,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
             return ` [duplicate name, to select this role use \`\`${role.name}~${dupe}\`\`]`;
           }
         })();
-        str += `\`\`${role.name.padEnd(maxLen)}\u200b\`\`${msg.member.roles.has(role.id)?' `✅`':''}${dupeString}\n`;
+        str += `\`\`${role.name.padEnd(maxLen)}\u200b\`\`${msg.member.roles.cache.has(role.id)?' `✅`':''}${dupeString}\n`;
       }
     }
     str += '\nRoles marked with `✅` are roles you already have\n';
@@ -101,7 +101,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
     const roleEntry = roleArr[index];
     if(roleEntry.permGroup && !permGroups.has(roleEntry.permGroup)) return msg.reply(`You are not allowed to self-assign \`\`${roleEntry.role.name}${index?'~'+(index+1):''}\`\``);
     const role = roleEntry.role;
-    if(!msg.member.roles.has(role.id)) {
+    if(!msg.member.roles.cache.has(role.id)) {
       msg.member.roles.add(role);
       return msg.reply(`Added role \`\`${role.name}\`\` to you`);
     } else {
@@ -111,10 +111,11 @@ module.exports = class RoleCommand extends RestrictedCommand {
     
   }
 
-  getSelfRoleGroups(guild) {
+  async getSelfRoleGroups(guild) {
     if(this.cache.has(guild.id)) return this.cache.get(guild.id);
     const groups = new Map();
-    guild.roles.forEach(r => {
+    const roles = (await guild.roles.fetch()).cache;
+    roles.forEach(r => {
       let match;
       // eslint-disable-next-line no-cond-assign
       if(match = r.name.match(startRegex)) {
@@ -162,7 +163,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
     }
     const groupMarkers = new Set();
     groups.forEach(({start, end}) => groupMarkers.add(start).add(end));
-    guild.roles.sort((r1,r2) => r2.position - r1.position).forEach(r => {
+    roles.sort((r1,r2) => r2.position - r1.position).forEach(r => {
       for(let [,group] of groups) {
         if(r.position < group.start.position && r.position > group.end.position) {
           if(groupMarkers.has(r)) throw new FriendlyError('Overlapping self-role groups. This is not good.');
@@ -197,7 +198,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
         ? permGroup
         : [permGroup];
       for(const role of roles) {
-        if(msg.member.roles.has(role)) {
+        if(msg.member.roles.cache.has(role)) {
           permGroups.add(permGroupName);
           continue permLoop;
         }
@@ -214,7 +215,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
 
     const permGroups = this.getPermGroups(msg);
 
-    const groups = this.getSelfRoleGroups(msg.guild);
+    const groups = await this.getSelfRoleGroups(msg.guild);
 
     if(!args) {
       const listGroups = groups.filter(group => {
@@ -229,7 +230,6 @@ module.exports = class RoleCommand extends RestrictedCommand {
         return msg.reply('There are no self roles defined on this server');
       }
       const upper = [...groups.values()].reduce((acc, {start}) => acc ? acc.position < start.position ? start : acc : start, null);
-      console.log(upper.name, upper.position);
       if(msg.guild.me.roles.highest.position < upper.position) return msg.reply(`Missing role high enough to give out roles. I require role \`\`${upper.name}\`\` or higher to be able to hand out roles.`);
       return this.assignRole(groups, permGroups, msg, args);
     }
