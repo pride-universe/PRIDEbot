@@ -6,3 +6,4 @@ main.test.sqlite
 scrap.js
 ignore/
 src/rendered.html
+*.log

@@ -1,4 +1,5 @@
 {
+  "puppeteerExecPath": "/usr/bin/chromium-browser",
   "housing": ["573294176498614332", {"active": "672933586302926851", "deleted": "673132558514520084"}],
   "servers": {
     "gru": {
