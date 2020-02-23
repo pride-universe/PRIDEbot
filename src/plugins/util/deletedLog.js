@@ -50,7 +50,7 @@ class DeletedLog extends Plugin {
     }
     for(let [guild, channel] of channels) {
       const storageTime = guild.settings.get('deletedMessageStorageTime', 86400000);
-      (await channel.messages.fetch()).cache.forEach(message=>{
+      (await channel.messages.fetch()).forEach(message=>{
         if(Date.now() - message.createdTimestamp > storageTime)
           message.delete();
       });
