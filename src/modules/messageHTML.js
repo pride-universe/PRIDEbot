@@ -733,11 +733,11 @@ function buildMessage (message) {
   const discordCallback = {
     user({id}) {
       let inner = `&lt;@${id}&gt;`;
-      const member = message.mentions.members.resolve(id) || message.guild.members.resolve(id);
+      const member = message.mentions.members.get(id) || message.guild.members.get(id);
       if (member) {
         inner = `@${member.displayName}`;
       } else {
-        const user = message.mentions.users.resolve(id) || message.client.users.resolve(id);
+        const user = message.mentions.users.get(id) || message.client.users.get(id);
         if(user) return `@${user.username}`;
       }
       
