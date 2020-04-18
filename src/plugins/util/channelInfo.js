@@ -53,7 +53,7 @@ class ChannelInfo extends Plugin {
     }).join('\n\n');
     let newContent = Util.splitMessage(text);
     if(typeof newContent === 'string') newContent = [newContent];
-    let oldMessages = (await channelList.messages.fetch()).cache.filter(msg=>msg.author.id === this.client.user.id);
+    let oldMessages = (await channelList.messages.fetch()).filter(msg=>msg.author.id === this.client.user.id);
     if(oldMessages.size < newContent.length) {
       oldMessages.forEach(msg=>msg.delete());
       oldMessages = null;
