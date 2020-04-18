@@ -36,7 +36,7 @@ class ChannelInfo extends Plugin {
     const channelList = guild.channels.resolve(guild.settings.get('channelListChannel'));
     if(!channelList) return;
     const memberRoles = guild.settings.get('permissionRoles', {}).members;
-    const [roots, children] = guild.channels.filter(
+    const [roots, children] = guild.channels.cache.filter(
       ch=>{
         if(!memberRoles) return true;
         if (ch.type === 'category') return true;
