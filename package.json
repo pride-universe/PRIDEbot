@@ -21,6 +21,7 @@
     "array-to-sentence": "^2.0.0",
     "atob": "^2.1.2",
     "axios": "^0.19.0",
+    "axios-cookiejar-support": "^1.0.0",
     "better-sqlite3": "^5.4.3",
     "btoa": "^1.2.1",
     "bufferutil": "^4.0.1",
@@ -38,11 +39,13 @@
     "moment-timezone": "^0.5.27",
     "puppeteer": "^2.1.1",
     "request": "^2.88.0",
+    "tough-cookie": "^4.0.0",
     "twemoji": "^12.1.5",
     "xlsx": "^0.15.5",
     "ytdl-core": "^1.0.9"
   },
   "devDependencies": {
+    "@types/tough-cookie": "^4.0.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "eslint": "^6.8.0",
