@@ -1,10 +1,10 @@
+/**
+ * @typedef {import('discord.js').Message Message
+ */
 const RestrictedCommand = require('../../restrictedCommand');
-const { bigIntToBase64 } = require('../../modules/snowflakeString');
+const { encodeSnowflake } = require('../../modules/snowflakeString');
+const { getPermGroups, getSelfRoleGroups, invalidateCache } = require('../../modules/roles');
 
-const startRegex = /^SELF-START\((\d+)\)\|([^|\n]+)(?:\|([^|\n]*))?$/;
-const endRegex = /^SELF-END\((\d+)\)$/;
-const invalidGroup = Symbol('invalidGroup');
-const { FriendlyError } = require('discord.js-commando');
 module.exports = class RoleCommand extends RestrictedCommand {
   constructor(client) {
     super(client, {
@@ -20,7 +20,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
     });
 
     this.cache = new Map();
-    this.invalidateCache = (role) => this.cache.delete(role.guild.id);
+    this.invalidateCache = (role) => invalidateCache(role.guild);
     this.startListeners();
   }
 
@@ -47,7 +47,6 @@ module.exports = class RoleCommand extends RestrictedCommand {
   }
   
   async listRoles(groups, msg) {
-
     const dupes = new Map();
     let str = 'List of available roles:\n';
     let hasDupe = false;
@@ -74,7 +73,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
       str += '\nDuplicate name exist in case you have a preference over which role color you want. You will get the color of the role with the highest position in the list.\n';
     }
     str += '\nAre we missing a role? Just ask a moderator to add it!\n';
-    if (process.env.NODE_ENV === 'development') str += `\nTired of typing commands? Try https://localhost:3000/r/${bigIntToBase64(BigInt(msg.guild.id))}\n`;
+    if (process.env.NODE_ENV === 'development') str += `\nTired of typing commands? Try ${process.env.VUE_APP_BASE_URL}/r/${encodeSnowflake(msg.guild.id)}\n`;
     msg.reply(str, {split: {prepend: '\n'}});
   }
 
@@ -108,114 +107,18 @@ module.exports = class RoleCommand extends RestrictedCommand {
       msg.member.roles.remove(role);
       return msg.reply(`Removed role \`\`${role.name}\`\` from you`);
     }
-    
   }
-
-  async getSelfRoleGroups(guild) {
-    if(this.cache.has(guild.id)) return this.cache.get(guild.id);
-    const groups = new Map();
-    const roles = (await guild.roles.fetch()).cache;
-    roles.forEach(r => {
-      let match;
-      // eslint-disable-next-line no-cond-assign
-      if(match = r.name.match(startRegex)) {
-        const id = match[1];
-        const name = match[2];
-        const permGroup = match[3];
-        
-        if(!groups.has(id)) groups.set(id, {});
-        const group = groups.get(id);
-        if(group === invalidGroup) return;
-
-        if(group.start) {
-          groups.set(id, invalidGroup);
-          return;
-        }
-        group.name = name;
-        group.permGroup = permGroup;
-        group.start = r;
-        group.roleEntries = [];
-      // eslint-disable-next-line no-cond-assign
-      } else if(match = r.name.match(endRegex)) {
-        const id = match[1];
-        
-        if(!groups.has(id)) groups.set(id, {});
-        const group = groups.get(id);
-        if(group === invalidGroup) return;
-
-        if(group.end) {
-          groups.set(id, invalidGroup);
-          return;
-        }
-
-        group.end = r;
-      }
-    });
-    for(let [key, group] of [...groups]) {
-      if(group !== invalidGroup &&
-        group.start &&
-        group.end &&
-        group.start.position > group.end.position)
-        continue;
-      
-      groups.delete(key);
-      this.client.emit('warn', `Self role group with id "${key}" is invalid.`);
-    }
-    const groupMarkers = new Set();
-    groups.forEach(({start, end}) => groupMarkers.add(start).add(end));
-    roles.sort((r1,r2) => r2.position - r1.position).forEach(r => {
-      for(let [,group] of groups) {
-        if(r.position < group.start.position && r.position > group.end.position) {
-          if(groupMarkers.has(r)) throw new FriendlyError('Overlapping self-role groups. This is not good.');
-          if(r.managed) {
-            this.client.emit('warn', `Role '${r.name}' in '${guild.name}' is managed by external service and not assignable, omitting from self-role.`);
-            return;
-          }
-          if(r.permissions.bitfield & 0x79C0203E) {
-            this.client.emit('warn', `Role '${r.name}' in '${guild.name}' has dangerous permissions, omitting from self-role.`);
-            return;
-          }
-          const roleEntry = {
-            permGroup: group.permGroup,
-            role: r
-          };
-          group.roleEntries.push(roleEntry);
-        }
-      }
-    });
-
-    const groupsArr = [...groups].sort(([key1], [key2])=>key1-key2).map(([,group]) => group);
-    this.cache.set(guild.id, groupsArr);
-    return groupsArr;
-  }
-
-  getPermGroups(msg) {
-    const permGroups = new Set();
-    const guildPerms = msg.guild.settings.get('permissionRoles') || {};
-    permLoop: for(const permGroupName of Object.keys(guildPerms)) {
-      const permGroup = guildPerms[permGroupName];
-      const roles = Array.isArray(permGroup)
-        ? permGroup
-        : [permGroup];
-      for(const role of roles) {
-        if(msg.member.roles.cache.has(role)) {
-          permGroups.add(permGroupName);
-          continue permLoop;
-        }
-      }
-    }
-    return permGroups;
-  }
-
+  /**
+   * 
+   * @param {Message} msg 
+   * @param {string} args 
+   */
   async run(msg, args) {
     if(!msg.guild) return;
-    if(msg.guild.settings.get('selfRoleLimits')) {
-      return this.client.registry.commands.get('legacyrole').run(msg, args);
-    }
 
-    const permGroups = this.getPermGroups(msg);
+    const permGroups = await getPermGroups(msg.guild, msg.member);
 
-    const groups = await this.getSelfRoleGroups(msg.guild);
+    const groups = await getSelfRoleGroups(msg.guild);
 
     if(!args) {
       const listGroups = groups.filter(group => {

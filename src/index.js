@@ -1,9 +1,15 @@
 #!/usr/bin/node
-require('dotenv').config();
+
+const dotenv = require('dotenv');
+const dotenvExpand = require('dotenv-expand');
+const path = require('path');
+dotenv.config({ path: path.join(__dirname, '../website/.env') });
+
+// Expand the normal .env, but not the website .env
+dotenvExpand(dotenv.config());
 require('./extensions');
 const Commando = require('discord.js-commando');
 const plugins = require('discord.js-plugins');
-const path = require('path');
 const oneLine = require('common-tags').oneLine;
 const token = process.env.DISCORD_TOKEN;
 const db = require('./db');
@@ -18,6 +24,7 @@ const bot = module.exports = new Commando.CommandoClient({
 });
 
 plugins.inject(bot);
+
 
 bot
   .on('error', console.error)
@@ -77,28 +84,33 @@ bot
 bot.setProvider(
   new Commando.SyncSQLiteProvider(db)
 ).catch(console.error);
-bot.registry
-  .registerDefaultTypes()
-  .registerDefaultGroups()
-  .registerGroup('jokes', 'Jokes')
-  .registerGroup('privacy', 'Privacy')
-  .registerGroup('staff', 'Staff')
-  .registerDefaultCommands({
-    'prefix': false,
-  })
-  .registerTypesIn(path.join(__dirname, 'types'))
-  //.registerType(new Commando.ArgumentUnionType(bot, 'searchablemessage|plusminusint'))
-  .registerCommandsIn(path.join(__dirname, 'commands'));
-bot.plugins
-  .registerGroup('default', 'Default')
-  .registerGroup('privacy', 'Privacy')
-  .registerGroup('jokes', 'Jokes')
-  .registerGroup('util', 'Util')
-  .registerGroup('media', 'Media')
-  .registerGroup('security', 'Security')
-  .loadPluginsIn(path.join(__dirname, 'plugins'));
 
 bot.login(token);
+
+
+setTimeout(() => {
+  bot.registry
+    .registerDefaultTypes()
+    .registerDefaultGroups()
+    .registerGroup('jokes', 'Jokes')
+    .registerGroup('privacy', 'Privacy')
+    .registerGroup('staff', 'Staff')
+    .registerDefaultCommands({
+      'prefix': false,
+    })
+    .registerTypesIn(path.join(__dirname, 'types'))
+    //.registerType(new Commando.ArgumentUnionType(bot, 'searchablemessage|plusminusint'))
+    .registerCommandsIn(path.join(__dirname, 'commands'));
+  bot.plugins
+    .registerGroup('default', 'Default')
+    .registerGroup('privacy', 'Privacy')
+    .registerGroup('jokes', 'Jokes')
+    .registerGroup('util', 'Util')
+    .registerGroup('media', 'Media')
+    .registerGroup('security', 'Security')
+    .loadPluginsIn(path.join(__dirname, 'plugins'));
+  require('../siteServer');
+}, 0);
 
 //require('./jokes/banned');
 //require('./jokes/cultTracker');

@@ -1,0 +1,84 @@
+
+:root {
+  --bd-blue: #3E82E5;
+  --bd-blue-hover: rgb(56,117,206);
+  --bd-blue-active: rgb(50,104,183);
+  --blurple: #7289DA;
+}
+.theme-dark {
+  --header-primary: #fff;
+  --header-secondary: #b9bbbe;
+  --text-normal: #dcddde;
+  --text-muted: #72767d;
+  --text-link: #00b0f4;
+  --channels-default: #8e9297;
+  --interactive-normal: #b9bbbe;
+  --interactive-hover: #dcddde;
+  --interactive-active: #fff;
+  --interactive-muted: #4f545c;
+  --background-primary: #36393f;
+  --background-secondary: #2f3136;
+  --background-secondary-alt: #292b2f;
+  --background-tertiary: #202225;
+  --background-accent: #4f545c;
+  --background-floating: #18191c;
+  --background-mobile-primary: #36393f;
+  --background-mobile-secondary: #2f3136;
+  --background-modifier-hover: rgba(79,84,92,0.16);
+  --background-modifier-active: rgba(79,84,92,0.24);
+  --background-modifier-selected: rgba(79,84,92,0.32);
+  --background-modifier-accent: hsla(0,0%,100%,0.06);
+  --background-mentioned: rgba(250,166,26,0.05);
+  --background-mentioned-hover: rgba(250,166,26,0.08);
+  --background-message-hover: rgba(4,4,5,0.07);
+  --scrollbar-thin-thumb: #202225;
+  --scrollbar-thin-track: transparent;
+  --scrollbar-auto-thumb: #202225;
+  --scrollbar-auto-track: #2e3338;
+  --scrollbar-auto-scrollbar-color-thumb: #202225;
+  --scrollbar-auto-scrollbar-color-track: #2f3136;
+  --elevation-stroke: 0 0 0 1px rgba(4,4,5,0.15);
+  --elevation-low: 0 1px 0 rgba(4,4,5,0.2),0 1.5px 0 rgba(6,6,7,0.05),0 2px 0 rgba(4,4,5,0.05);
+  --elevation-medium: 0 4px 4px rgba(0,0,0,0.16);
+  --elevation-high: 0 8px 16px rgba(0,0,0,0.24);
+  --logo-primary: #fff;
+  --focus-primary: #00b0f4;
+  --guild-header-text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+  --channeltextarea-background: #40444b;
+  --activity-card-background: #202225;
+  --textbox-markdown-syntax: #8e9297;
+}
+a, abbr, acronym, address, applet, big, blockquote, body, caption, cite, code, dd, del, dfn, div, dl, dt, em, fieldset, form, h1, h2, h3, h4, h5, h6, html, iframe, img, ins, kbd, label, legend, li, object, ol, p, pre, q, s, samp, small, span, strike, strong, table, tbody, td, tfoot, th, thead, tr, tt, ul, var {
+  border: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+::placeholder, body, button, input, select, textarea {
+  font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
+  text-rendering: optimizeLegibility;
+}
+::-webkit-input-placeholder, body, button, input, select, textarea {
+  font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
+  text-rendering: optimizeLegibility;
+}
+body, html {
+  height: 100%;
+  width: 100%;
+}
+body {
+  background: var(--background-secondary);
+  text-rendering: optimizeLegibility;
+  line-height: 1;
+  font-family: Whitney,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--text-link);
+  text-decoration: none;
+  cursor: pointer;
+}
