@@ -20,7 +20,7 @@ const routes = [
       if (to.query.code) {
         api.post('/token', { code: to.query.code }).then(({ data }) => {
           store.commit('setAuth', data.payload.token);
-          return next(to.query.state);
+          return next(to.query.state || '/');
         }).catch((err) => { console.error(err); next(); });
       } else {
         next();

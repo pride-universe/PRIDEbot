@@ -87,7 +87,6 @@ app.post('/api/token', jsonMiddleware, async (req, res) => {
     const token = jwt.sign(JSON.stringify({ ...data, expires: Math.floor(Date.now() / 1000) + expires_in, id }), JWT_SECRET, {
       algorithm: JWT_ALG,
     });
-    console.log(token);
     res.apiResponse({ token });
   } catch (err) {
     console.log(err);
@@ -116,6 +115,28 @@ app.get('/api/refresh', jwtMiddleware, async (req, res) => {
     });
     res.apiResponse({ token });
   } catch (err) {
+    res.apiResponse(err);
+  }
+});
+
+app.post('/api/logout', jwtMiddleware, async (req, res) => {
+  const { refresh_token } = req.user;
+  const body = {
+    client_id: CLIENT_ID,
+    client_secret: CLIENT_SECRET,
+    token_type: 'refresh_token',
+    token: refresh_token,
+  };
+  try {
+    res.apiResponse((await discordApi.post('/oauth2/token/revoke',
+      qs.stringify(body),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })).data);
+  } catch (err) {
+    console.error(err);
     res.apiResponse(err);
   }
 });
@@ -227,7 +248,6 @@ app.post('/api/servers/:id/roles', jwtMiddleware, jsonMiddleware, async (req, re
     res.apiResponse(err);
   }
 });
-
 app.use('/api/*', (req, res) => {
   res.status(404).apiResponse(new Error('Api endpoint not found'));
 });

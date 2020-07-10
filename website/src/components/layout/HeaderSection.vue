@@ -1,17 +1,29 @@
 <template>
   <div class="header-section">
     <div class="header-wrapper">
-      <router-link
+      <span
         to="/"
-        class="home-link"
+        class="logo-section"
       >
-        <img
+        <router-link
+          to="/"
           class="home-link-image"
-          alt="PrideBot logo"
-          src="../../assets/logo.png"
         >
-        <span class="home-link-text">PrideBot</span>
-      </router-link>
+          <img
+            alt="PrideBot logo"
+            src="../../assets/logo.png"
+          >
+        </router-link>
+        <div class="logo-section-after">
+          <router-link
+            to="/"
+            class="home-link-text"
+          >
+            PrideBot
+          </router-link>
+          <login-button class="user-button" />
+        </div>
+      </span>
       <div class="selector-wrapper">
         <server-selector />
       </div>
@@ -22,11 +34,13 @@
 <script>
 
 import ServerSelector from '../ServerSelector.vue';
+import LoginButton from '../LoginButton.vue';
 
 export default {
   name: 'App',
   components: {
     ServerSelector,
+    LoginButton,
   },
 };
 </script>
@@ -40,29 +54,44 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-start;
   padding: 0 2rem;
-  max-width: 1400px;
   margin: auto;
+  max-width: 1400px;
+  flex: 1 1;
+}
+.user-button {
+  flex: 0 0;
 }
 .header-wrapper > * {
   margin: 1rem 0;
 }
-.home-link {
+.logo-section {
   display: flex;
-  align-items: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+.logo-section-after {
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 .selector-wrapper {
-  min-width: 300px;
+  min-width: 100px;
   display: flex;
   margin-left: 2rem;
 }
 .home-link-image {
+  margin: auto;
+}
+.home-link-image > img {
   height: 72px;
   border-radius: 10px;
 }
 .home-link-text {
-  margin-left: 1rem;
-  font-size: 3em;
+  font-size: 2em;
   color: var(--text-normal);
 }
 </style>

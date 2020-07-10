@@ -56,13 +56,29 @@ a, abbr, acronym, address, applet, big, blockquote, body, caption, cite, code, d
   font-size: 100%;
   vertical-align: baseline;
 }
-::placeholder, body, button, input, select, textarea {
+::-webkit-input-placeholder, ::placeholder, body, button, input, select, textarea {
   font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
   text-rendering: optimizeLegibility;
 }
-::-webkit-input-placeholder, body, button, input, select, textarea {
-  font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
-  text-rendering: optimizeLegibility;
+button {
+  background: var(--bd-blue);
+  outline: 0;
+  position: relative;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 2px 16px;
+  user-select: none;
+  color: #fff;
+}
+button:hover {
+  background: var(--bd-blue-hover);
+}
+button:active {
+  background: var(--bd-blue-active);
 }
 body, html {
   height: 100%;

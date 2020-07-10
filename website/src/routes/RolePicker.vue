@@ -1,9 +1,10 @@
 <template>
   <div
-    v-if="redirecting"
+    v-if="requireAuth"
     class="page"
   >
-    Redirecting to discord...
+    You have to sign in to manage your roles!
+    <login-button class="login" />
   </div>
   <div
     v-else
@@ -48,27 +49,19 @@ import { decodeSnowflake } from '../../../src/modules/snowflakeString';
 import api from '../api';
 import ServerIcon from '../components/ServerIcon.vue';
 import RoleGroup from '../components/RoleGroup.vue';
-
-function getAuthUrl(guildEncodedId) {
-  return `https://discord.com/api/oauth2/authorize?client_id=${
-    encodeURIComponent(process.env.VUE_APP_CLIENT_ID)
-  }&redirect_uri=${
-    encodeURIComponent(`${process.env.VUE_APP_BASE_URL}/oauth2`)
-  }&state=${
-    encodeURIComponent(`/r/${encodeURIComponent(guildEncodedId)}`)
-  }&response_type=code&scope=identify`;
-}
+import LoginButton from '../components/LoginButton.vue';
 
 export default {
   name: 'RolePicker',
   components: {
     ServerIcon,
     RoleGroup,
+    LoginButton,
   },
   data: () => ({
     loading: false,
     guild: null,
-    redirecting: false,
+    requireAuth: false,
   }),
   beforeRouteUpdate(to, from, next) {
     this.fetchGuildInfo(to).then(() => next(), () => next());
@@ -91,8 +84,7 @@ export default {
       try {
         const id = decodeSnowflake(to.params.id);
         if (this.$store.state.authToken == null) {
-          this.redirecting = true;
-          window.location.assign(getAuthUrl(to.params.id));
+          this.requireAuth = true;
           return Promise.resolve();
         }
         this.loading = true;
@@ -134,5 +126,9 @@ export default {
   }
   .guild-title > span {
     margin-left: 1rem;
+  }
+  .login {
+    margin: auto;
+    margin-top: 1rem;
   }
 </style>
