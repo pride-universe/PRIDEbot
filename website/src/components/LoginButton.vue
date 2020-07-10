@@ -20,7 +20,7 @@
   >
     <img
       src="../assets/logout.svg"
-      alt="Discord"
+      alt="Sign-out icon"
     >
     <span>{{ $store.state.user ? `${$store.state.user.username}#${$store.state.user.discriminator}` : 'Sign out' }}</span>
   </button>
