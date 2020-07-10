@@ -10,7 +10,7 @@
           class="home-link-image"
         >
           <img
-            alt="PrideBot logo"
+            alt="PRIDE¨bot logo"
             src="../../assets/logo.png"
           >
         </router-link>
@@ -19,7 +19,7 @@
             to="/"
             class="home-link-text"
           >
-            PrideBot
+            PRIDEbot
           </router-link>
           <login-button class="user-button" />
         </div>
