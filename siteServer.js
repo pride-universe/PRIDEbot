@@ -252,7 +252,7 @@ app.use('/api/*', (req, res) => {
   res.status(404).apiResponse(new Error('Api endpoint not found'));
 });
 
-app.get('/', (req, res) => {
+app.use('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'website/dist', 'index.html'));
 });
 
