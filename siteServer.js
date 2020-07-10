@@ -252,8 +252,8 @@ app.use('/api/*', (req, res) => {
   res.status(404).apiResponse(new Error('Api endpoint not found'));
 });
 
-app.use('/', (req, res) => {
-  res.status(404).sendFile(path.join(__dirname, 'website/dist', 'index.html'));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'website/dist', 'index.html'));
 });
 
 app.listen(port, () => console.log(`Pridebot webserver listening on http://localhost:${port}`));
