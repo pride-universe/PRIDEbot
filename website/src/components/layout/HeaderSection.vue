@@ -37,7 +37,7 @@ import ServerSelector from '../ServerSelector.vue';
 import LoginButton from '../LoginButton.vue';
 
 export default {
-  name: 'App',
+  name: 'HeaderSection',
   components: {
     ServerSelector,
     LoginButton,
