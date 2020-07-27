@@ -73,7 +73,7 @@ module.exports = class RoleCommand extends RestrictedCommand {
       str += '\nDuplicate name exist in case you have a preference over which role color you want. You will get the color of the role with the highest position in the list.\n';
     }
     str += '\nAre we missing a role? Just ask a moderator to add it!\n';
-    str += `\nTired of typing commands? Try ${process.env.VUE_APP_BASE_URL}/r/${encodeSnowflake(msg.guild.id)}\n`;
+    str += `\nTired of typing commands? Try ${process.env.VUE_APP_BASE_URL}/r/${encodeURIComponent(encodeSnowflake(msg.guild.id))}\n`;
     msg.reply(str, {split: {prepend: '\n'}});
   }
 

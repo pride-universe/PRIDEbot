@@ -8,7 +8,7 @@ const atob = global.atob ? global.atob : require('atob');
  * @returns {string} The snowflake represented by the encoded string
  */
 function decodeSnowflake(encoded, keySize = 3n) {
-  const arr = new Uint8Array(Array.prototype.map.call(atob(encoded), c=>c.charCodeAt()));
+  const arr = new Uint8Array(Array.prototype.map.call(atob(encoded.replace(/-/g, '+').replace(/_/g, '/')), c=>c.charCodeAt()));
   let val = 0n;
   for (let i = 0n; i < arr.length; i++) {
     val |= BigInt( keySize && i >= keySize ? arr[i] ^ arr[i % keySize] : arr[i]) << (i) * 8n;
@@ -30,7 +30,7 @@ function encodeSnowflake(snowflake, keySize = 3n, bytes = 8) {
     const num = Number((snowflake >> i * 8n) & 0xFFn);
     arr[i] = keySize ? num ^ arr[i % keySize] : num;
   }
-  return btoa(String.fromCharCode(...arr)).replace(/=/g,'');
+  return btoa(String.fromCharCode(...arr)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g,'');
 }
 
 module.exports = {
