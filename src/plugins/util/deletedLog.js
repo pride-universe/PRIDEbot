@@ -61,12 +61,12 @@ class DeletedLog extends Plugin {
     const embed = new MessageEmbed()
       .setColor(message.member.displayColor)
       .setAuthor(message.author.tag, message.author.avatarURL())
-      .setDescription(message.content)
+      .setDescription(message.content || '[empty]')
       .setTimestamp();
     if(this.history[message.id]) {
       embed.setTitle('Final message');
       for(let i = this.history[message.id].length - 1; i >= 0; i--) {
-        embed.addField(i === 0 ? 'Original Message' : 'Prior Edit', this.history[message.id][i].substr(0, 1024));
+        embed.addField(i === 0 ? 'Original Message' : 'Prior Edit', this.history[message.id][i].substr(0, 1024) || '[empty]');
       }
     }
     return embed;

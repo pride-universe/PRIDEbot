@@ -38,7 +38,7 @@ class HousingLister extends Plugin {
       group: 'util',
       description: 'Keeps a registry of channels and channel topics',
       guarded: false,
-      autostart: true,
+      autostart: false,
       startOn: ['ready', 'providerReady']
     };
     super(client, info);
