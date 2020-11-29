@@ -37,6 +37,7 @@ function apiResponse(payload) {
       this.status(500);
     }
     this.end(JSON.stringify({ status: this.statusCode, error: payload.message }));
+    return;
   }
   this.end(JSON.stringify({ status: this.statusCode, payload }));
 }
