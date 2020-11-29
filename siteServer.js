@@ -31,6 +31,7 @@ const discordApi = axios.create({
 let bot = require('./src/index');
 
 function apiResponse(payload) {
+  if (!this.writable) return;
   if (payload instanceof Error) {
     if (this.statusCode < 300) {
       this.status(500);
