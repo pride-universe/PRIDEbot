@@ -1,18 +1,22 @@
 {
   "name": "pridebot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PRIDEuniverse bot",
+  "author": "NbOpposite",
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.15.3"
+  },
   "main": "src/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "eslint . && mocha -t 10000",
+    "test": "npm run lint && mocha -t 10000",
+    "lint": "eslint .",
     "start": "node .",
     "dev": "nodemon -w config -w src/media -w src/modules -w src/types ."
   },
-  "author": "NbOpposite",
-  "license": "MIT",
   "dependencies": {
     "@dguttman/wolfram-alpha-api": "^1.0.0-rc.1",
     "@discordjs/opus": "^0.5.3",
@@ -62,8 +66,5 @@
     "discord.js-plugins": "../discord.js-plugins",
     "discord.js-commando": "../Commando",
     "discord.js": "../discord.js"
-  },
-  "engines": {
-    "node": ">=0.10.3 <0.12"
   }
 }
