@@ -35,7 +35,8 @@ async function getSelfRoleGroups(guild) {
    * @type {Map<string, INVALID_GROUP | {name: string; permGroup: string; start: role; end: role; roleEntries: {role: Role; permGroup: string;}[];}>}}
    */
   const groups = new Map();
-  const roles = (await guild.roles.fetch()).cache;
+  const roles = (await guild.roles.fetch()).cache.sort(({rawPosition: a}, {rawPosition: b}) => b - a);
+  console.log(roles.map(r => r.name));
   roles.forEach(r => {
     let match;
     // eslint-disable-next-line no-cond-assign
@@ -80,7 +81,7 @@ async function getSelfRoleGroups(guild) {
       continue;
       
     groups.delete(key);
-    bot.client.emit('warn', `Self role group with id "${key}" is invalid.`);
+    bot.emit('warn', `Self role group with id "${key}" is invalid.`);
   }
   /**
    * @type {Set<Role>}

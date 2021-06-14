@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "@dguttman/wolfram-alpha-api": "^1.0.0-rc.1",
-    "@discordjs/opus": "^0.1.0",
+    "@discordjs/opus": "^0.5.3",
     "@types/better-sqlite3": "^5.4.0",
     "abort-controller": "^3.0.0",
     "array-to-sentence": "^2.0.0",
@@ -29,8 +29,8 @@
     "common-tags": "^1.8.0",
     "cors": "^2.8.5",
     "discord-markdown": "^2.2.0",
-    "discord.js": "github:discordjs/discord.js",
-    "discord.js-commando": "github:discordjs/Commando",
+    "discord.js": "^12.5.3",
+    "discord.js-commando": "^0.12.3",
     "discord.js-plugins": "github:djs-plugins/discord.js-plugins",
     "dotenv": "^8.2.0",
     "dotenv-expand": "^5.1.0",
@@ -39,15 +39,12 @@
     "express-jwt": "^6.0.0",
     "jsdom": "^16.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mime": "^2.4.4",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",
-    "puppeteer": "^2.1.1",
     "request": "^2.88.0",
     "tough-cookie": "^4.0.0",
-    "twemoji": "^12.1.5",
     "xlsx": "^0.15.5",
-    "ytdl-core": "^1.0.9"
+    "ytdl-core": "^4.8.2"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
