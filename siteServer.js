@@ -103,7 +103,6 @@ app.get('/api/refresh', jwtMiddleware, async (req, res) => {
     client_secret: CLIENT_SECRET,
     grant_type: 'refresh_token',
     refresh_token: refresh_token,
-    redirect_uri: 'http://localhost:8081/oauth2',
     scope,
   };
   try {

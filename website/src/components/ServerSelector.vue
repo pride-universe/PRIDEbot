@@ -133,7 +133,7 @@ export default {
   },
   watch: {
     authToken(from, to) {
-      if (!from || !to) {
+      if (!to) {
         this.guilds = null;
       }
       this.fetchGuilds();
@@ -151,6 +151,11 @@ export default {
           .then((response) => {
             this.guilds = response.data.payload;
           }, (err) => {
+            if (err.isAxiosError && err.response.status === 401) {
+              this.$store.dispatch('refreshToken');
+            }
+            return Promise.reject(err);
+          }).catch((err) => {
             console.error(err);
           });
       } catch (err) {

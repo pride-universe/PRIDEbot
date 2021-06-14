@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-// eslint-disable-next-line no-unused-vars
 import api, { DISCORD_API } from '../api';
 
 Vue.use(Vuex);

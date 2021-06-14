@@ -94,6 +94,11 @@ export default {
             this.loading = false;
             this.guild = response.data.payload;
           }, (err) => {
+            if (err.isAxiosError && err.response.status === 401) {
+              this.$store.dispatch('refreshToken');
+            }
+            return Promise.reject(err);
+          }).catch((err) => {
             console.error(err);
             this.loading = false;
             this.guild = null;

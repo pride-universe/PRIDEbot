@@ -36,7 +36,6 @@ async function getSelfRoleGroups(guild) {
    */
   const groups = new Map();
   const roles = (await guild.roles.fetch()).cache.sort(({rawPosition: a}, {rawPosition: b}) => b - a);
-  console.log(roles.map(r => r.name));
   roles.forEach(r => {
     let match;
     // eslint-disable-next-line no-cond-assign
