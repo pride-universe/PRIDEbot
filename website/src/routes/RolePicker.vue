@@ -58,14 +58,14 @@ export default {
     RoleGroup,
     LoginButton,
   },
+  beforeRouteUpdate(to, from, next) {
+    this.fetchGuildInfo(to).then(() => next(), () => next());
+  },
   data: () => ({
     loading: false,
     guild: null,
     requireAuth: false,
   }),
-  beforeRouteUpdate(to, from, next) {
-    this.fetchGuildInfo(to).then(() => next(), () => next());
-  },
   computed: {
     authToken() {
       return this.$store.state.authToken;
