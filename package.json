@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@dguttman/wolfram-alpha-api": "^1.0.0-rc.1",
-    "@discordjs/opus": "^0.5.3",
+    "@discordjs/opus": "^0.8.0",
     "@types/better-sqlite3": "^5.4.0",
     "abort-controller": "^3.0.0",
     "array-to-sentence": "^2.0.0",
