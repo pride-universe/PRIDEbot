@@ -151,6 +151,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line import/no-relative-packages
 import { encodeSnowflake } from '../../../src/modules/snowflakeString';
 /**
  * @param {string} acronym

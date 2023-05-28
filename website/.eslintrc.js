@@ -26,5 +26,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'vuejs-accessibility/click-events-have-key-events': 'warn',
+    'vuejs-accessibility/mouse-events-have-key-events': 'warn',
   },
 };

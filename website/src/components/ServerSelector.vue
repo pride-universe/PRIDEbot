@@ -4,7 +4,7 @@
     class="guild-selector"
   >
     <div
-      v-for="({guild}) in guilds"
+      v-for="({ guild }) in guilds"
       :key="guild.id"
       class="server-icon-wrapper"
     >
@@ -17,7 +17,7 @@
     </div>
     <template v-if="false">
       <div
-        v-for="({guild}) in guilds"
+        v-for="({ guild }) in guilds"
         :key="guild.id"
         class="server-icon-wrapper"
       >
@@ -29,7 +29,7 @@
         />
       </div>
       <div
-        v-for="({guild}) in guilds"
+        v-for="({ guild }) in guilds"
         :key="guild.id"
         class="server-icon-wrapper"
       >
@@ -41,7 +41,7 @@
         />
       </div>
       <div
-        v-for="({guild}) in guilds"
+        v-for="({ guild }) in guilds"
         :key="guild.id"
         class="server-icon-wrapper"
       >
@@ -53,7 +53,7 @@
         />
       </div>
       <div
-        v-for="({guild}) in guilds"
+        v-for="({ guild }) in guilds"
         :key="guild.id"
         class="server-icon-wrapper"
       >
@@ -65,7 +65,7 @@
         />
       </div>
       <div
-        v-for="({guild}) in guilds"
+        v-for="({ guild }) in guilds"
         :key="guild.id"
         class="server-icon-wrapper"
       >
@@ -77,7 +77,7 @@
         />
       </div>
       <div
-        v-for="({guild}) in guilds"
+        v-for="({ guild }) in guilds"
         :key="guild.id"
         class="server-icon-wrapper"
       >
@@ -89,7 +89,7 @@
         />
       </div>
       <div
-        v-for="({guild}) in guilds"
+        v-for="({ guild }) in guilds"
         :key="guild.id"
         class="server-icon-wrapper"
       >
@@ -101,7 +101,7 @@
         />
       </div>
       <div
-        v-for="({guild}) in guilds"
+        v-for="({ guild }) in guilds"
         :key="guild.id"
         class="server-icon-wrapper"
       >

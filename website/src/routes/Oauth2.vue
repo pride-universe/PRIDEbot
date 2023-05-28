@@ -15,6 +15,6 @@
 
 <script>
 export default {
-  name: 'Oauth2',
+  name: 'Oauth2Page',
 };
 </script>

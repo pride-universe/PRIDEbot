@@ -26,7 +26,7 @@
       </h1>
       <role-group
         v-for="(group, index) in guild.groups"
-        :key="index+group.name"
+        :key="index + group.name"
         :name="group.name"
         :roles="group.roleEntries"
         :guild-id="guild.id"
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line import/no-relative-packages
 import { decodeSnowflake } from '../../../src/modules/snowflakeString';
 import api from '../api';
 import ServerIcon from '../components/ServerIcon.vue';
